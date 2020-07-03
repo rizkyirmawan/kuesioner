@@ -24,4 +24,9 @@ class Pembelajaran extends Model
     {
         return $this->morphMany(Pertanyaan::class, 'questionable');
     }
+
+    public function responden()
+    {
+        return $this->morphMany(Responden::class, 'kuesionerable');
+    }
 }

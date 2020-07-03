@@ -14,4 +14,14 @@ class Pertanyaan extends Model
     {
     	return $this->morphTo();
     }
+
+    public function jawaban()
+    {
+    	return $this->hasMany(Jawaban::class);
+    }
+
+    public function respons()
+    {
+        return $this->hasMany(Respons::class);
+    }
 }

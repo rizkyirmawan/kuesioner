@@ -58,7 +58,9 @@ class DosenController extends Controller
             'email', 'password', 'role_id', 'email_verified_at', 'remember_token'
         ]));
 
-        return redirect('/users/dosen')->with('success', 'Data dosen telah ditambahkan.');
+        return redirect()
+                ->route('dosen.show', ['dosen' => $dosen->id])
+                ->with('success', 'Data dosen telah ditambahkan.');
     }
 
     // Show Details
@@ -104,7 +106,9 @@ class DosenController extends Controller
             'email', 'password', 'role_id', 'email_verified_at', 'remember_token'
         ]));
 
-        return redirect('/users/dosen/' . $dosen->id)->with('success', 'Data dosen telah diubah.');
+        return redirect()
+                ->route('dosen.show', ['dosen' => $dosen])
+                ->with('success', 'Data dosen telah diubah.');
     }
 
     // Delete Dosen
@@ -114,11 +118,19 @@ class DosenController extends Controller
             Storage::delete('public/' . $dosen->foto);
         }
 
+        if ($dosen->studi->count() > 0) {
+            return redirect()
+                    ->route('dosen.show', ['dosen' => $dosen])
+                    ->with('error', 'Dosen ini memiliki mata kuliah yang diajar.');
+        }
+
         $dosen->user->delete();
 
         $dosen->delete();
 
-        return redirect('/users/dosen')->with('success', 'Data dosen telah dihapus.');
+        return redirect()
+                ->route('dosen.index')
+                ->with('success', 'Data dosen telah dihapus.');
     }
 
     // Store Image

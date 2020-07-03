@@ -90,6 +90,29 @@
       </li>
       @endif
 
+      @if(Auth::user()->role->role === 'Mahasiswa')
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Pengisian Kuesioner
+      </div>
+
+      <li class="nav-item {{ Request::segment(2) === 'kuesioner' ? 'active' : '' }}">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaster">
+          <i class="fas fa-fw fa-book"></i>
+          <span>Kuesioner</span>
+        </a>
+        <div id="collapseMaster" class="collapse {{ Request::segment(2) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kelola Kuesioner:</h6>
+            <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('mahasiswa.pembelajaran') }}">Pembelajaran</a>
+          </div>
+        </div>
+      </li>
+      @endif
+
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 

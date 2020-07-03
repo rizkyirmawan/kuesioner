@@ -48,7 +48,7 @@
           </a>
         </div>
         <div class="p-2">
-          <a href="{{ route('matkul.peserta', ['mataKuliah' => $mataKuliah]) }}" class="btn btn-primary btn-sm btn-icon-split">
+          <a href="{{ route('matkul.peserta', ['mataKuliah' => $mataKuliah]) }}" class="btn btn-primary btn-sm btn-icon-split @if($mataKuliah->studi->count() <= 0) disabled @endif">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
@@ -105,7 +105,22 @@
             </tr>
             @forelse($mataKuliah->studi as $studi)
               <tr>
-                <td>{{ $studi->kelas->kelas }}</td>
+                <td>
+                  {{ $studi->kelas->kelas }}
+
+                  <div class="d-flex flex-row-reverse mt-2">
+                    <a href="#" class="badge badge-danger p-2" data-toggle="modal" data-target="#delete-{{ $studi->id }}">
+                      <i class="fa fa-times"></i>
+                    </a>
+                    <a href="#" class="badge badge-success p-2 mr-2" data-toggle="modal" data-target="#update-{{ $studi->id }}">
+                      <i class="fa fa-edit"></i>
+                    </a>
+                  </div>
+
+                  @include('partials.modal._updateStudi')
+                  @include('partials.modal._deleteStudi')
+
+                </td>
                 <td>
                   <ol>
                   @forelse($mataKuliah->mahasiswa->where('kelas_id', $studi->kelas->id) as $mahasiswa)

@@ -2,6 +2,8 @@
 
 	<div class="form-row">
 
+		<input type="hidden" name="id" value="{{ $mahasiswa->user->userable->id ?? '' }}">
+
 		<div class="col-md-2 mb-3">
 			<label for="nim" class="text-dark">NIM:</label>
 			<input type="text" name="nim" class="form-control @error('nim') is-invalid @enderror" onkeypress="isNumber(event)" maxlength="7" value="{{ old('nim') ?? $mahasiswa->nim }}">

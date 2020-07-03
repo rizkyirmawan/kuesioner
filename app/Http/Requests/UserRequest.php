@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Request;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -24,9 +24,37 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($this->id, 'email')]
-        ];
+        if (Request::segment(2) === 'mahasiswa') {
+            switch ($this->method()) {
+                case 'POST':
+                    return [
+                        'email' => 'required|email|unique:users,email'
+                    ];
+                    break;
+                case 'PATCH':
+                    return [
+                        'email' => 'required|email|unique:users,email,' . $this->mahasiswa->user->id
+                    ];
+                    break;
+                default:
+                    break;
+            }
+        } elseif (Request::segment(2) === 'dosen') {
+            switch ($this->method()) {
+                case 'POST':
+                    return [
+                        'email' => 'required|email|unique:users,email'
+                    ];
+                    break;
+                case 'PATCH':
+                    return [
+                        'email' => 'required|email|unique:users,email,' . $this->dosen->user->id
+                    ];
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public function messages()

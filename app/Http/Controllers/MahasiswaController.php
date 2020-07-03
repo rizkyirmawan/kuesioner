@@ -72,7 +72,9 @@ class MahasiswaController extends Controller
             'email', 'password', 'role_id', 'email_verified_at', 'remember_token'
         ]));
 
-        return redirect('/users/mahasiswa')->with('success', 'Data mahasiswa telah ditambahkan.');
+        return redirect()
+                ->route('mahasiswa.show', ['mahasiswa' => $mahasiswa->id])
+                ->with('success', 'Data mahasiswa telah ditambahkan.');
     }
 
     // Show Details
@@ -129,7 +131,9 @@ class MahasiswaController extends Controller
             'email', 'password', 'role_id', 'email_verified_at', 'remember_token'
         ]));
 
-        return redirect('/users/mahasiswa/' . $mahasiswa->id)->with('success', 'Data mahasiswa telah diubah.');
+        return redirect()
+                ->route('mahasiswa.show', ['mahasiswa' => $mahasiswa])
+                ->with('success', 'Data mahasiswa telah diubah.');
     }
 
     // Delete Mahasiswa
@@ -141,9 +145,13 @@ class MahasiswaController extends Controller
 
         $mahasiswa->user->delete();
 
+        $mahasiswa->matkul()->detach();
+
         $mahasiswa->delete();
 
-        return redirect('/users/mahasiswa')->with('success', 'Data mahasiswa telah dihapus.');
+        return redirect()
+                ->route('mahasiswa.index')
+                ->with('success', 'Data mahasiswa telah dihapus.');
     }
 
     // Store Image

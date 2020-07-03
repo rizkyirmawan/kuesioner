@@ -7,6 +7,7 @@ use App\Models\Matkul;
 use App\Models\Mahasiswa;
 use App\Models\Jurusan;
 use App\Models\Kelas;
+use App\Models\Studi;
 use App\Http\Requests\MatkulRequest;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,9 @@ class MatkulController extends Controller
 
         $mataKuliah->jurusan()->sync($matkulReq->jurusan);
 
-    	return redirect('/master/mata-kuliah')->with('success', 'Data mata kuliah berhasil ditambahkan.');
+    	return redirect()
+                ->route('matkul.show', ['mataKuliah' => $mataKuliah->id])
+                ->with('success', 'Data mata kuliah berhasil ditambahkan.');
     }
 
     // Show Matkul
@@ -73,7 +76,9 @@ class MatkulController extends Controller
 
         $mataKuliah->jurusan()->sync($matkulReq->jurusan);
 
-    	return redirect('/master/mata-kuliah/' . $mataKuliah->id)->with('success', 'Data mata kuliah berhasil diubah.');
+    	return redirect()
+                ->route('matkul.show', ['mataKuliah' => $mataKuliah])
+                ->with('success', 'Data mata kuliah berhasil diubah.');
     }
 
     // Delete Matkul
@@ -85,7 +90,9 @@ class MatkulController extends Controller
 
     	$mataKuliah->delete();
 
-    	return redirect('/master/mata-kuliah')->with('success', 'Data mata kuliah berhasil dihapus.');
+    	return redirect()
+                ->route('matkul.index')
+                ->with('success', 'Data mata kuliah berhasil dihapus.');
     }
 
     // Peserta Didik
@@ -108,7 +115,39 @@ class MatkulController extends Controller
 
         $mataKuliah->studi()->create($request->only('kelas_id', 'dosen_id'));
 
-        return redirect('/master/mata-kuliah/' . $mataKuliah->id)->with('success', 'Data kelas & dosen berhasil diubah.');
+        return redirect()
+                ->route('matkul.show', ['mataKuliah' => $mataKuliah])
+                ->with('success', 'Data kelas & dosen berhasil diubah.');
+    }
+
+    // Update Studi
+    public function updateStudi(Matkul $mataKuliah, Studi $studi, Request $request)
+    {
+        $request->request->add([
+            'dosen_id' => $request->dosen
+        ]);
+
+        $studi->update($request->only('dosen_id'));
+
+        return redirect()
+                ->route('matkul.show', ['mataKuliah' => $mataKuliah])
+                ->with('success', 'Data kelas & dosen berhasil diubah.');
+    }
+
+    // Destroy Studi
+    public function destroyStudi(Matkul $mataKuliah, Studi $studi)
+    {
+        if ($mataKuliah->mahasiswa->where('kelas_id', $studi->kelas->id)->count() > 0) {
+            return  redirect()
+                    ->route('matkul.show', ['mataKuliah' => $mataKuliah])
+                    ->with('error', 'Data studi ini memiliki peserta didik.');
+        }
+
+        $studi->delete();
+
+        return  redirect()
+                ->route('matkul.show', ['mataKuliah' => $mataKuliah])
+                ->with('success', 'Data kelas & dosen berhasil diubah.');
     }
 
     // Store Peserta Didik
@@ -116,7 +155,9 @@ class MatkulController extends Controller
     {
         $mataKuliah->mahasiswa()->sync($request->mahasiswa);
 
-        return redirect('/master/mata-kuliah/' . $mataKuliah->id . '/peserta-didik')->with('success', 'Data peserta didik berhasil diubah.');
+        return redirect()
+                ->route('matkul.peserta', ['mataKuliah' => $mataKuliah])
+                ->with('success', 'Data peserta didik berhasil diubah.');
     }
 
     // Get Jurusan API

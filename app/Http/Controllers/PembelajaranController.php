@@ -31,6 +31,8 @@ class PembelajaranController extends Controller
 
     	$pembelajaran = new Pembelajaran();
 
+        // dd($pembelajaran->studi());
+
     	return view('kuesioner.pembelajaran.create', compact('title', 'pembelajaran', 'studi'));
     }
 
@@ -54,7 +56,7 @@ class PembelajaranController extends Controller
     {
     	$title = 'Detail Kuesioner Pembelajaran';
 
-    	$pembelajaran->load(['studi.kelas', 'studi.matkul']);
+    	$pembelajaran->load(['studi.kelas', 'studi.matkul', 'pertanyaan.jawaban']);
 
     	return view('kuesioner.pembelajaran.show', compact('title', 'pembelajaran'));
     }
@@ -90,8 +92,28 @@ class PembelajaranController extends Controller
     // Destroy
     public function destroy(Pembelajaran $pembelajaran)
     {
-    	$pembelajaran->delete();
+    	$pembelajaran->pertanyaan()->jawaban()->delete();
+
+        $pembelajaran->responden()->respons()->delete();
+
+        $pembelajaran->delete();
 
     	return redirect()->route('pembelajaran.index')->with('success', 'Data kuesioner pembelajaran berhasil dihapus.');
+    }
+
+    // Show Respons
+    public function showRespons(Pembelajaran $pembelajaran)
+    {
+        $title = 'Respons Kuesioner Pembelajaran';
+
+        $pembelajaran->load(['pertanyaan.jawaban', 'responden.respons']);
+
+        $collection = $pembelajaran->responden;
+
+        $uniqueResponden = $collection->unique(function($item) {
+            return $item['user_id'].$item['kuesionerable_id'];
+        });
+
+        return view('kuesioner.pembelajaran.respons', compact('title', 'pembelajaran', 'uniqueResponden'));
     }
 }

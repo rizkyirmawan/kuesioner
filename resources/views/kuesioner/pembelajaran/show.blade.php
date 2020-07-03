@@ -35,7 +35,27 @@
 
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-			<h6 class="font-weight-bold text-primary">Detail Kuesioner Pembelajaran</h6>
+      <div class="d-flex">
+        <div class="p-2 mr-auto">
+          <h6 class="font-weight-bold text-primary">Detail Kuesioner Pembelajaran</h6>
+        </div>
+        <div class="p-2">
+          <a href="{{ route('pembelajaran.respons', ['pembelajaran' => $pembelajaran]) }}" class="btn btn-secondary btn-sm btn-icon-split @if($pembelajaran->responden->count() <= 0) disabled @endif">
+            <span class="icon text-white-50">
+              <i class="fas fa-eye"></i>
+            </span>
+            <span class="text">Respons</span>
+          </a>
+        </div>
+        <div class="p-2">
+          <a href="{{ route('pertanyaan.pembelajaran.create', ['pembelajaran' => $pembelajaran]) }}" class="btn btn-primary btn-sm btn-icon-split">
+            <span class="icon text-white-50">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Pertanyaan</span>
+          </a>
+        </div>
+      </div>
     </div>
     <div class="card-body">
       <div class="row">
@@ -63,6 +83,50 @@
               <td class="text-justify">{{ $pembelajaran->deskripsi }}</td>
             </tr>
           </table>
+        </div>
+
+        <div class="col-md-6">
+          <h5 class="text-dark">Pertanyaan</h5>
+          <hr>
+          @forelse($pembelajaran->pertanyaan as $pertanyaan)
+          <button class="btn btn-light btn-block mb-3" type="button" data-toggle="collapse" data-target="#collapse-{{ $pertanyaan->id }}">
+            {{ $loop->iteration }}. {{ $pertanyaan->pertanyaan }}
+          </button>
+          <div class="collapse" id="collapse-{{ $pertanyaan->id }}">
+            <div class="card card-body mb-3">
+
+              <div class="d-flex flex-row-reverse mt-2 mb-2">
+                <a href="#" class="btn btn-sm btn-danger p2" data-toggle="modal" data-target="#delete-{{ $pertanyaan->id }}">
+                  <i class="fa fa-times"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-success p2 mr-2"  data-toggle="modal" data-target="#update-{{ $pertanyaan->id }}">
+                  <i class="fa fa-edit"></i>
+                </a>
+              </div>
+
+              @include('partials.modal._updatePertanyaan')
+              @include('partials.modal._deletePertanyaan')
+
+              <span class="badge badge-info mb-2">{{ $pertanyaan->tipe }}</span>
+              <ol class="list-group text-dark">
+                @foreach($pertanyaan->jawaban as $jawaban)
+                <li class="list-group-item">{{ $jawaban->jawaban }}</li>
+                @endforeach
+              </ol>
+
+              @if($pertanyaan->tipe === 'Text')
+              <input class="form-control" type="text" disabled placeholder="Jawaban responden...">
+              @elseif($pertanyaan->tipe === 'Textarea')
+              <textarea rows="5" class="form-control" disabled placeholder="Jawaban responden..."></textarea>
+              @endif
+
+            </div>
+          </div>
+          @empty
+          <div class="text-center">
+            <h6 class="text-dark">Kuesioner ini belum memiliki pertanyaan.</h6>
+          </div>
+          @endforelse
         </div>
 
       </div>

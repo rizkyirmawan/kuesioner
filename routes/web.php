@@ -58,6 +58,8 @@ Route::middleware(['auth'])->group(function() {
 			Route::patch('mata-kuliah/{mataKuliah}', 'MatkulController@update')->name('matkul.update');
 			Route::delete('mata-kuliah/{mataKuliah}', 'MatkulController@destroy')->name('matkul.destroy');
 			Route::post('mata-kuliah/{mataKuliah}', 'MatkulController@storeStudi')->name('matkul.studi');
+			Route::patch('mata-kuliah/{mataKuliah}/{studi}', 'MatkulController@updateStudi')->name('matkul.studi.update');
+			Route::delete('mata-kuliah/{mataKuliah}/{studi}', 'MatkulController@destroyStudi')->name('matkul.studi.destroy');
 			Route::get('mata-kuliah/{mataKuliah}/peserta-didik', 'MatkulController@pesertaDidik')->name('matkul.peserta');
 			Route::post('mata-kuliah/{mataKuliah}/peserta-didik', 'MatkulController@storePeserta')->name('matkul.peserta.store');
 
@@ -87,9 +89,21 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('pembelajaran/{pembelajaran}/edit', 'PembelajaranController@edit')->name('pembelajaran.edit');
 			Route::patch('pembelajaran/{pembelajaran}', 'PembelajaranController@update')->name('pembelajaran.update');
 			Route::delete('pembelajaran/{pembelajaran}', 'PembelajaranController@destroy')->name('pembelajaran.destroy');
+			Route::get('pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
+
+			// Pertanyaan Pembelajaran Routes
+			Route::get('pembelajaran/{pembelajaran}/pertanyaan/create', 'PertanyaanController@createPembelajaran')->name('pertanyaan.pembelajaran.create');
+			Route::post('pembelajaran/{pembelajaran}/pertanyaan', 'PertanyaanController@storePembelajaran')->name('pertanyaan.pembelajaran.store');
+			Route::patch('pembelajaran/{pembelajaran}/pertanyaan/{pertanyaan}', 'PertanyaanController@updatePembelajaran')->name('pertanyaan.pembelajaran.update');
+			Route::delete('pembelajaran/{pembelajaran}/pertanyaan/{pertanyaan}', 'PertanyaanController@destroyPembelajaran')->name('pertanyaan.pembelajaran.destroy');
 		});
 
 	});
+
+	// Pengisian Kuesioner Pembelajaran Routes
+	Route::get('mahasiswa/kuesioner/pembelajaran', 'SurveyController@getPembelajaran')->name('mahasiswa.pembelajaran');
+	Route::get('mahasiswa/kuesioner/pembelajaran/{pembelajaran}', 'SurveyController@showPembelajaran')->name('mahasiswa.pembelajaran.show');
+	Route::post('mahasiswa/kuesioner/pembelajaran/{pembelajaran}', 'SurveyController@storePembelajaran')->name('mahasiswa.pembelajaran.store');
 	
 	Route::post('/logout', 'AuthController@logout');
 });
