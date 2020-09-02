@@ -35,7 +35,7 @@ class MatkulRequest extends FormRequest
                 break;
             case 'PATCH':
                 return [
-                    'kode' => ['required', Rule::unique('matkul', 'kode')->ignore($this->id, 'kode')],
+                    'kode' => ['required', Rule::unique('matkul', 'kode')->ignore($this->kode, 'kode')],
                     'mata_kuliah' => 'required',
                     'jurusan' => 'required|array|min:1',
                     'jurusan.*' => 'required'

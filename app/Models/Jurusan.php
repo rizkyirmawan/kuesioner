@@ -10,6 +10,8 @@ class Jurusan extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     public function mahasiswa()
     {
     	return $this->hasMany(Mahasiswa::class);
@@ -17,6 +19,6 @@ class Jurusan extends Model
 
     public function matkul()
     {
-    	return $this->belongsToMany(Matkul::class, 'program')->withTimestamps();
+    	return $this->belongsToMany(Matkul::class, 'program', 'jurusan_id', 'kode_matkul')->withTimestamps();
     }
 }

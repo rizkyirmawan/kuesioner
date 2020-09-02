@@ -14,10 +14,22 @@ class PembelajaranController extends Controller
     	$title = 'Data Kuesioner Pembelajaran';
 
     	$pembelajaran = Pembelajaran::with('studi')
-    					->where('user_id', auth()->user()->id)
     					->get();
 
     	return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
+    }
+
+    // Index for Dosen
+    public function indexDosen()
+    {
+        $title = 'Data Kuesioner Pembelajaran';
+
+        $pembelajaran = Pembelajaran::select('pembelajaran.*')
+                        ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
+                        ->where('studi.dosen_id', auth()->user()->userable->id)
+                        ->get();
+
+        return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
     }
 
     // Create
@@ -26,12 +38,9 @@ class PembelajaranController extends Controller
     	$title = 'Tambah Data Kuesioner Pembelajaran';
 
     	$studi = Studi::with(['matkul', 'kelas'])
-    				->where('dosen_id', auth()->user()->userable->id)
     				->get();
 
     	$pembelajaran = new Pembelajaran();
-
-        // dd($pembelajaran->studi());
 
     	return view('kuesioner.pembelajaran.create', compact('title', 'pembelajaran', 'studi'));
     }
@@ -108,12 +117,6 @@ class PembelajaranController extends Controller
 
         $pembelajaran->load(['pertanyaan.jawaban', 'responden.respons']);
 
-        $collection = $pembelajaran->responden;
-
-        $uniqueResponden = $collection->unique(function($item) {
-            return $item['user_id'].$item['kuesionerable_id'];
-        });
-
-        return view('kuesioner.pembelajaran.respons', compact('title', 'pembelajaran', 'uniqueResponden'));
+        return view('kuesioner.pembelajaran.respons', compact('title', 'pembelajaran'));
     }
 }

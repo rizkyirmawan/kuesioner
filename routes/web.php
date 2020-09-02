@@ -53,15 +53,15 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('mata-kuliah', 'MatkulController@index')->name('matkul.index');
 			Route::get('mata-kuliah/create', 'MatkulController@create')->name('matkul.create');
 			Route::post('mata-kuliah/create', 'MatkulController@store')->name('matkul.store');
-			Route::get('mata-kuliah/{mataKuliah}', 'MatkulController@show')->name('matkul.show');
-			Route::get('mata-kuliah/{mataKuliah}/edit', 'MatkulController@edit')->name('matkul.edit');
-			Route::patch('mata-kuliah/{mataKuliah}', 'MatkulController@update')->name('matkul.update');
-			Route::delete('mata-kuliah/{mataKuliah}', 'MatkulController@destroy')->name('matkul.destroy');
-			Route::post('mata-kuliah/{mataKuliah}', 'MatkulController@storeStudi')->name('matkul.studi');
-			Route::patch('mata-kuliah/{mataKuliah}/{studi}', 'MatkulController@updateStudi')->name('matkul.studi.update');
-			Route::delete('mata-kuliah/{mataKuliah}/{studi}', 'MatkulController@destroyStudi')->name('matkul.studi.destroy');
-			Route::get('mata-kuliah/{mataKuliah}/peserta-didik', 'MatkulController@pesertaDidik')->name('matkul.peserta');
-			Route::post('mata-kuliah/{mataKuliah}/peserta-didik', 'MatkulController@storePeserta')->name('matkul.peserta.store');
+			Route::get('mata-kuliah/{mataKuliah:kode}', 'MatkulController@show')->name('matkul.show');
+			Route::get('mata-kuliah/{mataKuliah:kode}/edit', 'MatkulController@edit')->name('matkul.edit');
+			Route::patch('mata-kuliah/{mataKuliah:kode}', 'MatkulController@update')->name('matkul.update');
+			Route::delete('mata-kuliah/{mataKuliah:kode}', 'MatkulController@destroy')->name('matkul.destroy');
+			Route::post('mata-kuliah/{mataKuliah:kode}', 'MatkulController@storeStudi')->name('matkul.studi');
+			Route::patch('mata-kuliah/{mataKuliah:kode}/{studi}', 'MatkulController@updateStudi')->name('matkul.studi.update');
+			Route::delete('mata-kuliah/{mataKuliah:kode}/{studi}', 'MatkulController@destroyStudi')->name('matkul.studi.destroy');
+			Route::get('mata-kuliah/{mataKuliah:kode}/peserta-didik', 'MatkulController@pesertaDidik')->name('matkul.peserta');
+			Route::post('mata-kuliah/{mataKuliah:kode}/peserta-didik', 'MatkulController@storePeserta')->name('matkul.peserta.store');
 
 			// Kelas Routes
 			Route::get('kelas', 'KelasController@index')->name('kelas.index');
@@ -74,11 +74,10 @@ Route::middleware(['auth'])->group(function() {
 
 			// Matkul API
 			Route::get('mata-kuliah/{mataKuliah}/jurusan', 'MatkulController@getJurusan');
+
+			// Import KRS
+			Route::post('mata-kuliah', 'MatkulController@importKRS')->name('matkul.import');
 		});
-
-	});
-
-	Route::middleware(['isDosen'])->group(function() {
 
 		Route::prefix('kuesioner')->group(function () {
 			// Kuesioner Pembelajaran Routes
@@ -89,7 +88,6 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('pembelajaran/{pembelajaran}/edit', 'PembelajaranController@edit')->name('pembelajaran.edit');
 			Route::patch('pembelajaran/{pembelajaran}', 'PembelajaranController@update')->name('pembelajaran.update');
 			Route::delete('pembelajaran/{pembelajaran}', 'PembelajaranController@destroy')->name('pembelajaran.destroy');
-			Route::get('pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
 
 			// Pertanyaan Pembelajaran Routes
 			Route::get('pembelajaran/{pembelajaran}/pertanyaan/create', 'PertanyaanController@createPembelajaran')->name('pertanyaan.pembelajaran.create');
@@ -98,6 +96,12 @@ Route::middleware(['auth'])->group(function() {
 			Route::delete('pembelajaran/{pembelajaran}/pertanyaan/{pertanyaan}', 'PertanyaanController@destroyPembelajaran')->name('pertanyaan.pembelajaran.destroy');
 		});
 
+	});
+
+	Route::prefix('kuesioner')->group(function () {
+		// Pembelajaran Respon
+		Route::get('pembelajaran/dosen', 'PembelajaranController@indexDosen')->name('dosen.pembelajaran.index');
+		Route::get('pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
 	});
 
 	// Pengisian Kuesioner Pembelajaran Routes

@@ -15,7 +15,7 @@ class CreateProgramTable extends Migration
     {
         Schema::create('program', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('matkul_id');
+            $table->string('kode_matkul');
             $table->unsignedBigInteger('jurusan_id');
             $table->timestamps();
         });

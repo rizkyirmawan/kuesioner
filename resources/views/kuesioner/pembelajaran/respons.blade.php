@@ -5,8 +5,12 @@
   <hr>
 
   @include('partials._messages')
-
+  
+  @if(Auth::user()->role->role === 'Admin')
   <a href="{{ route('pembelajaran.show', ['pembelajaran' => $pembelajaran]) }}" class="btn btn-dark btn-sm btn-icon-split">
+  @else
+  <a href="{{ route('dosen.pembelajaran.index') }}" class="btn btn-dark btn-sm btn-icon-split">
+  @endif
     <span class="icon text-white-50">
       <i class="fas fa-arrow-left"></i>
     </span>
@@ -44,25 +48,6 @@
   </div>
 
   <div class="row">
-
-    <div class="col-md-10 mx-auto">
-      <div class="card shadow mt-3 mb-3">
-        <div class="card-header">
-          <h6 class="font-weight-bold text-dark">Responden</h6>
-        </div>
-        <div class="card-body">
-          <ul class="list-group text-dark">
-            @forelse($uniqueResponden as $responden)
-            <li class="list-group-item">{{ $responden->user->userable->nim . ': ' .$responden->user->userable->nama }}</li>
-            @empty
-            <div class="text-center text-dark">
-              <h6>Belum ada responden.</h6>
-            </div>
-            @endforelse
-          </ul>
-        </div>
-      </div>
-    </div>
     
     @foreach($pembelajaran->pertanyaan as $pertanyaan)
     <div class="col-md-10 mx-auto">

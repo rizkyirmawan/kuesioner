@@ -16,7 +16,7 @@
       </a>
     </div>
     <div class="p-2">
-      <a href="{{ route('matkul.edit', ['mataKuliah' => $mataKuliah]) }}" class="btn btn-success btn-sm btn-icon-split">
+      <a href="{{ route('matkul.edit', ['mataKuliah' => $mataKuliah->kode]) }}" class="btn btn-success btn-sm btn-icon-split">
         <span class="icon text-white-50">
           <i class="fas fa-edit"></i>
         </span>
@@ -155,7 +155,7 @@
         <div class="modal-body">Hapus data mata kuliah: {{ $mataKuliah->mata_kuliah }}?</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-          <form action="{{ route('matkul.destroy', ['mataKuliah' => $mataKuliah]) }}" method="post" class="d-inline">
+          <form action="{{ route('matkul.destroy', ['mataKuliah' => $mataKuliah->kode]) }}" method="post" class="d-inline">
             
             @method('delete')
 

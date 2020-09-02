@@ -10,18 +10,27 @@ class Matkul extends Model
 
     protected $guarded = [];
 
+    protected $primaryKey = 'kode';
+
+    public $incrementing = false;
+
+    public function getRouteKeyName()
+    {
+        return 'kode';
+    }
+
     public function studi()
     {
-        return $this->hasMany(Studi::class);
+        return $this->hasMany(Studi::class, 'kode_matkul');
     }
 
     public function jurusan()
     {
-        return $this->belongsToMany(Jurusan::class, 'program')->withTimestamps();
+        return $this->belongsToMany(Jurusan::class, 'program', 'kode_matkul', 'jurusan_id')->withTimestamps();
     }
 
     public function mahasiswa()
     {
-        return $this->belongsToMany(Mahasiswa::class, 'peserta_didik')->withTimestamps();
+        return $this->belongsToMany(Mahasiswa::class, 'peserta_didik', 'kode_matkul', 'nim')->withTimestamps();
     }
 }

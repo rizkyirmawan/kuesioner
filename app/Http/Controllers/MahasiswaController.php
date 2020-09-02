@@ -205,7 +205,7 @@ class MahasiswaController extends Controller
     public function mahasiswaAttached($matkul)
     {
         $res = Mahasiswa::whereHas('matkul', function ($query) use ($matkul) {
-           $query->where('matkul_id', '=', $matkul);
+           $query->where('kode_matkul', '=', $matkul);
         })->get();
 
         return response()->json($res, 200);

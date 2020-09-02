@@ -15,8 +15,8 @@ class CreatePesertaDidikTable extends Migration
     {
         Schema::create('peserta_didik', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('matkul_id');
-            $table->unsignedBigInteger('mahasiswa_id');
+            $table->string('kode_mk');
+            $table->unsignedBigInteger('nim');
             $table->timestamps();
         });
     }

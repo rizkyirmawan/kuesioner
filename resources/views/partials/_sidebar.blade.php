@@ -65,9 +65,7 @@
           </div>
         </div>
       </li>
-      @endif
 
-      @if(Auth::user()->role->role === 'Dosen')
       <!-- Divider -->
       <hr class="sidebar-divider">
       
@@ -77,14 +75,37 @@
       </div>
 
       <li class="nav-item {{ Request::segment(1) === 'kuesioner' ? 'active' : '' }}">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaster">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseKuesioner">
           <i class="fas fa-fw fa-book"></i>
           <span>Kuesioner</span>
         </a>
-        <div id="collapseMaster" class="collapse {{ Request::segment(1) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
+        <div id="collapseKuesioner" class="collapse {{ Request::segment(1) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kelola Kuesioner:</h6>
             <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('pembelajaran.index') }}">Pembelajaran</a>
+          </div>
+        </div>
+      </li>
+      @endif
+
+      @if(Auth::user()->role->role === 'Dosen')
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Respons Kuesioner
+      </div>
+
+      <li class="nav-item {{ Request::segment(1) === 'kuesioner' ? 'active' : '' }}">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseKuesioner">
+          <i class="fas fa-fw fa-book"></i>
+          <span>Kuesioner</span>
+        </a>
+        <div id="collapseKuesioner" class="collapse {{ Request::segment(1) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Respons Kuesioner:</h6>
+            <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('dosen.pembelajaran.index') }}">Pembelajaran</a>
           </div>
         </div>
       </li>
@@ -106,7 +127,7 @@
         </a>
         <div id="collapseMaster" class="collapse {{ Request::segment(2) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kelola Kuesioner:</h6>
+            <h6 class="collapse-header">Pengisian Kuesioner:</h6>
             <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('mahasiswa.pembelajaran') }}">Pembelajaran</a>
           </div>
         </div>

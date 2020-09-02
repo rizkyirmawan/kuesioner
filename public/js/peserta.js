@@ -22,7 +22,7 @@ btnSimpan.setAttribute('disabled', '');
 
 document.addEventListener('DOMContentLoaded', async function() {
 	const arrUrl = location.href.split('/');
-	const matkulId = Number(arrUrl[5]);
+	const matkulId = arrUrl[5];
 
 	const res = await fetch(`/users/mahasiswa/data/matkul/${matkulId}`);
 	const jurusan = await fetch(`/master/mata-kuliah/${matkulId}/jurusan`);
@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 				data-nama="${e.nama}"
 				data-id="${e.id}"
 				class="list-group-item list-group-item-action">${e.nim}: ${e.nama}</a>
-			<input type="hidden" value="${e.id}" name="mahasiswa[]">`
+			<input type="hidden" value="${e.nim}" name="mahasiswa[]">`
 		);
 	});
 
-	console.log(jurusanIds);
+	console.log(data);
 });
 
 kelasSelect.addEventListener('change', async function(e) {
@@ -214,7 +214,7 @@ wrapper.addEventListener('click', function(e) {
 				data-nama="${target.dataset.nama}"
 				data-id="${target.dataset.id}"
 				class="list-group-item list-group-item-action">${target.dataset.nim}: ${target.dataset.nama}</a>
-			<input type="hidden" value="${target.dataset.id}" name="mahasiswa[]">`
+			<input type="hidden" value="${target.dataset.nim}" name="mahasiswa[]">`
 		);
 
 		toggleButton();

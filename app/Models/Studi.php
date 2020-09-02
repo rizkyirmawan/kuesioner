@@ -17,7 +17,7 @@ class Studi extends Model
 
     public function matkul()
     {
-    	return $this->belongsTo(Matkul::class);
+    	return $this->belongsTo(Matkul::class, 'kode_matkul');
     }
 
     public function dosen()

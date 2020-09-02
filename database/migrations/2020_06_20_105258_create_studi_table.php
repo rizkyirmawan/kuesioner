@@ -16,7 +16,7 @@ class CreateStudiTable extends Migration
         Schema::create('studi', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kelas_id');
-            $table->unsignedBigInteger('matkul_id');
+            $table->string('kode_matkul');
             $table->unsignedBigInteger('dosen_id');
             $table->timestamps();
         });

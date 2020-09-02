@@ -13,12 +13,14 @@
     			<h6 class="font-weight-bold text-primary">Daftar Kuesioner</h6>
     		</div>
     		<div class="p-2 ml-auto">
+          @if(Auth::user()->role->role === 'Admin')
 	      	<a href="{{ route('pembelajaran.create') }}" class="btn btn-primary btn-sm btn-icon-split">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
             <span class="text">Tambah Data</span>
           </a>
+          @endif
     		</div>
     	</div>
     </div>
@@ -43,12 +45,21 @@
               <td>{{ $kuesioner->studi->kelas->kelas }}</td>
               <td>{{ $kuesioner->studi->matkul->mata_kuliah }}</td>
               <td>
+                @if(Auth::user()->role->role === 'Admin')
 								<a href="{{ route('pembelajaran.show', ['pembelajaran' => $kuesioner]) }}" class="btn btn-secondary btn-sm btn-icon-split">
                   <span class="icon text-white-50">
                     <i class="fas fa-eye text-white-50"></i>
                   </span>
                   <span class="text">Detail</span>
                 </a>
+                @else
+                <a href="{{ route('pembelajaran.respons', ['pembelajaran' => $kuesioner]) }}" class="btn btn-secondary btn-sm btn-icon-split">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-eye text-white-50"></i>
+                  </span>
+                  <span class="text">Respons</span>
+                </a>
+                @endif
               </td>
             </tr>
             @endforeach

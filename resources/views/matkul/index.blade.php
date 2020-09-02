@@ -6,6 +6,32 @@
 
   @include('partials._messages')
 
+  <div class="mb-3">
+    <a href="#import-collapse" data-toggle="collapse" class="btn btn-success btn-sm btn-icon-split">
+      <span class="icon text-white-50">
+        <i class="fas fa-file-import"></i>
+      </span>
+      <span class="text">Import KRS</span>
+    </a>  
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="collapse" id="import-collapse">
+        <div class="card card-body mb-3">
+          <form action="{{ route('matkul.import') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+              <label for="excel" class="text-dark">Import Excel:</label>
+              <input type="file" class="form-control-file" name="excel">
+            </div>
+            <button class="btn btn-sm btn-success" type="submit">Import</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card shadow mb-4">
     <div class="card-header py-3">
     	<div class="d-flex">
@@ -41,7 +67,7 @@
               <td>{{ $matkul->kode }}</td>
               <td>{{ $matkul->mata_kuliah }}</td>
               <td>
-								<a href="{{ route('matkul.show', ['mataKuliah' => $matkul]) }}" class="btn btn-secondary btn-sm btn-icon-split">
+								<a href="{{ route('matkul.show', ['mataKuliah' => $matkul->kode]) }}" class="btn btn-secondary btn-sm btn-icon-split">
                   <span class="icon text-white-50">
                     <i class="fas fa-eye text-white-50"></i>
                   </span>

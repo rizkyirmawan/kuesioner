@@ -27,6 +27,6 @@ class Mahasiswa extends Model
 
     public function matkul()
     {
-        return $this->belongsToMany(Matkul::class, 'peserta_didik')->withTimestamps();
+        return $this->belongsToMany(Matkul::class, 'peserta_didik', 'nim', 'kode_matkul', 'nim')->withTimestamps();
     }
 }
