@@ -19,6 +19,8 @@ class CreatePembelajaranTable extends Migration
             $table->unsignedBigInteger('studi_id');
             $table->string('kuesioner');
             $table->text('deskripsi');
+            $table->string('tahun_ajaran');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

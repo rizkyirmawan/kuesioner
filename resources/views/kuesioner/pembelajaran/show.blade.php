@@ -55,6 +55,14 @@
             <span class="text">Pertanyaan</span>
           </a>
         </div>
+        <div class="p-2">
+          <a href="#" class="btn btn-warning btn-sm btn-icon-split @if($pembelajaran->status == 1) disabled  @endif"  data-target="#pertanyaanDefaultModal" data-toggle="modal">
+            <span class="icon">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Pertanyaan Default</span>
+          </a>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -73,6 +81,10 @@
             <tr>
               <th>Dosen</th>
               <td>{{ $pembelajaran->studi->dosen->nama }}</td>
+            </tr>
+            <tr>
+              <th>Tahun Ajaran</th>
+              <td>{{ $pembelajaran->tahunAjaran->semester . ' ' . $pembelajaran->tahunAjaran->tahun_ajaran }}</td>
             </tr>
             <tr>
               <th>Kuesioner</th>
@@ -152,6 +164,30 @@
             @csrf
 
             <button type="submit" class="btn btn-danger">Hapus</button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="pertanyaanDefaultModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Pertanyaan Default</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Anda yakin untuk menambahkan pertanyaan default?</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+          <form action="{{ route('pembelajaran.default.create', ['pembelajaran' => $pembelajaran]) }}" method="post" class="d-inline">
+
+            @csrf
+
+            <button type="submit" class="btn btn-primary">Tambahkan</button>
 
           </form>
         </div>

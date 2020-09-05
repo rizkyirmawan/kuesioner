@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePesertaDidikTable extends Migration
+class CreateTahunAjaranTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreatePesertaDidikTable extends Migration
      */
     public function up()
     {
-        Schema::create('peserta_didik', function (Blueprint $table) {
+        Schema::create('tahun_ajaran', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_matkul');
-            $table->unsignedBigInteger('nim');
+            $table->string('semester');
+            $table->string('tahun_ajaran');
+            $table->unsignedSmallInteger('aktif')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreatePesertaDidikTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('peserta_didik');
+        Schema::dropIfExists('tahun_ajaran');
     }
 }

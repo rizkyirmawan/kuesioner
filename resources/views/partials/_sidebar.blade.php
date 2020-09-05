@@ -38,6 +38,7 @@
             <h6 class="collapse-header">Kelola Master Data:</h6>
             <a class="collapse-item {{ Request::segment(2) === 'kelas' ? 'active' : '' }}" href="{{ route('kelas.index') }}">Kelas</a>
             <a class="collapse-item {{ Request::segment(2) === 'mata-kuliah' ? 'active' : '' }}" href="{{ route('matkul.index') }}">Mata Kuliah</a>
+            <a class="collapse-item {{ Request::segment(2) === 'tahun-ajaran' ? 'active' : '' }}" href="{{ route('tahunAjaran.index') }}">Tahun Ajaran</a>
           </div>
         </div>
       </li>
@@ -60,8 +61,8 @@
         <div id="collapseUsers" class="collapse {{ Request::segment(1) === 'users' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kelola Pengguna:</h6>
-            <a class="collapse-item {{ Request::segment(2) === 'mahasiswa' ? 'active' : '' }}" href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
             <a class="collapse-item {{ Request::segment(2) === 'dosen' ? 'active' : '' }}" href="{{ route('dosen.index') }}">Dosen</a>
+            <a class="collapse-item {{ Request::segment(2) === 'mahasiswa' ? 'active' : '' }}" href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
           </div>
         </div>
       </li>
@@ -105,7 +106,7 @@
         <div id="collapseKuesioner" class="collapse {{ Request::segment(1) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Respons Kuesioner:</h6>
-            <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('dosen.pembelajaran.index') }}">Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('dosen.pembelajaran.index') }}">Pembelajaran</a>
           </div>
         </div>
       </li>

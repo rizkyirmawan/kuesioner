@@ -33,11 +33,13 @@
             <tr>
               <th>Kelas</th>
               <th>Dosen</th>
+              <th>Tahun Ajaran</th>
               <th>Mata Kuliah</th>
             </tr>
             <tr>
               <td>{{ $pembelajaran->studi->kelas->kelas }}</td>
               <td>{{ $pembelajaran->studi->dosen->nama }}</td>
+              <td>{{ $pembelajaran->tahunAjaran->semester . ' ' . $pembelajaran->tahunAjaran->tahun_ajaran }}</td>
               <td>{{ $pembelajaran->studi->matkul->mata_kuliah }}</td>
             </tr>
           </table>

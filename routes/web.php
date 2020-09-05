@@ -72,6 +72,13 @@ Route::middleware(['auth'])->group(function() {
 			Route::patch('kelas/{kelas}', 'KelasController@update')->name('kelas.update');
 			Route::delete('kelas/{kelas}', 'KelasController@destroy')->name('kelas.destroy');
 
+			// Tahun Ajaran Routes
+			Route::get('tahun-ajaran', 'TahunAjaranController@index')->name('tahunAjaran.index');
+			Route::get('tahun-ajaran/create', 'TahunAjaranController@create')->name('tahunAjaran.create');
+			Route::post('tahun-ajaran/create', 'TahunAjaranController@store')->name('tahunAjaran.store');
+			Route::patch('tahun-ajaran/{tahunAjaran}', 'TahunAjaranController@activate')->name('tahunAjaran.activate');
+			Route::delete('tahun-ajaran/{tahunAjaran}', 'TahunAjaranController@destroy')->name('tahunAjaran.destroy');
+
 			// Matkul API
 			Route::get('mata-kuliah/{mataKuliah}/jurusan', 'MatkulController@getJurusan');
 
@@ -90,6 +97,7 @@ Route::middleware(['auth'])->group(function() {
 			Route::delete('pembelajaran/{pembelajaran}', 'PembelajaranController@destroy')->name('pembelajaran.destroy');
 
 			// Pertanyaan Pembelajaran Routes
+			Route::post('pembelajaran/{pembelajaran}', 'PertanyaanController@storePembelajaranDefault')->name('pembelajaran.default.create');
 			Route::get('pembelajaran/{pembelajaran}/pertanyaan/create', 'PertanyaanController@createPembelajaran')->name('pertanyaan.pembelajaran.create');
 			Route::post('pembelajaran/{pembelajaran}/pertanyaan', 'PertanyaanController@storePembelajaran')->name('pertanyaan.pembelajaran.store');
 			Route::patch('pembelajaran/{pembelajaran}/pertanyaan/{pertanyaan}', 'PertanyaanController@updatePembelajaran')->name('pertanyaan.pembelajaran.update');
@@ -100,8 +108,8 @@ Route::middleware(['auth'])->group(function() {
 
 	Route::prefix('kuesioner')->group(function () {
 		// Pembelajaran Respon
-		Route::get('pembelajaran/dosen', 'PembelajaranController@indexDosen')->name('dosen.pembelajaran.index');
-		Route::get('pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
+		Route::get('dosen/pembelajaran', 'PembelajaranController@indexDosen')->name('dosen.pembelajaran.index');
+		Route::get('dosen/pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
 	});
 
 	// Pengisian Kuesioner Pembelajaran Routes

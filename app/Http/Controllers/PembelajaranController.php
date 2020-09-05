@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pembelajaran;
 use App\Models\Studi;
+use App\Models\TahunAjaran;
 use App\Http\Requests\KuesionerRequest;
 
 class PembelajaranController extends Controller
@@ -48,13 +49,16 @@ class PembelajaranController extends Controller
     // Store
     public function store(KuesionerRequest $request)
     {
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
     	$request->request->add([
     		'user_id' => auth()->user()->id,
-    		'studi_id' => $request->studi
+    		'studi_id' => $request->studi,
+            'tahun_ajaran' => $tahunAjaran->id
     	]);
 
     	$pembelajaran = Pembelajaran::create($request->only([
-    		'user_id', 'studi_id', 'kuesioner', 'deskripsi'
+    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran'
     	]));
 
     	return redirect()->route('pembelajaran.index')->with('success', 'Data kuesioner pembelajaran berhasil ditambah.');
@@ -85,14 +89,16 @@ class PembelajaranController extends Controller
     // Update
     public function update(Pembelajaran $pembelajaran, KuesionerRequest $request)
     {
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
     	
     	$request->request->add([
     		'user_id' => auth()->user()->id,
-    		'studi_id' => $request->studi
+    		'studi_id' => $request->studi,
+            'tahun_ajaran' => $tahunAjaran->id
     	]);
 
     	$pembelajaran->update($request->only([
-    		'user_id', 'studi_id', 'kuesioner', 'deskripsi'
+    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran'
     	]));
 
     	return redirect()->route('pembelajaran.show', ['pembelajaran' => $pembelajaran])->with('success', 'Data kuesioner pembelajaran berhasil diubah.');
