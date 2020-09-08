@@ -56,11 +56,17 @@ class MatkulController extends Controller
     {
     	$title = 'Mata Kuliah: ' . $mataKuliah->mata_kuliah;
 
+        $mahasiswa = Mahasiswa::whereHas('matkul', function ($query) use ($mataKuliah) {
+           $query->where('kode_matkul', '=', $mataKuliah->kode);
+        })->get();
+
+        // dd($mahasiswa->where('kelas_id', 2));
+
         $kelas = Kelas::whereNotIn('id', $mataKuliah->studi->pluck('kelas_id'))->get();
 
         $dosen = Dosen::all();
 
-    	return view('matkul.show', compact('title', 'mataKuliah', 'kelas', 'dosen'));
+    	return view('matkul.show', compact('title', 'mataKuliah', 'kelas', 'dosen', 'mahasiswa'));
     }
 
     // Edit Matkul
@@ -179,43 +185,27 @@ class MatkulController extends Controller
     // Import Excel KRS
     public function importKRS(Request $request)
     {
-        $collection = Excel::toCollection(new KRSImport, $request->file('excel'));
+        try {
+            $collection = Excel::toCollection(new KRSImport, $request->file('excel'));
 
-        $plucked = $collection->first()->map(function ($item, $key) {
-            $item['kode_matkul'] = $item['kode_mk'];
-            return collect($item)->only(['nim', 'kode_matkul']);
-        })->toArray();
+            $plucked = $collection->first()->map(function ($item, $key) {
+                $item['kode_matkul'] = $item['kode_mk'];
+                return collect($item)->only(['nim', 'kode_matkul']);
+            })->toArray();
 
-        // $uniqueImportedNIM =  collect(Arr::pluck($plucked, 'nim'))
-        //                         ->unique()
-        //                         ->values()
-        //                         ->all();
+            DB::table('peserta_didik')->truncate();
 
-        // $uniqueImportedMk =  collect(Arr::pluck($plucked, 'kode_'))
-        //                         ->unique()
-        //                         ->values()
-        //                         ->all();
-
-        // $uniqueImportedNIM = array_map('intval', $uniqueImportedNIM);
-
-        // $uniqueNIM = collect(Mahasiswa::all())->pluck('nim')->toArray();
-
-        // $uniqueMk = collect(Matkul::all())->pluck('kode')->toArray();
-
-        // if (Arr::sortRecursive($uniqueImportedNIM) !== Arr::sortRecursive($uniqueNIM)) {
-        //     return redirect()
-        //             ->route('matkul.index')
-        //             ->with('error', 'Terdapat data mahasiswa yang belum terdaftar.');
-        // } elseif (Arr::sortRecursive($uniqueImportedMk) !== Arr::sortRecursive($uniqueMk)) {
-        //     return redirect()
-        //             ->route('matkul.index')
-        //             ->with('error', 'Terdapat data mata kuliah yang belum terdaftar.');
-        // } else {
             DB::table('peserta_didik')->insert($plucked);
+        } catch(\Exception $e) {
+            return back()
+                    ->with('error', 'Gagal membaca file. Silahkan periksa kembali.');
+        } catch(\Error $e) {
+            return back()
+                    ->with('error', 'Gagal membaca file. Silahkan periksa kembali.');
+        }
 
-            return redirect()
-                    ->route('matkul.index')
-                    ->with('success', 'Data KRS berhasil diimport.');
-        // }
+        return redirect()
+                ->route('matkul.index')
+                ->with('success', 'Data KRS berhasil diimport.');
     }
 }

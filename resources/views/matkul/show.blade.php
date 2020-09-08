@@ -123,8 +123,8 @@
                 </td>
                 <td>
                   <ol>
-                  @forelse($mataKuliah->mahasiswa->where('kelas_id', $studi->kelas->id) as $mahasiswa)
-                    <li>{{ $mahasiswa->nama . ' (' . $mahasiswa->nim . ')' }}</li>
+                  @forelse($mahasiswa->where('kelas_id', $studi->kelas->id) as $mhs)
+                    <li>{{ $mhs->nama . ' (' . $mhs->nim . ')' }}</li>
                   @empty
                     <h6>Belum ada peserta pada kelas ini.</h6>
                   @endforelse

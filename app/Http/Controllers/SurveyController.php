@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembelajaran;
+use App\Models\Studi;
+use App\Models\Mahasiswa;
+use App\Models\Matkul;
 use Illuminate\Http\Request;
 
 class SurveyController extends Controller
@@ -12,15 +15,19 @@ class SurveyController extends Controller
     {
     	$title = 'Kuesioner Pembelajaran';
 
-    	$pembelajaran = Pembelajaran::select('pembelajaran.*')
-    					->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
-    					->join('matkul', 'studi.matkul_id', '=', 'matkul.id')
-    					->join('peserta_didik', 'matkul.id', '=', 'peserta_didik.matkul_id')
-    					->join('kelas', 'studi.kelas_id', '=', 'kelas.id')
-    					->join('mahasiswa', 'peserta_didik.mahasiswa_id', '=', 'mahasiswa.id')
-    					->where('kelas.id', auth()->user()->userable->kelas_id)
-    					->where('mahasiswa.id', auth()->user()->userable->id)
-    					->get();
+    	$ds = Pembelajaran::select('pembelajaran.*')
+                        ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
+                        ->join('matkul', 'studi.kode_matkul', '=', 'matkul.kode')
+                        ->join('peserta_didik', 'matkul.kode', '=', 'peserta_didik.kode_matkul')
+                        ->join('kelas', 'studi.kelas_id', '=', 'kelas.id')
+                        ->join('mahasiswa', 'peserta_didik.nim', '=', 'mahasiswa.nim')
+                        ->where('studi.kelas_id', auth()->user()->userable->kelas_id)
+                        ->where('peserta_didik.nim', auth()->user()->userable->nim)
+                        ->get();
+
+        $pembelajaran = collect($ds)->unique()->values()->all();
+
+        // dd($pembelajaran);
 
     	return view('kuesioner.mahasiswa.pembelajaran.index', compact('title', 'pembelajaran'));
     }

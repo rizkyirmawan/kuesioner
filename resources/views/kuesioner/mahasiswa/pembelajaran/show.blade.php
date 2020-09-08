@@ -23,16 +23,18 @@
       <div class="row">
         
         <div class="col-md-12">
-          <table class="table table-bordered">
+          <table class="table table-bordered text-dark">
             <tr>
               <th>Kelas</th>
               <th>Dosen</th>
               <th>Mata Kuliah</th>
+              <th>Tahun Ajaran</th>
             </tr>
             <tr>
               <td>{{ $pembelajaran->studi->kelas->kelas }}</td>
               <td>{{ $pembelajaran->studi->dosen->nama }}</td>
               <td>{{ $pembelajaran->studi->matkul->mata_kuliah }}</td>
+              <td>{{ $pembelajaran->tahunAjaran->semester . ' ' . $pembelajaran->tahunAjaran->tahun_ajaran }}</td>
             </tr>
           </table>
         </div>
@@ -97,12 +99,21 @@
     @endforeach
 
     <div class="d-flex justify-content-end mb-3">
+      @if($pembelajaran->pertanyaan)
       <button class="btn btn-primary btn-icon-split" type="submit">
         <span class="icon text-white-50">
           <i class="fas fa-check"></i>
         </span>
         <span class="text">Selesai</span>
       </button>
+      @else
+      <button class="btn btn-danger btn-icon-split disabled" type="submit">
+        <span class="icon text-white-50">
+          <i class="fas fa-times"></i>
+        </span>
+        <span class="text">Belum Ada Pertanyaan</span>
+      </button>
+      @endif
     </div>
 
   </form>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
+use App\Models\Matkul;
 use App\Models\Pembelajaran;
 use App\Models\Studi;
 use App\Models\TahunAjaran;
