@@ -24,4 +24,9 @@ class Kemahasiswaan extends Model
     {
         return $this->morphMany(Responden::class, 'kuesionerable');
     }
+
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran');
+    }
 }

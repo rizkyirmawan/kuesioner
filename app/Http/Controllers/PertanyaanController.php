@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kemahasiswaan;
 use App\Models\Pembelajaran;
 use App\Models\Pertanyaan;
 use App\Http\Requests\PertanyaanRequest;
@@ -13,7 +14,7 @@ class PertanyaanController extends Controller
     {
     	$title = 'Tambah Pertanyaan';
 
-    	return view('pertanyaan.create', compact('title', 'pembelajaran'));
+    	return view('pertanyaan.pembelajaran.create', compact('title', 'pembelajaran'));
     }
 
     // Store Pembelajaran
@@ -120,6 +121,105 @@ class PertanyaanController extends Controller
 
         return redirect()
                 ->route('pembelajaran.show', ['pembelajaran' => $pembelajaran])
+                ->with('success', 'Pertanyaan berhasil dihapus.');   
+    }
+
+    // Create Kemahasiswaan
+    public function createKemahasiswaan(Kemahasiswaan $kemahasiswaan)
+    {
+        $title = 'Tambah Pertanyaan';
+
+        return view('pertanyaan.kemahasiswaan.create', compact('title', 'kemahasiswaan'));
+    }
+
+    // Store Kemahasiswaan
+    public function storeKemahasiswaan(PertanyaanRequest $request, Kemahasiswaan $kemahasiswaan)
+    {
+        $pertanyaan = $kemahasiswaan
+                        ->pertanyaan()
+                        ->create($request->only('pertanyaan', 'tipe'));
+
+        if ($request->jawaban) {
+            $pertanyaan->jawaban()->createMany($request->jawaban);
+        }
+
+        return redirect()
+                ->route('kemahasiswaan.show', ['kemahasiswaan' => $kemahasiswaan])
+                ->with('success', 'Pertanyaan berhasil ditambah.');
+    }
+
+    // Store Kemahasiswaan Default
+    public function storeKemahasiswaanDefault(Kemahasiswaan $kemahasiswaan)
+    {
+        $data = [
+            ['pertanyaan' => 'Pelayanan administrasi akademik dan kemahasiswaan STMIK Bandung.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Sikap pelayanan staff layanan akademik.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Pelaksanaan bimbingan kegiatan kemahasiswaan.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Pelaksanaan bimbingan akademik mahasiswa.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Ketertarikan untuk mengikuti kegiatan bimbingan akademik.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Ketertarikan untuk mengikuti kegiatan bimbingan kegiatan kemahasiswaan.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Manfaat dan kinerja organisasi kemahasiswaan STMIK Bandung.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Pengaruh keberadaan dan kinerja organisasi mahasiswa terhadap motivasi belajar anda.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Keaktifan anda dalam mengikuti kegiatan ekstrakurikuler di STMIK Bandung.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Penyebaran Informasi dan layanan beasiswa.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Penyebaran informasi kegiatan dan lomba kemahasiswaan.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi sarana perkuliahan di STMIK Bandung.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi sarana praktikum di STMIK Bandung.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kenyamanan situasi belajar di STMIK Bandung yang dapat memotivasi berkajar mahasiswa.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi tempat istirahat mahasiswa di lingkungan STMIK Bandung.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Hubungan personal di bagian kerumahtanggaan (satpam, cleaning service dan office boy) untuk kenyamanan mahasiswa menuntut ilmu.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi tempat parkir.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi sarana peribadahan.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi sarana perpustakaan.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi sarana toilet.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi sarana konsultasi.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Kondisi penunjang kegiatan kemahasiswaan.', 'tipe' => 'Radio']
+        ];
+
+        $dataJawaban = [
+            ['jawaban' => 'Sangat Baik'],
+            ['jawaban' => 'Baik'],
+            ['jawaban' => 'Cukup Baik'],
+            ['jawaban' => 'Kurang'],
+            ['jawaban' => 'Sangat Kurang']
+        ];
+
+        $pertanyaan = $kemahasiswaan
+                        ->pertanyaan()
+                        ->createMany($data);
+
+        foreach ($pertanyaan as $key) {   
+            $key->jawaban()->createMany($dataJawaban);
+        }
+
+        $kemahasiswaan->update(['status' => 1]);
+
+        return redirect()
+                ->route('kemahasiswaan.show', ['kemahasiswaan' => $kemahasiswaan])
+                ->with('success', 'Pertanyaan default berhasil ditambah.');
+    }
+
+    // Update Kemahasiswaan
+    public function updateKemahasiswaan(Kemahasiswaan $kemahasiswaan, Pertanyaan $pertanyaan)
+    {
+        $pertanyaan->update(request()->only('pertanyaan'));
+
+        return redirect()
+                ->route('kemahasiswaan.show', ['kemahasiswaan' => $kemahasiswaan])
+                ->with('success', 'Pertanyaan berhasil diubah.');
+    }
+
+    // Delete Kemahasiswaan
+    public function destroyKemahasiswaan(Kemahasiswaan $kemahasiswaan, Pertanyaan $pertanyaan)
+    {
+        $pertanyaan->jawaban()->delete();
+
+        $pertanyaan->respons()->delete();
+
+        $pertanyaan->delete();
+
+        return redirect()
+                ->route('kemahasiswaan.show', ['kemahasiswaan' => $kemahasiswaan])
                 ->with('success', 'Pertanyaan berhasil dihapus.');   
     }
 }

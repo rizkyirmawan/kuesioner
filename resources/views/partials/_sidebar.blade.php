@@ -84,6 +84,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kelola Kuesioner:</h6>
             <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('pembelajaran.index') }}">Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(2) === 'layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('kemahasiswaan.index') }}">Layanan Mahasiswa</a>
           </div>
         </div>
       </li>
@@ -130,6 +131,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Pengisian Kuesioner:</h6>
             <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('mahasiswa.pembelajaran') }}">Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(3) === 'layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('mahasiswa.kemahasiswaan') }}">Layanan Mahasiswa</a>
           </div>
         </div>
       </li>

@@ -7,7 +7,7 @@ use App\Models\Matkul;
 use App\Models\Pembelajaran;
 use App\Models\Studi;
 use App\Models\TahunAjaran;
-use App\Http\Requests\KuesionerRequest;
+use App\Http\Requests\PembelajaranRequest;
 
 class PembelajaranController extends Controller
 {
@@ -16,8 +16,7 @@ class PembelajaranController extends Controller
     {
     	$title = 'Data Kuesioner Pembelajaran';
 
-    	$pembelajaran = Pembelajaran::with('studi')
-    					->get();
+    	$pembelajaran = Pembelajaran::with('studi')->get();
 
     	return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
     }
@@ -40,8 +39,7 @@ class PembelajaranController extends Controller
     {
     	$title = 'Tambah Data Kuesioner Pembelajaran';
 
-    	$studi = Studi::with(['matkul', 'kelas'])
-    				->get();
+    	$studi = Studi::with(['matkul', 'kelas'])->get();
 
     	$pembelajaran = new Pembelajaran();
 
@@ -49,7 +47,7 @@ class PembelajaranController extends Controller
     }
 
     // Store
-    public function store(KuesionerRequest $request)
+    public function store(PembelajaranRequest $request)
     {
         $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
@@ -89,7 +87,7 @@ class PembelajaranController extends Controller
     }
 
     // Update
-    public function update(Pembelajaran $pembelajaran, KuesionerRequest $request)
+    public function update(Pembelajaran $pembelajaran, PembelajaranRequest $request)
     {
         $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
     	

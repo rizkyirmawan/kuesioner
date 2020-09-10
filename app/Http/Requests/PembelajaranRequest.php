@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class KuesionerRequest extends FormRequest
+class PembelajaranRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class KuesionerRequest extends FormRequest
     {
         return [
             'kuesioner' => 'required',
-            'deskripsi' => 'required'
+            'deskripsi' => 'required',
+            'studi' => 'required'
         ];
     }
 
@@ -33,7 +34,8 @@ class KuesionerRequest extends FormRequest
     {
         return [
             'kuesioner.required' => 'Judul kuesioner tidak boleh kosong.',
-            'deskripsi.required' => 'Deskripsi kuesioner tidak boleh kosong'
+            'deskripsi.required' => 'Deskripsi kuesioner tidak boleh kosong.',
+            'studi.required' => 'Silahkan pilih kelas kuliah.'
         ];
     }
 }

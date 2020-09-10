@@ -102,6 +102,25 @@ Route::middleware(['auth'])->group(function() {
 			Route::post('pembelajaran/{pembelajaran}/pertanyaan', 'PertanyaanController@storePembelajaran')->name('pertanyaan.pembelajaran.store');
 			Route::patch('pembelajaran/{pembelajaran}/pertanyaan/{pertanyaan}', 'PertanyaanController@updatePembelajaran')->name('pertanyaan.pembelajaran.update');
 			Route::delete('pembelajaran/{pembelajaran}/pertanyaan/{pertanyaan}', 'PertanyaanController@destroyPembelajaran')->name('pertanyaan.pembelajaran.destroy');
+
+			// Kuesioner Layanan Mahasiswa Routes
+			Route::get('layanan-mahasiswa', 'KemahasiswaanController@index')->name('kemahasiswaan.index');
+			Route::get('layanan-mahasiswa/create', 'KemahasiswaanController@create')->name('kemahasiswaan.create');
+			Route::post('layanan-mahasiswa/create', 'KemahasiswaanController@store')->name('kemahasiswaan.store');
+			Route::get('layanan-mahasiswa/{kemahasiswaan}', 'KemahasiswaanController@show')->name('kemahasiswaan.show');
+			Route::get('layanan-mahasiswa/{kemahasiswaan}/edit', 'KemahasiswaanController@edit')->name('kemahasiswaan.edit');
+			Route::patch('layanan-mahasiswa/{kemahasiswaan}', 'KemahasiswaanController@update')->name('kemahasiswaan.update');
+			Route::delete('layanan-mahasiswa/{kemahasiswaan}', 'KemahasiswaanController@destroy')->name('kemahasiswaan.destroy');
+
+			// Layanan Mahasiswa Respons
+			Route::get('layanan-mahasiswa/{kemahasiswaan}/respons', 'KemahasiswaanController@showRespons')->name('kemahasiswaan.respons');
+
+			// Pertanyaan Layanan Mahasiswa Routes
+			Route::post('layanan-mahasiswa/{kemahasiswaan}', 'PertanyaanController@storeKemahasiswaanDefault')->name('kemahasiswaan.default.create');
+			Route::get('layanan-mahasiswa/{kemahasiswaan}/pertanyaan/create', 'PertanyaanController@createKemahasiswaan')->name('pertanyaan.kemahasiswaan.create');
+			Route::post('layanan-mahasiswa/{kemahasiswaan}/pertanyaan', 'PertanyaanController@storeKemahasiswaan')->name('pertanyaan.kemahasiswaan.store');
+			Route::patch('layanan-mahasiswa/{kemahasiswaan}/pertanyaan/{pertanyaan}', 'PertanyaanController@updateKemahasiswaan')->name('pertanyaan.kemahasiswaan.update');
+			Route::delete('layanan-mahasiswa/{kemahasiswaan}/pertanyaan/{pertanyaan}', 'PertanyaanController@destroyKemahasiswaan')->name('pertanyaan.kemahasiswaan.destroy');
 		});
 
 	});
@@ -116,6 +135,11 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('mahasiswa/kuesioner/pembelajaran', 'SurveyController@getPembelajaran')->name('mahasiswa.pembelajaran');
 	Route::get('mahasiswa/kuesioner/pembelajaran/{pembelajaran}', 'SurveyController@showPembelajaran')->name('mahasiswa.pembelajaran.show');
 	Route::post('mahasiswa/kuesioner/pembelajaran/{pembelajaran}', 'SurveyController@storePembelajaran')->name('mahasiswa.pembelajaran.store');
+
+	// Pengisian Kuesioner Layanan Mahasiswa Routes
+	Route::get('mahasiswa/kuesioner/layanan-mahasiswa', 'SurveyController@getKemahasiswaan')->name('mahasiswa.kemahasiswaan');
+	Route::get('mahasiswa/kuesioner/layanan-mahasiswa/{kemahasiswaan}', 'SurveyController@showKemahasiswaan')->name('mahasiswa.kemahasiswaan.show');
+	Route::post('mahasiswa/kuesioner/layanan-mahasiswa/{kemahasiswaan}', 'SurveyController@storeKemahasiswaan')->name('mahasiswa.kemahasiswaan.store');
 	
 	Route::post('/logout', 'AuthController@logout');
 });

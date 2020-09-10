@@ -1,14 +1,14 @@
 @extends('app')
 
 @section('content')
-  <h1 class="h3 mb-2 text-gray-800">Detail Kuesioner Pembelajaran</h1>
+  <h1 class="h3 mb-2 text-gray-800">Detail Kuesioner Layanan Mahasiswa</h1>
   <hr>
 
   @include('partials._messages')
 
   <div class="d-flex mb-2">
     <div class="mr-auto p-2">
-      <a href="{{ route('pembelajaran.index') }}" class="btn btn-dark btn-sm btn-icon-split">
+      <a href="{{ route('kemahasiswaan.index') }}" class="btn btn-dark btn-sm btn-icon-split">
         <span class="icon text-white-50">
           <i class="fas fa-arrow-left"></i>
         </span>
@@ -16,7 +16,7 @@
       </a>
     </div>
     <div class="p-2">
-      <a href="{{ route('pembelajaran.edit', ['pembelajaran' => $pembelajaran]) }}" class="btn btn-success btn-sm btn-icon-split">
+      <a href="{{ route('kemahasiswaan.edit', ['kemahasiswaan' => $kemahasiswaan]) }}" class="btn btn-success btn-sm btn-icon-split">
         <span class="icon text-white-50">
           <i class="fas fa-edit"></i>
         </span>
@@ -37,10 +37,10 @@
     <div class="card-header py-3">
       <div class="d-flex">
         <div class="p-2 mr-auto">
-          <h6 class="font-weight-bold text-primary">Detail Kuesioner Pembelajaran</h6>
+          <h6 class="font-weight-bold text-primary">Detail Kuesioner Layanan Mahasiswa</h6>
         </div>
         <div class="p-2">
-          <a href="{{ route('pembelajaran.respons', ['pembelajaran' => $pembelajaran]) }}" class="btn btn-secondary btn-sm btn-icon-split @if($pembelajaran->responden->count() <= 0) disabled @endif">
+          <a href="{{ route('kemahasiswaan.respons', ['kemahasiswaan' => $kemahasiswaan]) }}" class="btn btn-secondary btn-sm btn-icon-split @if($kemahasiswaan->responden->count() <= 0) disabled @endif">
             <span class="icon text-white-50">
               <i class="fas fa-eye"></i>
             </span>
@@ -48,7 +48,7 @@
           </a>
         </div>
         <div class="p-2">
-          <a href="{{ route('pertanyaan.pembelajaran.create', ['pembelajaran' => $pembelajaran]) }}" class="btn btn-primary btn-sm btn-icon-split">
+          <a href="{{ route('pertanyaan.kemahasiswaan.create', ['kemahasiswaan' => $kemahasiswaan]) }}" class="btn btn-primary btn-sm btn-icon-split">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
@@ -56,7 +56,7 @@
           </a>
         </div>
         <div class="p-2">
-          <a href="#" class="btn btn-warning btn-sm btn-icon-split @if($pembelajaran->status == 1) disabled  @endif"  data-target="#pertanyaanDefaultModal" data-toggle="modal">
+          <a href="#" class="btn btn-warning btn-sm btn-icon-split @if($kemahasiswaan->status == 1) disabled  @endif"  data-target="#pertanyaanDefaultModal" data-toggle="modal">
             <span class="icon">
               <i class="fas fa-plus"></i>
             </span>
@@ -71,28 +71,20 @@
         <div class="col-md-6">
           <table class="table table-bordered">
             <tr>
-              <th>Kelas</th>
-              <td>{{ $pembelajaran->studi->kelas->kelas }}</td>
-            </tr>
-            <tr>
-              <th>Matkul</th>
-              <td>{{ $pembelajaran->studi->matkul->mata_kuliah }}</td>
-            </tr>
-            <tr>
-              <th>Dosen</th>
-              <td>{{ $pembelajaran->studi->dosen->nama }}</td>
+              <th>Angkatan Tertuju</th>
+              <td>{{ $kemahasiswaan->angkatan }}</td>
             </tr>
             <tr>
               <th>Tahun Ajaran</th>
-              <td>{{ $pembelajaran->tahunAjaran->semester . ' ' . $pembelajaran->tahunAjaran->tahun_ajaran }}</td>
+              <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
             </tr>
             <tr>
               <th>Kuesioner</th>
-              <td>{{ $pembelajaran->kuesioner }}</td>
+              <td>{{ $kemahasiswaan->kuesioner }}</td>
             </tr>
             <tr>
               <th>Deskripsi</th>
-              <td class="text-justify">{{ $pembelajaran->deskripsi }}</td>
+              <td class="text-justify">{{ $kemahasiswaan->deskripsi }}</td>
             </tr>
           </table>
         </div>
@@ -100,7 +92,7 @@
         <div class="col-md-6">
           <h5 class="text-dark">Pertanyaan</h5>
           <hr>
-          @forelse($pembelajaran->pertanyaan as $pertanyaan)
+          @forelse($kemahasiswaan->pertanyaan as $pertanyaan)
           <button class="btn btn-light btn-block mb-3" type="button" data-toggle="collapse" data-target="#collapse-{{ $pertanyaan->id }}">
             {{ $loop->iteration }}. {{ $pertanyaan->pertanyaan }}
           </button>
@@ -116,8 +108,8 @@
                 </a>
               </div>
 
-              @include('partials.modal._updatePertanyaanPembelajaran')
-              @include('partials.modal._deletePertanyaanPembelajaran')
+              @include('partials.modal._updatePertanyaanKemahasiswaan')
+              @include('partials.modal._deletePertanyaanKemahasiswaan')
 
               <span class="badge badge-info mb-2">{{ $pertanyaan->tipe }}</span>
               <ol class="list-group text-dark">
@@ -157,7 +149,7 @@
         <div class="modal-body">Hapus data kuesioner?</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-          <form action="{{ route('pembelajaran.destroy', ['pembelajaran' => $pembelajaran]) }}" method="post" class="d-inline">
+          <form action="{{ route('kemahasiswaan.destroy', ['kemahasiswaan' => $kemahasiswaan]) }}" method="post" class="d-inline">
             
             @method('delete')
 
@@ -183,7 +175,7 @@
         <div class="modal-body">Anda yakin untuk menambahkan pertanyaan default?</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-          <form action="{{ route('pembelajaran.default.create', ['pembelajaran' => $pembelajaran]) }}" method="post" class="d-inline">
+          <form action="{{ route('kemahasiswaan.default.create', ['kemahasiswaan' => $kemahasiswaan]) }}" method="post" class="d-inline">
 
             @csrf
 
