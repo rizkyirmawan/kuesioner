@@ -1,10 +1,10 @@
 @extends('app')
 
 @section('content')
-	<h1 class="h3 mb-2 text-gray-800">Ubah Data Mahasiswa</h1>
+	<h1 class="h3 mb-2 text-gray-800">Ubah Data Alumni</h1>
   <hr>
 	
-	<a href="{{ route('mahasiswa.show', ['mahasiswa' => $mahasiswa->id]) }}" class="btn btn-secondary btn-sm btn-icon-split mb-3">
+	<a href="{{ route('alumni.show', ['alumni' => $alumni->id]) }}" class="btn btn-secondary btn-sm btn-icon-split mb-3">
     <span class="icon text-white-50">
       <i class="fas fa-arrow-left"></i>
     </span>
@@ -15,13 +15,13 @@
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">Form Ubah Data</h6>
     </div>
-    <form action="{{ route('mahasiswa.update', ['mahasiswa' => $mahasiswa]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('alumni.update', ['alumni' => $alumni]) }}" method="post" enctype="multipart/form-data">
 
     	@method('patch')
 
 		@csrf
 
-	    @include('mahasiswa.form')
+	    @include('alumni.form')
 
 	    <div class="card-footer">
 	    	<div class="d-flex justify-content-end">

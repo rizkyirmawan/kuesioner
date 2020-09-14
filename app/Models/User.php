@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany(Kemahasiswaan::class);
     }
 
+    public function tracerStudy()
+    {
+        return $this->hasMany(TracerStudy::class);
+    }
+
     public function responden()
     {
         return $this->hasMany(Responden::class);

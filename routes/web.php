@@ -46,6 +46,15 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('dosen/{dosen}/edit', 'DosenController@edit')->name('dosen.edit');
 			Route::patch('dosen/{dosen}', 'DosenController@update')->name('dosen.update');
 			Route::delete('dosen/{dosen}', 'DosenController@destroy')->name('dosen.destroy');
+
+			// Alumni Routes
+			Route::get('alumni', 'AlumniController@index')->name('alumni.index');
+			Route::get('alumni/create', 'AlumniController@create')->name('alumni.create');
+			Route::post('alumni/create', 'AlumniController@store')->name('alumni.store');
+			Route::get('alumni/{alumni}', 'AlumniController@show')->name('alumni.show');
+			Route::get('alumni/{alumni}/edit', 'AlumniController@edit')->name('alumni.edit');
+			Route::patch('alumni/{alumni}', 'AlumniController@update')->name('alumni.update');
+			Route::delete('alumni/{alumni}', 'AlumniController@destroy')->name('alumni.destroy');
 		});
 
 		Route::prefix('master')->group(function() {
@@ -121,6 +130,12 @@ Route::middleware(['auth'])->group(function() {
 			Route::post('layanan-mahasiswa/{kemahasiswaan}/pertanyaan', 'PertanyaanController@storeKemahasiswaan')->name('pertanyaan.kemahasiswaan.store');
 			Route::patch('layanan-mahasiswa/{kemahasiswaan}/pertanyaan/{pertanyaan}', 'PertanyaanController@updateKemahasiswaan')->name('pertanyaan.kemahasiswaan.update');
 			Route::delete('layanan-mahasiswa/{kemahasiswaan}/pertanyaan/{pertanyaan}', 'PertanyaanController@destroyKemahasiswaan')->name('pertanyaan.kemahasiswaan.destroy');
+
+			// Tracer Study Routes
+			Route::get('tracer-study', 'TracerStudyController@index')->name('tracerStudy.index');
+			Route::post('tracer-study', 'TracerStudyController@createIdentitas')->name('tracerStudy.identitas.create');
+			Route::get('tracer-study/identitas/{identitas}', 'TracerStudyController@showIdentitas')->name('tracerStudy.identitas.show');
+			Route::get('tracer-study/{tracerStudy}', 'TracerStudyController@showRespons')->name('tracerStudy.respons');
 		});
 
 	});
@@ -140,6 +155,15 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('mahasiswa/kuesioner/layanan-mahasiswa', 'SurveyController@getKemahasiswaan')->name('mahasiswa.kemahasiswaan');
 	Route::get('mahasiswa/kuesioner/layanan-mahasiswa/{kemahasiswaan}', 'SurveyController@showKemahasiswaan')->name('mahasiswa.kemahasiswaan.show');
 	Route::post('mahasiswa/kuesioner/layanan-mahasiswa/{kemahasiswaan}', 'SurveyController@storeKemahasiswaan')->name('mahasiswa.kemahasiswaan.store');
+
+	// Pengisian Kuesioner Tracer Study Routes
+	Route::get('alumni/kuesioner/tracer-study', 'SurveyController@getTracerStudyIdentitas')->name('alumni.tracerStudy');
+	Route::get('alumni/kuesioner/tracer-study/identitas/{identitas}', 'SurveyController@createTracerStudyIdentitas')->name('alumni.tracerStudy.identitas.create');
+	Route::post('alumni/kuesioner/tracer-study/identitas/{identitas}', 'SurveyController@storeTracerStudyIdentitas')->name('alumni.tracerStudy.identitas.store');
+	Route::get('pengisian/kuesioner/tracer-study', 'SurveyController@getTracerStudy')->name('tracerStudy.auth');
+	Route::post('pengisian/kuesioner/tracer-study', 'SurveyController@redirectTracerStudy')->name('tracerStudy.redirect');
+	Route::get('pengisian/kuesioner/tracer-study/{tracerStudy:kode}', 'SurveyController@showTracerStudy')->name('tracerStudy.show');
+	Route::post('pengisian/kuesioner/tracer-study/{tracerStudy:kode}', 'SurveyController@storeTracerStudy')->name('tracerStudy.store');
 	
 	Route::post('/logout', 'AuthController@logout');
 });

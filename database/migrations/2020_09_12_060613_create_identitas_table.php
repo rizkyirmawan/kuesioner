@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRespondenTable extends Migration
+class CreateIdentitasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateRespondenTable extends Migration
      */
     public function up()
     {
-        Schema::create('responden', function (Blueprint $table) {
+        Schema::create('identitas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('username')->nullable();
-            $table->unsignedBigInteger('kuesionerable_id');
-            $table->string('kuesionerable_type');
+            $table->string('angkatan');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateRespondenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('responden');
+        Schema::dropIfExists('identitas');
     }
 }

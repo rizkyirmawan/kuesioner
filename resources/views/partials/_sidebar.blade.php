@@ -13,11 +13,13 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
+      @if(auth())
       <li class="nav-item {{ Request::segment(1) === 'dasbor' ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('dasbor') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dasbor</span></a>
       </li>
+      @endif
       
       @if(Auth::user()->role->role === 'Admin')
       <!-- Divider -->
@@ -63,6 +65,7 @@
             <h6 class="collapse-header">Kelola Pengguna:</h6>
             <a class="collapse-item {{ Request::segment(2) === 'dosen' ? 'active' : '' }}" href="{{ route('dosen.index') }}">Dosen</a>
             <a class="collapse-item {{ Request::segment(2) === 'mahasiswa' ? 'active' : '' }}" href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
+            <a class="collapse-item {{ Request::segment(2) === 'alumni' ? 'active' : '' }}" href="{{ route('alumni.index') }}">Alumni</a>
           </div>
         </div>
       </li>
@@ -85,6 +88,7 @@
             <h6 class="collapse-header">Kelola Kuesioner:</h6>
             <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('pembelajaran.index') }}">Pembelajaran</a>
             <a class="collapse-item {{ Request::segment(2) === 'layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('kemahasiswaan.index') }}">Layanan Mahasiswa</a>
+            <a class="collapse-item {{ Request::segment(2) === 'tracer-study' ? 'active' : '' }}" href="{{ route('tracerStudy.index') }}">Tracer Study</a>
           </div>
         </div>
       </li>
@@ -132,6 +136,29 @@
             <h6 class="collapse-header">Pengisian Kuesioner:</h6>
             <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('mahasiswa.pembelajaran') }}">Pembelajaran</a>
             <a class="collapse-item {{ Request::segment(3) === 'layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('mahasiswa.kemahasiswaan') }}">Layanan Mahasiswa</a>
+          </div>
+        </div>
+      </li>
+      @endif
+
+      @if(Auth::user()->role->role === 'Alumni')
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+      
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Pengisian Kuesioner
+      </div>
+
+      <li class="nav-item {{ Request::segment(2) === 'kuesioner' ? 'active' : '' }}">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaster">
+          <i class="fas fa-fw fa-book"></i>
+          <span>Kuesioner</span>
+        </a>
+        <div id="collapseMaster" class="collapse {{ Request::segment(2) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Pengisian Kuesioner:</h6>
+            <a class="collapse-item {{ Request::segment(3) === 'tracer-study' ? 'active' : '' }}" href="{{ route('alumni.tracerStudy') }}">Tracer Study</a>
           </div>
         </div>
       </li>

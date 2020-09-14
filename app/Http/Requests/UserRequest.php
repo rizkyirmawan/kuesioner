@@ -54,6 +54,21 @@ class UserRequest extends FormRequest
                 default:
                     break;
             }
+        } elseif (Request::segment(2) === 'alumni') {
+            switch ($this->method()) {
+                case 'POST':
+                    return [
+                        'email' => 'required|email|unique:users,email'
+                    ];
+                    break;
+                case 'PATCH':
+                    return [
+                        'email' => 'required|email|unique:users,email,' . $this->alumni->user->id
+                    ];
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

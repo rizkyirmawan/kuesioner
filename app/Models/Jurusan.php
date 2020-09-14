@@ -17,6 +17,11 @@ class Jurusan extends Model
     	return $this->hasMany(Mahasiswa::class);
     }
 
+    public function alumni()
+    {
+        return $this->hasMany(Alumni::class);
+    }
+
     public function matkul()
     {
     	return $this->belongsToMany(Matkul::class, 'program', 'jurusan_id', 'kode_matkul')->withTimestamps();
