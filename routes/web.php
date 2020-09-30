@@ -160,10 +160,11 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('alumni/kuesioner/tracer-study', 'SurveyController@getTracerStudyIdentitas')->name('alumni.tracerStudy');
 	Route::get('alumni/kuesioner/tracer-study/identitas/{identitas}', 'SurveyController@createTracerStudyIdentitas')->name('alumni.tracerStudy.identitas.create');
 	Route::post('alumni/kuesioner/tracer-study/identitas/{identitas}', 'SurveyController@storeTracerStudyIdentitas')->name('alumni.tracerStudy.identitas.store');
-	Route::get('pengisian/kuesioner/tracer-study', 'SurveyController@getTracerStudy')->name('tracerStudy.auth');
-	Route::post('pengisian/kuesioner/tracer-study', 'SurveyController@redirectTracerStudy')->name('tracerStudy.redirect');
-	Route::get('pengisian/kuesioner/tracer-study/{tracerStudy:kode}', 'SurveyController@showTracerStudy')->name('tracerStudy.show');
-	Route::post('pengisian/kuesioner/tracer-study/{tracerStudy:kode}', 'SurveyController@storeTracerStudy')->name('tracerStudy.store');
 	
 	Route::post('/logout', 'AuthController@logout');
 });
+
+Route::get('pengisian/kuesioner/tracer-study', 'SurveyController@getTracerStudy')->name('tracerStudy.auth');
+Route::post('pengisian/kuesioner/tracer-study', 'SurveyController@redirectTracerStudy')->name('tracerStudy.redirect');
+Route::get('pengisian/kuesioner/tracer-study/{tracerStudy:kode}', 'SurveyController@showTracerStudy')->name('tracerStudy.show');
+Route::post('pengisian/kuesioner/tracer-study/{tracerStudy:kode}', 'SurveyController@storeTracerStudy')->name('tracerStudy.store');

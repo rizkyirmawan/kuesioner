@@ -13,7 +13,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      @if(auth())
+      @if(Auth::user())
       <li class="nav-item {{ Request::segment(1) === 'dasbor' ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('dasbor') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -21,7 +21,7 @@
       </li>
       @endif
       
-      @if(Auth::user()->role->role === 'Admin')
+      @if(Auth::user() && Auth::user()->role->role === 'Admin')
       <!-- Divider -->
       <hr class="sidebar-divider">
       
@@ -46,7 +46,7 @@
       </li>
       @endif
       
-      @if(Auth::user()->role->role === 'Admin')
+      @if(Auth::user() && Auth::user()->role->role === 'Admin')
       <!-- Divider -->
       <hr class="sidebar-divider">
 
@@ -94,7 +94,7 @@
       </li>
       @endif
 
-      @if(Auth::user()->role->role === 'Dosen')
+      @if(Auth::user() && Auth::user()->role->role === 'Dosen')
       <!-- Divider -->
       <hr class="sidebar-divider">
       
@@ -117,7 +117,7 @@
       </li>
       @endif
 
-      @if(Auth::user()->role->role === 'Mahasiswa')
+      @if(Auth::user() && Auth::user()->role->role === 'Mahasiswa')
       <!-- Divider -->
       <hr class="sidebar-divider">
       
@@ -141,7 +141,7 @@
       </li>
       @endif
 
-      @if(Auth::user()->role->role === 'Alumni')
+      @if(Auth::user() && Auth::user()->role->role === 'Alumni')
       <!-- Divider -->
       <hr class="sidebar-divider">
       
