@@ -3,7 +3,7 @@
 @section('content')
 	<h1 class="h3 mb-2 text-gray-800">Tambah Data Kelas</h1>
   <hr>
-	
+
 	<a href="{{ route('kelas.index') }}" class="btn btn-secondary btn-sm btn-icon-split mb-3">
     <span class="icon text-white-50">
       <i class="fas fa-arrow-left"></i>
@@ -23,7 +23,7 @@
 
 	    <div class="card-footer">
 	    	<div class="d-flex justify-content-end">
-	    		<button class="btn btn-primary btn-icon-split" type="submit">
+	    		<button class="btn btn-primary btn-icon-split" id="simpan" type="submit">
 	    			<span class="icon text-white-50">
 	    				<i class="fas fa-save"></i>
 	    			</span>

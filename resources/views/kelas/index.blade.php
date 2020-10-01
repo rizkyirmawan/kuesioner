@@ -13,7 +13,7 @@
     			<h6 class="font-weight-bold text-primary">Daftar Kelas</h6>
     		</div>
     		<div class="p-2 ml-auto">
-	      	<a href="{{ route('kelas.create') }}" class="btn btn-primary btn-sm btn-icon-split">
+	      	<a href="{{ route('kelas.create') }}" class="btn btn-primary btn-sm btn-icon-split" id="tambah-data">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
