@@ -40,7 +40,7 @@
                 <div class="p-5">
 
                   @include('partials._messages')
-                  
+
                   <form class="user" method="post" action="/">
 
                     @csrf
@@ -59,7 +59,7 @@
                       @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                    <button type="submit" id="login" class="btn btn-primary btn-user btn-block">
                       Login
                     </button>
 
