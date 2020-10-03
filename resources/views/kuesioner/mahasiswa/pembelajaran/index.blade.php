@@ -16,7 +16,7 @@
           <thead>
             <tr>
               <th>No.</th>
-              <th>Kuesioner</th>
+              <th>Dosen</th>
               <th>Kelas</th>
               <th>Mata Kuliah</th>
               <th>Kelola</th>
@@ -27,7 +27,7 @@
             @foreach($pembelajaran as $kuesioner)
             <tr>
             	<td>{{ $loop->iteration }}.</td>
-              <td>{{ $kuesioner->kuesioner }}</td>
+              <td>{{ $kuesioner->studi->dosen->nama }}</td>
               <td>{{ $kuesioner->studi->kelas->kelas }}</td>
               <td>{{ $kuesioner->studi->matkul->mata_kuliah }}</td>
               <td class="text-center">

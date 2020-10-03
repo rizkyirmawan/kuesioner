@@ -10,12 +10,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class KRSImport implements ToCollection, WithHeadingRow
 {
-    public function collection(Collection $row)
+    public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
             DB::table('peserta_didik')->insert([
                 'nim'         => $row['nim'],
-                'kode_matkul' => $row['kode_mk']
+                'kode_matkul' => $row['kd_mk']
             ]);
         }
     }

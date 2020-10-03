@@ -16,7 +16,6 @@ class CreateKemahasiswaanTable extends Migration
         Schema::create('kemahasiswaan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('angkatan');
             $table->string('kuesioner');
             $table->text('deskripsi');
             $table->unsignedBigInteger('tahun_ajaran');

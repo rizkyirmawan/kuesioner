@@ -17,7 +17,6 @@
             <tr>
               <th>No.</th>
               <th>Kuesioner</th>
-              <th>Angkatan Tertuju</th>
               <th>Tahun Ajaran</th>
               <th>Kelola</th>
             </tr>
@@ -28,7 +27,6 @@
             <tr>
             	<td>{{ $loop->iteration }}.</td>
               <td>{{ $kuesioner->kuesioner }}</td>
-              <td>{{ $kuesioner->angkatan }}</td>
               <td>{{ $kuesioner->tahunAjaran->semester . ' ' . $kuesioner->tahunAjaran->tahun_ajaran }}</td>
               <td class="text-center">
                 @if($kuesioner->responden->where('user_id', auth()->user()->id)->count() > 0)

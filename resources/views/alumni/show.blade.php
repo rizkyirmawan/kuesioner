@@ -51,7 +51,7 @@
         @endif
 
         <div class="col-md-6">
-          <table class="table table-bordered">
+          <table class="table table-bordered text-dark">
             <tr>
               <td class="text-dark">NIM</td>
               <td>{{ $alumni->nim }}</td>

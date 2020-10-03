@@ -98,7 +98,7 @@
         <div class="col-md-6">
           <h5 class="text-dark">Peserta Didik</h5>
           <hr>
-          <table class="table table-bordered">
+          <table class="table table-bordered text-dark">
             <tr>
               <th>Kelas</th>
               <th>Peserta</th>

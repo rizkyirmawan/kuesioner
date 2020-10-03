@@ -8,12 +8,16 @@ use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\MahasiswaRequest;
 use App\Http\Requests\UserRequest;
+use App\Exports\MahasiswaExport;
+use App\Imports\MahasiswaImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
@@ -63,7 +67,7 @@ class MahasiswaController extends Controller
         ]);
 
         $mahasiswa = Mahasiswa::create($mahasiswaReq->only([
-            'nim', 'nama', 'alamat', 'jenis_kelamin', 'nomor_telepon', 'angkatan', 'jurusan_id', 'kelas_id'
+            'nim', 'nama', 'alamat', 'nomor_telepon', 'angkatan', 'jurusan_id', 'kelas_id'
         ]));
 
         $this->storeImage($mahasiswa);
@@ -122,7 +126,7 @@ class MahasiswaController extends Controller
         ]);
 
         $mahasiswa->update($mahasiswaReq->only([
-            'nim', 'nama', 'alamat', 'jenis_kelamin', 'nomor_telepon', 'angkatan', 'jurusan_id', 'kelas_id'
+            'nim', 'nama', 'alamat', 'nomor_telepon', 'angkatan', 'jurusan_id', 'kelas_id'
         ]));
 
         $this->storeImage($mahasiswa);
@@ -209,5 +213,107 @@ class MahasiswaController extends Controller
         })->get();
 
         return response()->json($res, 200);
+    }
+
+    // Download Blanko
+    public function blankoMahasiswa()
+    {
+        return response()->download(public_path().'/files/Mahasiswa.xlsx');
+    }
+
+    // Export Mahasiswa
+    public function exportMahasiswa()
+    {
+        $kode = Str::upper(Str::random(5));
+
+        return Excel::download(new MahasiswaExport, $kode . '-DATA-MAHASISWA.xlsx');
+    }
+
+    // Import Mahasiswa
+    public function importMahasiswa(Request $request)
+    {
+        try {
+            $collection = Excel::toCollection(new MahasiswaImport, $request->file('excel'));
+
+            $dataMhs = $collection->first()->map(function ($item, $key) {
+                $jurusanIF = Jurusan::where('kode', 'IF')->first();
+
+                $jurusanSI = Jurusan::where('kode', 'SI')->first();
+
+                $kelasRegPagi = Kelas::where('kode', 'REG-A')->first();
+
+                $kelasRegSore = Kelas::where('kode', 'REG-B')->first();
+
+                $kelasEksekutif = Kelas::where('kode', 'EKS-A')->first();
+
+                $mahasiswaRole = Role::where('role', 'Mahasiswa')->first();
+
+                $currentYear = Str::of(strval(Carbon::now()->year))->substr(0, 2);
+
+                $tahunAngkatan = Str::of(strval($item['nim']))->substr(2, 2);
+                
+                $item['angkatan'] = $currentYear . $tahunAngkatan;
+                
+                $item['nama'] = $item['nama_mahasiswa'];
+
+                $item['nomor_telepon'] = '+' . strval($item['nomor_telepon']);
+
+                $item['password'] = bcrypt($item['nim']);
+
+                $item['remember_token'] = Str::random(10);
+
+                $item['email_verified_at'] = Carbon::now();
+                    
+                $item['role_id'] = $mahasiswaRole->id;
+
+                if (Str::substr(strval($item['nim']), 0, 2) == '12') {
+                    $item['jurusan_id'] = $jurusanIF->id;
+                } elseif (Str::substr(strval($item['nim']), 0, 2) == '32') {
+                    $item['jurusan_id'] = $jurusanSI->id;
+                }
+
+                if($item['kelas_program'] === 'REGULER') {
+                    $item['kelas_id'] = $kelasRegPagi->id;
+                } elseif ($item['kelas_program'] === 'KARYAWAN') {
+                    $item['kelas_id'] = $kelasRegSore->id;
+                } elseif ($item['kelas_program'] === 'EKSEKUTIF') {
+                    $item['kelas_id'] = $kelasEksekutif->id;
+                }
+
+                return collect($item)->forget(['nama_mahasiswa', 'kelas_program', 'jurusan']);
+            })->toArray();
+
+            Mahasiswa::truncate();
+
+            User::where('userable_type', Mahasiswa::class)->delete();
+
+            foreach ($dataMhs as $mahasiswa) {
+                $mhs = Mahasiswa::create(Arr::except($mahasiswa, [
+                    'email',
+                    'password',
+                    'role_id',
+                    'remember_token',
+                    'email_verified_at'
+                ]));
+
+                $mhs->user()->create(Arr::only($mahasiswa, [
+                    'email',
+                    'password',
+                    'role_id',
+                    'remember_token',
+                    'email_verified_at'
+                ]));
+            }
+        } catch (\Exception $e) {
+            return back()
+                    ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
+        } catch (\Error $e) {
+            return back()
+                    ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
+        }
+
+        return redirect()
+                ->route('mahasiswa.index')
+                ->with('success', 'Data mahasiswa berhasil diimport.');
     }
 }

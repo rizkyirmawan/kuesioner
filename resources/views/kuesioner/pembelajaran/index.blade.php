@@ -12,16 +12,24 @@
     		<div class="p-2">
     			<h6 class="font-weight-bold text-primary">Daftar Kuesioner</h6>
     		</div>
-    		<div class="p-2 ml-auto">
-          @if(Auth::user()->role->role === 'Admin')
+        @if(Auth::user()->role->role === 'Admin')
+        <div class="p-2 ml-auto">
+          <a href="{{ route('export.rekap.pembelajaran') }}" class="btn btn-success btn-sm btn-icon-split @if($pembelajaran->count() <= 0) disabled @endif">
+            <span class="icon text-white-50">
+              <i class="fas fa-file-export"></i>
+            </span>
+            <span class="text">Export Rekap</span>
+          </a>
+        </div>
+    		<div class="p-2">
 	      	<a href="{{ route('pembelajaran.create') }}" class="btn btn-primary btn-sm btn-icon-split">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
             <span class="text">Tambah Data</span>
           </a>
-          @endif
-    		</div>
+        </div>
+        @endif
     	</div>
     </div>
     <div class="card-body">
@@ -30,7 +38,7 @@
           <thead>
             <tr>
               <th>No.</th>
-              <th>Kuesioner</th>
+              <th>Dosen</th>
               <th>Kelas</th>
               <th>Mata Kuliah</th>
               <th>Kelola</th>
@@ -41,9 +49,9 @@
             @foreach($pembelajaran as $kuesioner)
             <tr>
             	<td>{{ $loop->iteration }}.</td>
-              <td>{{ $kuesioner->kuesioner }}</td>
+              <td>{{ $kuesioner->studi->dosen->nama }}</td>
               <td>{{ $kuesioner->studi->kelas->kelas }}</td>
-              <td>{{ $kuesioner->studi->matkul->mata_kuliah }}</td>
+              <td>{{ $kuesioner->studi->matkul->kode . ': ' .$kuesioner->studi->matkul->mata_kuliah }}</td>
               <td>
                 @if(Auth::user()->role->role === 'Admin')
 								<a href="{{ route('pembelajaran.show', ['pembelajaran' => $kuesioner]) }}" class="btn btn-secondary btn-sm btn-icon-split">

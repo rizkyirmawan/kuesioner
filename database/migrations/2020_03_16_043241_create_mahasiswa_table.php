@@ -20,7 +20,6 @@ class CreateMahasiswaTable extends Migration
             $table->bigInteger('nim');
             $table->string('nama');
             $table->string('angkatan')->nullable();
-            $table->string('jenis_kelamin');
             $table->string('alamat');
             $table->string('nomor_telepon');
             $table->string('foto')->nullable();

@@ -71,7 +71,7 @@ class SurveyController extends Controller
     {
         $title = 'Kuesioner Layanan Mahasiswa';
 
-        $data = Kemahasiswaan::where('angkatan', auth()->user()->userable->angkatan)->get();
+        $data = Kemahasiswaan::all();
 
         $kemahasiswaan = collect($data)->unique()->values()->all();
 
@@ -112,7 +112,7 @@ class SurveyController extends Controller
     {
         $title = 'Kuesioner Tracer Study';
 
-        $data = Identitas::where('angkatan', auth()->user()->userable->angkatan)->get();
+        $data = Identitas::where('tahun_lulus', auth()->user()->userable->tahun_lulus)->get();
 
         $identitas = collect($data)->unique()->values()->all();
 
@@ -135,6 +135,8 @@ class SurveyController extends Controller
         $kode = Str::upper(Str::random(8));
 
         $dataPertanyaan = [
+            ['pertanyaan' => 'Nama pengisi.', 'tipe' => 'Text'],
+            ['pertanyaan' => 'Jabatan pengisi.', 'tipe' => 'Text'],
             ['pertanyaan' => 'Integritas (etika dan moral).', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Keahlian berdasarkan bidang ilmu (profesionalisme).', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Bahasa Inggris.', 'tipe' => 'Radio'],
@@ -142,13 +144,6 @@ class SurveyController extends Controller
             ['pertanyaan' => 'Komunikasi.', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Kerjasama tim.', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Pengembangan diri.', 'tipe' => 'Radio'],
-        ];
-
-        $dataJawaban = [
-            ['jawaban' => 'Sangat Baik'],
-            ['jawaban' => 'Baik'],
-            ['jawaban' => 'Cukup'],
-            ['jawaban' => 'Kurang']
         ];
 
         $pertanyaanIT = [
@@ -159,6 +154,13 @@ class SurveyController extends Controller
             ['pertanyaan' => 'Kemampuan dalam melakukan Rekayasa Perangkat Lunak.', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Kemampuan dalam mengoperasikan berbagai sistem operasi (Windows/Linux).', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Kemampuan dalam implementasi Jaringan Komputer.', 'tipe' => 'Radio']
+        ];
+
+        $dataJawaban = [
+            ['jawaban' => 'Sangat Baik', 'skor' => 4],
+            ['jawaban' => 'Baik', 'skor' => 3],
+            ['jawaban' => 'Cukup', 'skor' => 2],
+            ['jawaban' => 'Kurang', 'skor' => 1]
         ];
 
         if ($request->bidang == 'IT') {
@@ -191,6 +193,8 @@ class SurveyController extends Controller
     // Get Tracer Study
     public function getTracerStudy()
     {
+        auth()->logout();
+
         $title = 'Kuesioner Tracer Study';
 
         return view('kuesioner.tracerStudy.auth', compact('title'));

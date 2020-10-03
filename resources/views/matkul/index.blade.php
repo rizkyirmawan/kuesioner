@@ -6,20 +6,30 @@
 
   @include('partials._messages')
 
-  <div class="mb-3">
-    <a href="#import-collapse" data-toggle="collapse" class="btn btn-success btn-sm btn-icon-split">
-      <span class="icon text-white-50">
-        <i class="fas fa-file-import"></i>
-      </span>
-      <span class="text">Import KRS</span>
-    </a>  
+  <div class="d-flex mb-3">
+    <div class="p-2">
+      <a href="#import-collapse" data-toggle="collapse" class="btn btn-success btn-sm btn-icon-split">
+        <span class="icon text-white-50">
+          <i class="fas fa-file-import"></i>
+        </span>
+        <span class="text">Import KRS</span>
+      </a>
+    </div>
+    <div class="p-2">
+      <a href="{{ route('download.blankoKRS') }}" class="btn btn-info btn-sm btn-icon-split">
+        <span class="icon text-white-50">
+          <i class="fas fa-download"></i>
+        </span>
+        <span class="text">Blanko KRS</span>
+      </a>
+    </div>
   </div>
 
   <div class="row">
     <div class="col-md-4">
       <div class="collapse" id="import-collapse">
         <div class="card card-body mb-3">
-          <form action="{{ route('matkul.import') }}" method="post" enctype="multipart/form-data">
+          <form action="{{ route('krs.import') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
               <label for="excel" class="text-dark">Import Excel:</label>

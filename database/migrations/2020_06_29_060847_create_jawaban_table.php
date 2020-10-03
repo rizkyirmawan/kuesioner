@@ -17,6 +17,7 @@ class CreateJawabanTable extends Migration
             $table->id();
             $table->unsignedBigInteger('pertanyaan_id');
             $table->string('jawaban')->nullable();
+            $table->unsignedSmallInteger('skor')->nullable();
             $table->timestamps();
         });
     }

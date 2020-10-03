@@ -47,33 +47,13 @@
             <span class="text">Respons</span>
           </a>
         </div>
-        <div class="p-2">
-          <a href="{{ route('pertanyaan.kemahasiswaan.create', ['kemahasiswaan' => $kemahasiswaan]) }}" class="btn btn-primary btn-sm btn-icon-split">
-            <span class="icon text-white-50">
-              <i class="fas fa-plus"></i>
-            </span>
-            <span class="text">Pertanyaan</span>
-          </a>
-        </div>
-        <div class="p-2">
-          <a href="#" class="btn btn-warning btn-sm btn-icon-split @if($kemahasiswaan->status == 1) disabled  @endif"  data-target="#pertanyaanDefaultModal" data-toggle="modal">
-            <span class="icon">
-              <i class="fas fa-plus"></i>
-            </span>
-            <span class="text">Pertanyaan Default</span>
-          </a>
-        </div>
       </div>
     </div>
     <div class="card-body">
       <div class="row">
         
         <div class="col-md-6">
-          <table class="table table-bordered">
-            <tr>
-              <th>Angkatan Tertuju</th>
-              <td>{{ $kemahasiswaan->angkatan }}</td>
-            </tr>
+          <table class="table table-bordered text-dark">
             <tr>
               <th>Tahun Ajaran</th>
               <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>

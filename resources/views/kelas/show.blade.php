@@ -38,7 +38,7 @@
 			<h6 class="font-weight-bold text-primary">Detail Kelas: {{ $kelas->kelas }}</h6>
     </div>
     <div class="card-body">
-      <table class="table table-bordered">
+      <table class="table table-bordered text-dark">
         <tr>
           <th>Kode</th>
           <th>Kelas</th>

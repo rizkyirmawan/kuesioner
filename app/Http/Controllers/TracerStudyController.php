@@ -6,6 +6,10 @@ use App\Models\Alumni;
 use App\Models\Identitas;
 use App\Models\TracerStudy;
 use Illuminate\Http\Request;
+use App\Exports\ResponsTracerStudyExport;
+use App\Exports\RekapTracerStudyExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class TracerStudyController extends Controller
 {
@@ -18,12 +22,12 @@ class TracerStudyController extends Controller
 
     	$identitas = Identitas::all();
 
-    	$angkatanUnique = Alumni::pluck('angkatan')
+    	$tahunLulus = Alumni::pluck('tahun_lulus')
     						->unique()
     						->values()
     						->all();
 
-    	return view('kuesioner.tracerStudy.index', compact('title', 'identitas', 'tracerStudy', 'angkatanUnique'));
+    	return view('kuesioner.tracerStudy.index', compact('title', 'identitas', 'tracerStudy', 'tahunLulus'));
     }
 
     // Create Identitas
@@ -32,7 +36,7 @@ class TracerStudyController extends Controller
     	try {
     		Identitas::create($request->all());
     	} catch (\Exception $e) {
-    		return back()->with('error', 'Silahkan pilih angkatan tertuju.');
+    		return back()->with('error', 'Silahkan pilih tahun lulus tertuju.');
     	}
 
     	return redirect()
@@ -57,5 +61,25 @@ class TracerStudyController extends Controller
         $tracerStudy->load(['pertanyaan.jawaban', 'responden.respons']);
 
         return view('kuesioner.tracerStudy.respons', compact('title', 'tracerStudy'));
+    }
+
+    // Export Respons
+    public function exportRespons(TracerStudy $tracerStudy)
+    {
+        $kode = Str::upper(Str::random(5));
+
+        $tracerStudy->load(['pertanyaan.jawaban', 'pertanyaan.respons', 'pertanyaan.respons.jawaban']);
+
+        return Excel::download(new ResponsTracerStudyExport($tracerStudy), $kode . '-TRACER-STUDY-' . Str::upper(Str::slug($tracerStudy->user->userable->nama)) . '.xlsx');
+    }
+
+    // Export Rekap
+    public function exportRekap(Identitas $identitas)
+    {
+        $kode = Str::upper(Str::random(5));
+
+        $identitas->load(['tracerStudy']);
+
+        return Excel::download(new RekapTracerStudyExport($identitas), $kode . '-REKAP-TRACER-STUDY-' . $identitas->tahun_lulus . '.xlsx');
     }
 }

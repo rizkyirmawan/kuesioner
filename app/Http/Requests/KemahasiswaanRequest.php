@@ -25,8 +25,7 @@ class KemahasiswaanRequest extends FormRequest
     {
         return [
             'kuesioner' => 'required',
-            'deskripsi' => 'required',
-            'angkatan' => 'required'
+            'deskripsi' => 'required'
         ];
     }
 
@@ -34,8 +33,7 @@ class KemahasiswaanRequest extends FormRequest
     {
         return [
             'kuesioner.required' => 'Judul kuesioner tidak boleh kosong.',
-            'deskripsi.required' => 'Deskripsi kuesioner tidak boleh kosong.',
-            'angkatan.required' => 'Silahkan pilih angkatan tertuju.'
+            'deskripsi.required' => 'Deskripsi kuesioner tidak boleh kosong.'
         ];
     }
 }

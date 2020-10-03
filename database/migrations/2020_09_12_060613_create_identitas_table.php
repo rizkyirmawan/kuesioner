@@ -15,7 +15,7 @@ class CreateIdentitasTable extends Migration
     {
         Schema::create('identitas', function (Blueprint $table) {
             $table->id();
-            $table->string('angkatan');
+            $table->string('tahun_lulus');
             $table->timestamps();
         });
     }

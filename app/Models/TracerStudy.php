@@ -29,4 +29,9 @@ class TracerStudy extends Model
     {
         return $this->morphMany(Responden::class, 'kuesionerable');
     }
+
+    public function respons()
+    {
+        return $this->hasManyThrough(Respons::class, Pertanyaan::class, 'questionable_id')->where('questionable_type', TracerStudy::class);
+    }
 }

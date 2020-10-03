@@ -52,7 +52,7 @@
             <label for="jawaban-{{ $jawaban->id }}">
               <li class="list-group-item">
                 <input type="radio" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2" required>
-                {{ $jawaban->jawaban }}
+                {{ $jawaban->jawaban . ' (Nilai: ' . $jawaban->skor . ')' }}
                 <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
               </li>
             </label>

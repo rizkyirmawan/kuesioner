@@ -30,7 +30,7 @@
           <thead>
             <tr>
               <th>No.</th>
-              <th>Angkatan Tertuju</th>
+              <th>Tahun Lulus Tertuju</th>
               <th>Kelola</th>
             </tr>
           </thead>
@@ -39,7 +39,7 @@
             @foreach($identitas as $kuesioner)
             <tr>
             	<td>{{ $loop->iteration }}.</td>
-              <td>{{ $kuesioner->angkatan }}</td>
+              <td>{{ $kuesioner->tahun_lulus }}</td>
               <td>
                 @if(Auth::user()->role->role === 'Admin')
 								<a href="{{ route('tracerStudy.identitas.show', ['identitas' => $kuesioner]) }}" class="btn btn-secondary btn-sm btn-icon-split">
@@ -74,11 +74,11 @@
             @csrf
 
             <div class="form-group">
-              <label for="angkatan">Angkatan Tertuju:</label>
-              <select name="angkatan" class="form-control">
-                <option selected disabled>Pilih Angkatan</option>
-                @foreach($angkatanUnique as $angkatan)
-                <option value="{{ $angkatan }}">{{ $angkatan }}</option>
+              <label for="tahun_lulus">Tahun Lulus Tertuju:</label>
+              <select name="tahun_lulus" class="form-control">
+                <option selected disabled>Pilih Tahun Lulus</option>
+                @foreach($tahunLulus as $tahun)
+                <option value="{{ $tahun }}">{{ $tahun }}</option>
                 @endforeach
               </select>
             </div>

@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-  <h1 class="h3 mb-2 text-gray-800">Data Mahasiswa</h1>
+  <h1 class="h3 mb-2 text-gray-800">Detail Mahasiswa</h1>
   <hr>
 
   @include('partials._messages')
@@ -51,7 +51,7 @@
         @endif
 
         <div class="col-md-6">
-          <table class="table table-bordered">
+          <table class="table table-bordered text-dark">
             <tr>
               <td class="text-dark">NIM</td>
               <td>{{ $mahasiswa->nim }}</td>
@@ -59,10 +59,6 @@
             <tr>
               <td class="text-dark">Nama</td>
               <td>{{ $mahasiswa->nama }}</td>
-            </tr>
-            <tr>
-              <td class="text-dark">Jenis Kelamin</td>
-              <td>{{ $mahasiswa->jenis_kelamin }}</td>
             </tr>
             <tr>
               <td class="text-dark">Alamat</td>

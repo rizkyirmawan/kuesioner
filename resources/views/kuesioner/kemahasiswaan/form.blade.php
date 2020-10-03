@@ -4,20 +4,7 @@
  
 		<input type="hidden" value="{{ $kemahasiswaan->id ?? '' }}" name="id">
 
-		<div class="col-md-6 mb-3">
-			<label for="angkatan" class="text-dark">Angakatan Tertuju:</label>
-			<select name="angkatan" class="form-control">
-				<option disabled selected>Pilih Angkatan</option>
-				@foreach($angkatanUnique as $angkatan)
-				<option value="{{ $angkatan }}" @if($angkatan === $kemahasiswaan->angkatan) {{ 'selected' }} @endif>{{ $angkatan }}</option>
-				@endforeach
-			</select>
-			@error('angkatan')
-				<small class="form-text text-danger">{{ $message }}</small>
-			@enderror
-		</div>
-
-		<div class="col-md-6 mb-3">
+		<div class="col-md-12 mb-3">
 			<label for="kuesioner" class="text-dark">Judul Kuesioner:</label>
 			<input type="text" name="kuesioner" class="form-control @error('kuesioner') is-invalid @enderror" value="{{ old('kuesioner') ?? $kemahasiswaan->kuesioner }}">
 			@error('kuesioner')

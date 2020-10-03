@@ -23,13 +23,11 @@
       <div class="row">
         
         <div class="col-md-12">
-          <table class="table table-bordered text-dark">
+          <table class="table table-bordered text-dark text-center">
             <tr>
-              <th>Angkatan Tertuju</th>
               <th>Tahun Ajaran</th>
             </tr>
             <tr>
-              <td>{{ $kemahasiswaan->angkatan }}</td>
               <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
             </tr>
           </table>
@@ -57,7 +55,7 @@
             <label for="jawaban-{{ $jawaban->id }}">
               <li class="list-group-item">
                 <input type="radio" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2" required>
-                {{ $jawaban->jawaban }}
+                {{ $jawaban->jawaban . ' (Nilai: ' . $jawaban->skor . ')' }}
                 <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
               </li>
             </label>
@@ -71,7 +69,7 @@
             <label for="jawaban-{{ $jawaban->id }}">
               <li class="list-group-item">
                 <input type="checkbox" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2">
-                {{ $jawaban->jawaban }}
+                {{ $jawaban->jawaban . ' (Nilai: ' . $jawaban->skor . ')' }}
                 <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
               </li>
             </label>

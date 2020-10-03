@@ -7,12 +7,16 @@ use App\Models\Matkul;
 use App\Models\Mahasiswa;
 use App\Models\Jurusan;
 use App\Models\Kelas;
+use App\Models\Role;
 use App\Models\Studi;
 use App\Http\Requests\MatkulRequest;
 use App\Imports\KRSImport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MatkulController extends Controller
@@ -189,23 +193,59 @@ class MatkulController extends Controller
             $collection = Excel::toCollection(new KRSImport, $request->file('excel'));
 
             $plucked = $collection->first()->map(function ($item, $key) {
-                $item['kode_matkul'] = $item['kode_mk'];
+                $item['kode_matkul'] = $item['kd_mk'];
                 return collect($item)->only(['nim', 'kode_matkul']);
             })->toArray();
+
+            $dataMatkul = $collection->first()->unique('kd_mk')->map(function ($item, $key) {
+                $item['kode'] = $item['kd_mk'];
+
+                $item['mata_kuliah'] = $item['nama_mk'];
+
+                return collect($item)->only(['kode', 'mata_kuliah']);
+            })->toArray();
+
+            DB::table('matkul')->truncate();
+
+            DB::table('program')->truncate();
+
+            foreach ($dataMatkul as $matkul) {
+                $jurusanIF = Jurusan::where('kode', 'IF')->first();
+
+                $jurusanSI = Jurusan::where('kode', 'SI')->first();
+
+                if (Str::substr($matkul['kode'], 0, 2) == 'IF') {
+                    $jurusan = [$jurusanIF->id];
+                } elseif (Str::substr($matkul['kode'], 0, 2) == 'SI') {
+                    $jurusan = [$jurusanSI->id];
+                } else {
+                    $jurusan = [$jurusanIF->id, $jurusanSI->id];
+                }
+
+                $mk = Matkul::create($matkul);
+
+                $mk->jurusan()->sync($jurusan);
+            }
 
             DB::table('peserta_didik')->truncate();
 
             DB::table('peserta_didik')->insert($plucked);
         } catch(\Exception $e) {
             return back()
-                    ->with('error', 'Gagal membaca file. Silahkan periksa kembali.');
+                    ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
         } catch(\Error $e) {
             return back()
-                    ->with('error', 'Gagal membaca file. Silahkan periksa kembali.');
+                    ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
         }
 
         return redirect()
                 ->route('matkul.index')
                 ->with('success', 'Data KRS berhasil diimport.');
+    }
+
+    // Download Blanko KRS
+    public function blankoKRS()
+    {
+        return response()->download(public_path().'/files/KRS.xlsx');
     }
 }

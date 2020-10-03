@@ -20,7 +20,7 @@
           <thead>
             <tr>
               <th>No.</th>
-              <th>Angkatan Tertuju</th>
+              <th>Tahun Lulus Tertuju</th>
               <th>Kelola</th>
             </tr>
           </thead>
@@ -29,7 +29,7 @@
             @foreach($identitas as $kuesioner)
             <tr>
             	<td>{{ $loop->iteration }}.</td>
-              <td>{{ $kuesioner->angkatan }}</td>
+              <td>{{ $kuesioner->tahun_lulus }}</td>
               <td>
                 @if(!$tracerStudy)
 								<a href="{{ route('alumni.tracerStudy.identitas.create', ['identitas' => $kuesioner]) }}" class="btn btn-warning btn-sm btn-icon-split">

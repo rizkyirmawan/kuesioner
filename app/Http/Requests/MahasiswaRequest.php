@@ -30,7 +30,6 @@ class MahasiswaRequest extends FormRequest
                     'nama' => 'required',
                     'jurusan' => 'required',
                     'kelas' => 'required',
-                    'jenis_kelamin' => 'required',
                     'alamat' => 'required',
                     'nomor_telepon' => 'required|max:15',
                     'foto' => 'file|image|max:5000|nullable'
@@ -42,7 +41,6 @@ class MahasiswaRequest extends FormRequest
                     'nama' => 'required',
                     'jurusan' => 'required',
                     'kelas' => 'required',
-                    'jenis_kelamin' => 'required',
                     'alamat' => 'required',
                     'nomor_telepon' => 'required|max:15',
                     'foto' => 'file|image|max:5000|nullable'
@@ -61,7 +59,6 @@ class MahasiswaRequest extends FormRequest
             'nama.required' => 'Nama tidak boleh kosong.',
             'jurusan.required' => 'Silahkan pilih jurusan.',
             'kelas.required' => 'Silahkan pilih kelas.',
-            'jenis_kelamin.required' => 'Silahkan pilih jenis kelamin.',
             'alamat.required' => 'Alamat tidak boleh kosong.',
             'nomor_telepon.required' => 'Nomor telepon tidak boleh kosong.',
             'nomor_telepon.max' => 'Isi dengan nomor telepon yang valid.',

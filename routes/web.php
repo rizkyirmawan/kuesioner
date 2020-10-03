@@ -55,6 +55,9 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('alumni/{alumni}/edit', 'AlumniController@edit')->name('alumni.edit');
 			Route::patch('alumni/{alumni}', 'AlumniController@update')->name('alumni.update');
 			Route::delete('alumni/{alumni}', 'AlumniController@destroy')->name('alumni.destroy');
+
+			// Import Mahasiswa
+			Route::post('import-mahasiswa', 'MahasiswaController@importMahasiswa')->name('mahasiswa.import');
 		});
 
 		Route::prefix('master')->group(function() {
@@ -92,7 +95,7 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('mata-kuliah/{mataKuliah}/jurusan', 'MatkulController@getJurusan');
 
 			// Import KRS
-			Route::post('mata-kuliah', 'MatkulController@importKRS')->name('matkul.import');
+			Route::post('mata-kuliah', 'MatkulController@importKRS')->name('krs.import');
 		});
 
 		Route::prefix('kuesioner')->group(function () {
@@ -138,12 +141,32 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('tracer-study/{tracerStudy}', 'TracerStudyController@showRespons')->name('tracerStudy.respons');
 		});
 
+		// Exports
+		Route::prefix('export')->group(function () {
+			// Kuesioner
+			Route::get('respons-pembelajaran/{pembelajaran}', 'PembelajaranController@exportRespons')->name('export.respons.pembelajaran');
+			Route::get('respons-layanan-mahasiswa/{kemahasiswaan}', 'KemahasiswaanController@exportRespons')->name('export.respons.kemahasiswaan');
+			Route::get('respons-tracer-study/{tracerStudy}', 'TracerStudyController@exportRespons')->name('export.respons.tracerStudy');
+			Route::get('rekap-pembelajaran', 'PembelajaranController@exportRekap')->name('export.rekap.pembelajaran');
+			Route::get('rekap-layanan-mahasiswa', 'KemahasiswaanController@exportRekap')->name('export.rekap.kemahasiswaan');
+			Route::get('rekap-tracer-study/{identitas}', 'TracerStudyController@exportRekap')->name('export.rekap.tracerStudy');
+
+			// Mahasiswa
+			Route::get('export-mahasiswa', 'MahasiswaController@exportMahasiswa')->name('export.mahasiswa');
+		});
+
+		// Downloads
+		Route::prefix('download')->group(function () {
+			Route::get('blanko-krs', 'MatkulController@blankoKRS')->name('download.blankoKRS');
+			Route::get('blanko-mahasiswa', 'MahasiswaController@blankoMahasiswa')->name('download.blankoMahasiswa');
+		});
+
 	});
 
 	Route::prefix('kuesioner')->group(function () {
 		// Pembelajaran Respon
 		Route::get('dosen/pembelajaran', 'PembelajaranController@indexDosen')->name('dosen.pembelajaran.index');
-		Route::get('dosen/pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
+		Route::get('pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');
 	});
 
 	// Pengisian Kuesioner Pembelajaran Routes

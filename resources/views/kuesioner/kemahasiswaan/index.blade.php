@@ -12,16 +12,24 @@
     		<div class="p-2">
     			<h6 class="font-weight-bold text-primary">Daftar Kuesioner</h6>
     		</div>
-    		<div class="p-2 ml-auto">
-          @if(Auth::user()->role->role === 'Admin')
-	      	<a href="{{ route('kemahasiswaan.create') }}" class="btn btn-primary btn-sm btn-icon-split">
+        @if(Auth::user()->role->role === 'Admin')
+        <div class="p-2 ml-auto">
+          <a href="{{ route('export.rekap.kemahasiswaan') }}" class="btn btn-success btn-sm btn-icon-split @if($kemahasiswaan->count() <= 0) disabled @endif">
+            <span class="icon text-white-50">
+              <i class="fas fa-file-export"></i>
+            </span>
+            <span class="text">Export Rekap</span>
+          </a>
+        </div>
+        <div class="p-2">
+          <a href="{{ route('kemahasiswaan.create') }}" class="btn btn-primary btn-sm btn-icon-split">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
             <span class="text">Tambah Data</span>
           </a>
-          @endif
-    		</div>
+        </div>
+        @endif
     	</div>
     </div>
     <div class="card-body">
@@ -31,7 +39,6 @@
             <tr>
               <th>No.</th>
               <th>Kuesioner</th>
-              <th>Angkatan Tertuju</th>
               <th>Tahun Ajaran</th>
               <th>Kelola</th>
             </tr>
@@ -42,7 +49,6 @@
             <tr>
             	<td>{{ $loop->iteration }}.</td>
               <td>{{ $kuesioner->kuesioner }}</td>
-              <td>{{ $kuesioner->angkatan }}</td>
               <td>{{ $kuesioner->tahunAjaran->semester . ' ' . $kuesioner->tahunAjaran->tahun_ajaran }}</td>
               <td>
                 @if(Auth::user()->role->role === 'Admin')

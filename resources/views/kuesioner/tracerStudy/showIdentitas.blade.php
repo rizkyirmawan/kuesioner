@@ -23,6 +23,14 @@
         <div class="p-2 mr-auto">
           <h6 class="font-weight-bold text-primary">Detail Kuesioner Tracer Study</h6>
         </div>
+        <div class="p-2 ml-auto">
+          <a href="{{ route('export.rekap.tracerStudy', ['identitas' => $identitas]) }}" class="btn btn-success btn-sm btn-icon-split @if($identitas->tracerStudy->count() <= 0) disabled @endif">
+            <span class="icon text-white-50">
+              <i class="fas fa-file-export"></i>
+            </span>
+            <span class="text">Export Rekap</span>
+          </a>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -44,7 +52,7 @@
             @foreach($identitas->tracerStudy as $kuesioner)
             <tr>
               <td>{{ $loop->iteration }}.</td>
-              <td>{{ $kuesioner->user->userable->nama }}</td>
+              <td>{{ $kuesioner->user->userable->nim . ': ' . $kuesioner->user->userable->nama }}</td>
               <td>{{ $kuesioner->user->userable->angkatan }}</td>
               <td>{{ $kuesioner->user->userable->tahun_lulus }}</td>
               <td>{{ $kuesioner->perusahaan }} <span class="badge badge-info">{{ $kuesioner->bidang }}</span></td>
