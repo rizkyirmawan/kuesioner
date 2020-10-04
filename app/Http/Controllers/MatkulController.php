@@ -7,7 +7,6 @@ use App\Models\Matkul;
 use App\Models\Mahasiswa;
 use App\Models\Jurusan;
 use App\Models\Kelas;
-use App\Models\Role;
 use App\Models\Studi;
 use App\Http\Requests\MatkulRequest;
 use App\Imports\KRSImport;
@@ -16,7 +15,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MatkulController extends Controller
@@ -63,8 +61,6 @@ class MatkulController extends Controller
         $mahasiswa = Mahasiswa::whereHas('matkul', function ($query) use ($mataKuliah) {
            $query->where('kode_matkul', '=', $mataKuliah->kode);
         })->get();
-
-        // dd($mahasiswa->where('kelas_id', 2));
 
         $kelas = Kelas::whereNotIn('id', $mataKuliah->studi->pluck('kelas_id'))->get();
 

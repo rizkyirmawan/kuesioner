@@ -42,14 +42,14 @@ class DosenController extends Controller
         $dosenReq->request->add([
             'nomor_telepon' => '+62' . $dosenReq->nomor_telepon,
             'email' => $userReq->email,
-            'password' => bcrypt($dosenReq->nip),
+            'password' => bcrypt($dosenReq->nidn),
             'role_id' => $dosenRole->id,
             'email_verified_at' => Carbon::now(),
             'remember_token' => Str::random(10)
         ]);
 
         $dosen = Dosen::create($dosenReq->only([
-            'nip', 'nama', 'alamat', 'nomor_telepon'
+            'nidn', 'nama', 'alamat', 'nomor_telepon'
         ]));
 
         $this->storeImage($dosen);
@@ -90,14 +90,14 @@ class DosenController extends Controller
         $dosenReq->request->add([
             'nomor_telepon' => '+62' . $dosenReq->nomor_telepon,
             'email' => $userReq->email,
-            'password' => bcrypt($dosenReq->nip),
+            'password' => bcrypt($dosenReq->nidn),
             'role_id' => $dosenRole->id,
             'email_verified_at' => Carbon::now(),
             'remember_token' => Str::random(10)
         ]);
 
         $dosen->update($dosenReq->only([
-            'nip', 'nama', 'alamat', 'nomor_telepon'
+            'nidn', 'nama', 'alamat', 'nomor_telepon'
         ]));
 
         $this->storeImage($dosen);

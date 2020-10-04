@@ -3,9 +3,9 @@
 	<div class="form-row">
 
 		<div class="col-md-4 mb-3">
-			<label for="nip" class="text-dark">NIP:</label>
-			<input type="text" name="nip" class="form-control @error('nip') is-invalid @enderror" onkeypress="isNumber(event)" value="{{ old('nip') ?? $dosen->nip }}">
-			@error('nip')
+			<label for="nidn" class="text-dark">NIDN:</label>
+			<input type="text" name="nidn" class="form-control @error('nidn') is-invalid @enderror" onkeypress="isNumber(event)" value="{{ old('nidn') ?? $dosen->nidn }}">
+			@error('nidn')
 				<small class="form-text text-danger">{{ $message }}</small>
 			@enderror
 		</div>

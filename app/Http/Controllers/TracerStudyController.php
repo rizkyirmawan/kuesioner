@@ -44,6 +44,7 @@ class TracerStudyController extends Controller
     			->with('success', 'Data kuesioner berhasil ditambah.');
     }
 
+    // Show Identitas
     public function showIdentitas(Identitas $identitas)
     {
         $title = 'Detail Kuesioner Tracer Study';

@@ -19,49 +19,71 @@ class DosenTableSeeder extends Seeder
 
     	$data = [
     		[
-    			'nip' 				=> 1315020100,
-    			'nama' 				=> 'Lynch Dickinson',
-    			'alamat' 			=> 'Bandung Timur',
-    			'nomor_telepon' 	=> '+6285000000000',
+    			'nidn' 				=> '0826098201',
+    			'nama' 				=> 'MINA ISMU RAHAYU, MT',
+    			'alamat' 			=> 'Bandung',
+    			'nomor_telepon' 	=> '+6281321131982',
     			'role_id' 			=> $dosenRole->id,
-    			'email' 			=> 'lynch@example.com',
-    			'password' 			=> bcrypt(1315020100),
+    			'email' 			=> 'ismurahayu@gmail.com',
+    			'password' 			=> bcrypt('dosen'),
     			'remember_token' 	=> Str::random(10),
     			'email_verified_at'	=> Carbon::now()
     		],
     		[
-    			'nip' 				=> 1315020200,
-    			'nama' 				=> 'Pakih Rottenface',
-    			'alamat' 			=> 'Bandung Barat',
-    			'nomor_telepon' 	=> '+6285000000000',
+    			'nidn' 				=> '1017078801',
+    			'nama' 				=> 'SITI YULIANTI, M.KOM',
+    			'alamat' 			=> 'Bandung',
+    			'nomor_telepon' 	=> '+6281785879875',
     			'role_id' 			=> $dosenRole->id,
-    			'email' 			=> 'pakih@example.com',
-    			'password' 			=> bcrypt(1315020200),
+    			'email' 			=> 'sitiyuliyanti@gmail.com',
+    			'password' 			=> bcrypt('dosen'),
     			'remember_token' 	=> Str::random(10),
     			'email_verified_at'	=> Carbon::now()
     		],
-    		[
-    			'nip' 				=> 1315020300,
-    			'nama' 				=> 'Eutik McMahon',
-    			'alamat' 			=> 'Bandung Selatan',
-    			'nomor_telepon' 	=> '+6285000000000',
-    			'role_id' 			=> $dosenRole->id,
-    			'email' 			=> 'eutik@example.com',
-    			'password' 			=> bcrypt(1315020300),
-    			'remember_token' 	=> Str::random(10),
-    			'email_verified_at'	=> Carbon::now()
-    		],
-    		[
-    			'nip' 				=> 1315020400,
-    			'nama' 				=> 'Carlson Subagja',
-    			'alamat' 			=> 'Bandung Utara',
-    			'nomor_telepon' 	=> '+6285000000000',
-    			'role_id' 			=> $dosenRole->id,
-    			'email' 			=> 'carlson@example.com',
-    			'password' 			=> bcrypt(1315020400),
-    			'remember_token' 	=> Str::random(10),
-    			'email_verified_at'	=> Carbon::now()
-    		],
+            [
+                'nidn'               => '0020087901',
+                'nama'              => 'RINI NURAINI SUKMANA, MT',
+                'alamat'            => 'Bandung',
+                'nomor_telepon'     => '+628882024236',
+                'role_id'           => $dosenRole->id,
+                'email'             => 'rnurainisukmana@gmail.com',
+                'password'          => bcrypt('dosen'),
+                'remember_token'    => Str::random(10),
+                'email_verified_at' => Carbon::now()
+            ],
+            [
+                'nidn'               => '0403027304',
+                'nama'              => 'URO ABDULROHIM, MT',
+                'alamat'            => 'Bandung',
+                'nomor_telepon'     => '+6287822988483',
+                'role_id'           => $dosenRole->id,
+                'email'             => 'uroabdulrohim@gmail.com',
+                'password'          => bcrypt('dosen'),
+                'remember_token'    => Str::random(10),
+                'email_verified_at' => Carbon::now()
+            ],
+            [
+                'nidn'               => '10241184001',
+                'nama'              => 'INDRA MAULANA YUSUP KUSUMAH, M.KOM',
+                'alamat'            => 'Bandung',
+                'nomor_telepon'     => '+6285659021234',
+                'role_id'           => $dosenRole->id,
+                'email'             => 'indramaulanayk@gmail.com',
+                'password'          => bcrypt('dosen'),
+                'remember_token'    => Str::random(10),
+                'email_verified_at' => Carbon::now()
+            ],
+            [
+                'nidn'               => '0410087711',
+                'nama'              => 'YUS JAYUSMAN, MT',
+                'alamat'            => 'Bandung',
+                'nomor_telepon'     => '+628156037494',
+                'role_id'           => $dosenRole->id,
+                'email'             => 'yusjayusman@gmail.com',
+                'password'          => bcrypt('dosen'),
+                'remember_token'    => Str::random(10),
+                'email_verified_at' => Carbon::now()
+            ]
     	];
 
     	foreach ($data as $dosen) {

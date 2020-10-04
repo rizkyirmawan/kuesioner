@@ -25,7 +25,7 @@ class AlumniTableSeeder extends Seeder
     	$data = [
     		[
     			'nim' 				=> '1213666',
-    			'nama' 				=> 'Ronx Bangkanang',
+    			'nama' 				=> 'RONX BANGKANANG',
     			'alamat' 			=> 'Bandung',
     			'jenis_kelamin'		=> 'Laki-laki',
     			'nomor_telepon' 	=> '+6289444888666',
@@ -40,7 +40,7 @@ class AlumniTableSeeder extends Seeder
     		],
     		[
     			'nim' 				=> '1213777',
-    			'nama' 				=> 'Uyan Walker',
+    			'nama' 				=> 'UYAN WALKER',
     			'alamat' 			=> 'Bandung',
     			'jenis_kelamin'		=> 'Laki-laki',
     			'nomor_telepon' 	=> '+6289444888000',
@@ -55,7 +55,7 @@ class AlumniTableSeeder extends Seeder
     		],
     		[
     			'nim' 				=> '1213888',
-    			'nama' 				=> 'Karmanah O\' Brien',
+    			'nama' 				=> 'KARMANAH O\' BRIEN',
     			'alamat' 			=> 'Bandung',
     			'jenis_kelamin'		=> 'Perempuan',
     			'nomor_telepon' 	=> '+6289444888222',

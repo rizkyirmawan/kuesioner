@@ -28,7 +28,7 @@
           <thead>
             <tr>
               <th>No.</th>
-              <th>NIP</th>
+              <th>NIDN</th>
               <th>Nama</th>
               <th>Kelola</th>
             </tr>
@@ -38,7 +38,7 @@
             @foreach($dosen as $ds)
             <tr>
             	<td>{{ $loop->iteration }}.</td>
-              <td>{{ $ds->nip }}</td>
+              <td>{{ $ds->nidn }}</td>
               <td>{{ $ds->nama }}</td>
               <td>
 								<a href="{{ route('dosen.show', ['dosen' => $ds]) }}" class="btn btn-secondary btn-sm btn-icon-split">
