@@ -58,7 +58,7 @@ class AlumniController extends Controller
         ]);
 
         $alumni = Alumni::create($request->only([
-            'nim', 'nama', 'alamat', 'jenis_kelamin', 'nomor_telepon', 'angkatan', 'jurusan_id', 'tahun_lulus'
+            'nim', 'nama', 'alamat', 'nomor_telepon', 'angkatan', 'jurusan_id', 'tahun_lulus'
         ]));
 
         $this->storeImage($alumni);
@@ -116,7 +116,7 @@ class AlumniController extends Controller
         ]);
 
         $alumni->update($request->only([
-            'nim', 'nama', 'alamat', 'jenis_kelamin', 'nomor_telepon', 'angkatan', 'tahun_lulus'
+            'nim', 'nama', 'alamat', 'nomor_telepon', 'angkatan', 'tahun_lulus'
         ]));
 
         $this->storeImage($alumni);

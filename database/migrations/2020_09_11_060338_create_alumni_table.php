@@ -19,7 +19,6 @@ class CreateAlumniTable extends Migration
             $table->bigInteger('nim');
             $table->string('nama');
             $table->string('alamat');
-            $table->string('jenis_kelamin');
             $table->string('nomor_telepon');
             $table->string('angkatan');
             $table->string('tahun_lulus');

@@ -61,10 +61,6 @@
               <td>{{ $alumni->nama }}</td>
             </tr>
             <tr>
-              <td class="text-dark">Jenis Kelamin</td>
-              <td>{{ $alumni->jenis_kelamin }}</td>
-            </tr>
-            <tr>
               <td class="text-dark">Alamat</td>
               <td>{{ $alumni->alamat }}</td>
             </tr>

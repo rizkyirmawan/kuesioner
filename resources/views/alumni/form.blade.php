@@ -4,7 +4,7 @@
 
 		<input type="hidden" name="id" value="{{ $alumni->user->userable->id ?? '' }}">
 
-		<div class="col-md-2 mb-3">
+		<div class="col-md-4 mb-3">
 			<label for="nim" class="text-dark">NIM:</label>
 			<input type="text" name="nim" class="form-control @error('nim') is-invalid @enderror" onkeypress="isNumber(event)" maxlength="7" value="{{ old('nim') ?? $alumni->nim }}">
 			@error('nim')
@@ -12,22 +12,10 @@
 			@enderror
 		</div>
 
-		<div class="col-md-5 mb-3">
+		<div class="col-md-8 mb-3">
 			<label for="nama" class="text-dark">Nama:</label>
 			<input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') ?? $alumni->nama }}">
 			@error('nama')
-				<small class="form-text text-danger">{{ $message }}</small>
-			@enderror
-		</div>
-
-		<div class="col-md-5 mb-3">
-			<label for="jenis_kelamin" class="text-dark">Jenis Kelamin:</label>
-			<select name="jenis_kelamin" class="form-control @error('nama') is-invalid @enderror">
-				<option disabled selected>Pilih Jenis Kelamin</option>
-				<option value="Laki-laki" @if($alumni->jenis_kelamin == 'Laki-laki') {{ 'selected' }} @endif>Laki-laki</option>
-				<option value="Perempuan" @if($alumni->jenis_kelamin == 'Perempuan') {{ 'selected' }} @endif>Perempuan</option>
-			</select>
-			@error('jenis_kelamin')
 				<small class="form-text text-danger">{{ $message }}</small>
 			@enderror
 		</div>
