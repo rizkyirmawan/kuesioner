@@ -51,10 +51,10 @@ class DasborController extends Controller
         if (auth()->user()->role->role === 'Dosen') {
             $pembelajaranDosen = Pembelajaran::select('pembelajaran.*')
                             ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
-                            ->where('studi.dosen_id', auth()->user()->userable->id)
+                            ->where('studi.kode_dosen', auth()->user()->userable->kode)
                             ->count();
 
-            $studiDosen = Studi::where('dosen_id', auth()->user()->userable->id)->count();
+            $studiDosen = Studi::where('kode_dosen', auth()->user()->userable->kode)->count();
         }
 
     	return view('auth.dasbor', compact(

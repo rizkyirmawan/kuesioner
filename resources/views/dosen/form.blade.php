@@ -1,8 +1,16 @@
 <div class="card-body">
 
 	<div class="form-row">
+		
+		<div class="col-md-2 mb-3">
+			<label for="kode" class="text-dark">Kode:</label>
+			<input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') ?? $dosen->kode }}" maxlength="3">
+			@error('kode')
+				<small class="form-text text-danger">{{ $message }}</small>
+			@enderror
+		</div>
 
-		<div class="col-md-4 mb-3">
+		<div class="col-md-2 mb-3">
 			<label for="nidn" class="text-dark">NIDN:</label>
 			<input type="text" name="nidn" class="form-control @error('nidn') is-invalid @enderror" onkeypress="isNumber(event)" value="{{ old('nidn') ?? $dosen->nidn }}">
 			@error('nidn')

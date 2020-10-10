@@ -54,7 +54,7 @@
               <td>{{ $pembelajaran->studi->dosen->nama }}</td>
               <td>{{ $pembelajaran->tahunAjaran->semester . ' ' . $pembelajaran->tahunAjaran->tahun_ajaran }}</td>
               <td>{{ $pembelajaran->studi->matkul->mata_kuliah }}</td>
-              <td>{{ $pembelajaran->respons->sum('jawaban.skor') . ' dari ' . $pembelajaran->responden->count() . ' responden.' }}</td>
+              <td>{{ $pembelajaran->respons->sum('jawaban.skor') <= 0 ? 0 : round($pembelajaran->respons->sum('jawaban.skor') / $pembelajaran->pertanyaan()->count(), 1) . ' dari ' . $pembelajaran->responden->count() . ' responden.' }}</td>
             </tr>
           </table>
         </div>

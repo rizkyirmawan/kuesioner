@@ -46,7 +46,7 @@
               <td>{{ $tracerStudy->user->userable->angkatan }}</td>
               <td>{{ $tracerStudy->user->userable->tahun_lulus }}</td>
               <td>{{ $tracerStudy->perusahaan }} <span class="badge badge-info">{{ $tracerStudy->bidang }}</span></td>
-              <td>{{ $tracerStudy->respons->sum('jawaban.skor') }}</td>
+              <td>{{ $tracerStudy->respons->sum('jawaban.skor') <= 0 ? 0 : round($tracerStudy->respons->sum('jawaban.skor') / $tracerStudy->pertanyaan()->count(), 1) }}</td>
             </tr>
           </table>
         </div>

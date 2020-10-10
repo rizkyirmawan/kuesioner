@@ -44,7 +44,7 @@
             </tr>
             <tr>
               <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
-              <td>{{ $kemahasiswaan->respons->sum('jawaban.skor') . ' dari ' . $kemahasiswaan->responden->count() . ' responden.' }}</td>
+              <td>{{ $kemahasiswaan->respons->sum('jawaban.skor') <= 0 ? 0 : round($kemahasiswaan->respons->sum('jawaban.skor') / $kemahasiswaan->pertanyaan()->count(), 1) . ' dari ' . $kemahasiswaan->responden->count() . ' responden.' }}</td>
             </tr>
           </table>
         </div>

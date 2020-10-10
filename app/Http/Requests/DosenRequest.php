@@ -26,6 +26,7 @@ class DosenRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
+                    'kode' => 'required|unique:dosen,kode',
                     'nidn' => 'required|unique:dosen,nidn',
                     'nama' => 'required',
                     'alamat' => 'required',
@@ -35,6 +36,7 @@ class DosenRequest extends FormRequest
                 break;
             case 'PATCH':
                 return [
+                    'kode' => 'required|unique:dosen,kode,' . $this->dosen->id,
                     'nidn' => 'required|unique:dosen,nidn,' . $this->dosen->id,
                     'nama' => 'required',
                     'alamat' => 'required',
@@ -50,6 +52,8 @@ class DosenRequest extends FormRequest
     public function messages()
     {
         return [
+            'kode.required' => 'Kode dosen tidak boleh kosong.',
+            'kode.unique' => 'Kode dosen sudah terdaftar.',
             'nidn.required' => 'NIDN tidak boleh kosong.',
             'nidn.unique' => 'NIDN sudah terdaftar.',
             'nama.required' => 'Nama tidak boleh kosong.',

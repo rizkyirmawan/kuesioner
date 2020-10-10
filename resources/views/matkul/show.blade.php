@@ -200,7 +200,7 @@
                 <select name="dosen" class="form-control" required>
                   <option disabled selected>Pilih Dosen</option>
                   @foreach($dosen as $ds)
-                    <option value="{{ $ds->id }}">{{ $ds->nama }}</option>
+                    <option value="{{ $ds->kode }}">{{ $ds->nama }}</option>
                   @endforeach
                 </select>
               </div>

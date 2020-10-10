@@ -17,7 +17,6 @@ class CreatePesertaDidikTable extends Migration
             $table->id();
             $table->string('kode_matkul');
             $table->unsignedBigInteger('nim');
-            $table->timestamps();
         });
     }
 

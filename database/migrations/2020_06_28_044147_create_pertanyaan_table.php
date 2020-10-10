@@ -19,7 +19,6 @@ class CreatePertanyaanTable extends Migration
             $table->string('questionable_type');
             $table->string('pertanyaan');
             $table->string('tipe');
-            $table->timestamps();
         });
     }
 

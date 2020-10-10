@@ -236,35 +236,25 @@ class MahasiswaController extends Controller
             $collection = Excel::toCollection(new MahasiswaImport, $request->file('excel'));
 
             $dataMhs = $collection->first()->map(function ($item, $key) {
-                $jurusanIF = Jurusan::where('kode', 'IF')->first();
+                $jurusanIF      = Jurusan::where('kode', 'IF')->first();
+                $jurusanSI      = Jurusan::where('kode', 'SI')->first();
 
-                $jurusanSI = Jurusan::where('kode', 'SI')->first();
-
-                $kelasRegPagi = Kelas::where('kode', 'REG-A')->first();
-
-                $kelasRegSore = Kelas::where('kode', 'REG-B')->first();
-
+                $kelasRegPagi   = Kelas::where('kode', 'REG-A')->first();
+                $kelasRegSore   = Kelas::where('kode', 'REG-B')->first();
                 $kelasEksekutif = Kelas::where('kode', 'EKS-A')->first();
 
-                $mahasiswaRole = Role::where('role', 'Mahasiswa')->first();
+                $mahasiswaRole  = Role::where('role', 'Mahasiswa')->first();
 
-                $currentYear = Str::of(strval(Carbon::now()->year))->substr(0, 2);
-
-                $tahunAngkatan = Str::of(strval($item['nim']))->substr(2, 2);
+                $currentYear    = Str::of(strval(Carbon::now()->year))->substr(0, 2);
+                $tahunAngkatan  = Str::of(strval($item['nim']))->substr(2, 2);
                 
-                $item['angkatan'] = $currentYear . $tahunAngkatan;
-                
-                $item['nama'] = $item['nama_mahasiswa'];
-
-                $item['nomor_telepon'] = '+' . strval($item['nomor_telepon']);
-
-                $item['password'] = bcrypt($item['nim']);
-
-                $item['remember_token'] = Str::random(10);
-
-                $item['email_verified_at'] = Carbon::now();
-                    
-                $item['role_id'] = $mahasiswaRole->id;
+                $item['angkatan']           = $currentYear . $tahunAngkatan;
+                $item['nama']               = $item['nama_mahasiswa'];
+                $item['nomor_telepon']      = '+' . strval($item['nomor_telepon']);
+                $item['password']           = bcrypt($item['nim']);
+                $item['remember_token']     = Str::random(10);
+                $item['email_verified_at']  = Carbon::now();
+                $item['role_id']            = $mahasiswaRole->id;
 
                 if (Str::substr(strval($item['nim']), 0, 2) == '12') {
                     $item['jurusan_id'] = $jurusanIF->id;

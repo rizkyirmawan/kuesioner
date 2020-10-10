@@ -35,7 +35,7 @@
 		@endforeach
 		<tr>
 			<td colspan="2" style="font-weight: bold;">Total Nilai</td>
-			<td style="font-weight: bold;">{{ $tracerStudy->respons->sum('jawaban.skor') }}</td>
+			<td style="font-weight: bold;">{{ $tracerStudy->respons->sum('jawaban.skor') <= 0 ? 0 : round($tracerStudy->respons->sum('jawaban.skor') / $tracerStudy->pertanyaan()->count(), 1) }}</td>
 		</tr>
 	</tbody>
 </table>

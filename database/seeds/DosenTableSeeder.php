@@ -19,6 +19,7 @@ class DosenTableSeeder extends Seeder
 
     	$data = [
     		[
+                'kode'              => 'MN',
     			'nidn' 				=> '0826098201',
     			'nama' 				=> 'MINA ISMU RAHAYU, MT',
     			'alamat' 			=> 'Bandung',
@@ -30,6 +31,7 @@ class DosenTableSeeder extends Seeder
     			'email_verified_at'	=> Carbon::now()
     		],
     		[
+                'kode'              => 'SY',
     			'nidn' 				=> '1017078801',
     			'nama' 				=> 'SITI YULIANTI, M.KOM',
     			'alamat' 			=> 'Bandung',
@@ -41,7 +43,8 @@ class DosenTableSeeder extends Seeder
     			'email_verified_at'	=> Carbon::now()
     		],
             [
-                'nidn'               => '0020087901',
+                'kode'              => 'RN',
+                'nidn'              => '0020087901',
                 'nama'              => 'RINI NURAINI SUKMANA, MT',
                 'alamat'            => 'Bandung',
                 'nomor_telepon'     => '+628882024236',
@@ -52,7 +55,8 @@ class DosenTableSeeder extends Seeder
                 'email_verified_at' => Carbon::now()
             ],
             [
-                'nidn'               => '0403027304',
+                'kode'              => 'UA',
+                'nidn'              => '0403027304',
                 'nama'              => 'URO ABDULROHIM, MT',
                 'alamat'            => 'Bandung',
                 'nomor_telepon'     => '+6287822988483',
@@ -63,7 +67,8 @@ class DosenTableSeeder extends Seeder
                 'email_verified_at' => Carbon::now()
             ],
             [
-                'nidn'               => '10241184001',
+                'kode'              => 'IM',
+                'nidn'              => '10241184001',
                 'nama'              => 'INDRA MAULANA YUSUP KUSUMAH, M.KOM',
                 'alamat'            => 'Bandung',
                 'nomor_telepon'     => '+6285659021234',
@@ -74,7 +79,8 @@ class DosenTableSeeder extends Seeder
                 'email_verified_at' => Carbon::now()
             ],
             [
-                'nidn'               => '0410087711',
+                'kode'              => 'YJ',
+                'nidn'              => '0410087711',
                 'nama'              => 'YUS JAYUSMAN, MT',
                 'alamat'            => 'Bandung',
                 'nomor_telepon'     => '+628156037494',

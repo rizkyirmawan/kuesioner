@@ -6,11 +6,15 @@ use App\Models\Dosen;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\DosenRequest;
 use App\Http\Requests\UserRequest;
+use App\Exports\DosenExport;
+use App\Imports\DosenImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
 {
@@ -49,7 +53,7 @@ class DosenController extends Controller
         ]);
 
         $dosen = Dosen::create($dosenReq->only([
-            'nidn', 'nama', 'alamat', 'nomor_telepon'
+            'kode', 'nidn', 'nama', 'alamat', 'nomor_telepon'
         ]));
 
         $this->storeImage($dosen);
@@ -59,7 +63,7 @@ class DosenController extends Controller
         ]));
 
         return redirect()
-                ->route('dosen.show', ['dosen' => $dosen->id])
+                ->route('dosen.show', ['dosen' => $dosen->kode])
                 ->with('success', 'Data dosen telah ditambahkan.');
     }
 
@@ -97,7 +101,7 @@ class DosenController extends Controller
         ]);
 
         $dosen->update($dosenReq->only([
-            'nidn', 'nama', 'alamat', 'nomor_telepon'
+            'kode', 'nidn', 'nama', 'alamat', 'nomor_telepon'
         ]));
 
         $this->storeImage($dosen);
@@ -147,5 +151,73 @@ class DosenController extends Controller
 
             $image->save();
         }
+    }
+
+    // Download Blanko
+    public function blankoDosen()
+    {
+        return response()->download(public_path().'/files/Dosen.xlsx');
+    }
+
+    // Export Dosen
+    public function exportDosen()
+    {
+        $kode = Str::upper(Str::random(5));
+
+        return Excel::download(new DosenExport, $kode . '-DATA-DOSEN.xlsx');
+    }
+
+    // Import Dosen
+    public function importDosen()
+    {
+        try {
+            $collection = Excel::toCollection(new DosenImport, request()->file('excel'));
+
+            $dataDosen = $collection->first()->map(function ($item, $key) {
+                $item['nomor_telepon']  = '+' . strval($item['nomor_telepon']);
+                $item['nama']           = $item['nama_dosen'];
+
+                $dosenRole  = Role::where('role', 'Dosen')->first();
+
+                $item['remember_token']     = Str::random(10);
+                $item['email_verified_at']  = now()->toDateTimeString();
+                $item['role_id']            = $dosenRole->id;
+                $item['password']           = bcrypt('dosen');
+
+                return collect($item)->forget(['nama_dosen']);
+            })->toArray();
+
+            Dosen::truncate();
+
+            User::where('userable_type', Dosen::class)->delete();
+
+            foreach ($dataDosen as $dosen) {
+                $ds = Dosen::create(Arr::except($dosen, [
+                    'email',
+                    'password',
+                    'role_id',
+                    'remember_token',
+                    'email_verified_at'
+                ]));
+
+                $ds->user()->create(Arr::only($dosen, [
+                    'email',
+                    'password',
+                    'role_id',
+                    'remember_token',
+                    'email_verified_at'
+                ]));
+            }
+        } catch (\Exception $e) {
+            return back()
+                    ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
+        } catch (\Error $e) {
+            return back()
+                    ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
+        }
+
+        return redirect()
+                ->route('dosen.index')
+                ->with('success', 'Data dosen berhasil diimport.');
     }
 }

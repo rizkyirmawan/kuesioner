@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Pembelajaran;
+use App\Models\Pertanyaan;
 use App\Models\Studi;
 use App\Models\TahunAjaran;
 use App\Http\Requests\PembelajaranRequest;
 use App\Exports\ResponsPembelajaranExport;
 use App\Exports\RekapPembelajaranExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class PembelajaranController extends Controller
 {
@@ -32,7 +35,7 @@ class PembelajaranController extends Controller
 
         $pembelajaran = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
-                        ->where('studi.dosen_id', auth()->user()->userable->id)
+                        ->where('studi.kode_dosen', auth()->user()->userable->kode)
                         ->get();
 
         return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
@@ -53,19 +56,7 @@ class PembelajaranController extends Controller
     // Store
     public function store(PembelajaranRequest $request)
     {
-        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
-
-    	$request->request->add([
-    		'user_id' => auth()->user()->id,
-    		'studi_id' => $request->studi,
-            'tahun_ajaran' => $tahunAjaran->id
-    	]);
-
-    	$pembelajaran = Pembelajaran::create($request->only([
-    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran'
-    	]));
-
-        $data = [
+        $dataPertanyaan = [
             ['pertanyaan' => 'Dosen menjelaskan silabus di awal perkuliahan.', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Dosen menyampaikan informasi tentang tujuan pembelajaran yang akan dicapai. ', 'tipe' => 'Radio'],
             ['pertanyaan' => 'Dosen menginformasikan kompetensi yang harus dicapai mahasiswa.', 'tipe' => 'Radio'],
@@ -114,9 +105,73 @@ class PembelajaranController extends Controller
             ['jawaban' => 'Sangat Kurang', 'skor' => 1]
         ];
 
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
+        if ($request->studi === 'Semua') {
+            ini_set('max_execution_time', 300);
+
+            $studiIds = Studi::pluck('id')->values();
+
+            $insertedPembelajaranIds = [];
+
+            $dataPertanyaanBaru = [];
+
+            $dataJawabanBaru = [];
+
+            foreach ($studiIds as $id => $value) {
+                $insertedPembelajaranIds[] = DB::table('pembelajaran')->insertGetId([
+                    'user_id'       => auth()->user()->id,
+                    'studi_id'      => $value,
+                    'kuesioner'     => $request->kuesioner,
+                    'deskripsi'     => $request->deskripsi,
+                    'tahun_ajaran'  => $tahunAjaran->id,
+                    'status'        => 1
+                ]);
+            }
+
+            foreach ($insertedPembelajaranIds as $id => $value) {
+                foreach ($dataPertanyaan as $pertanyaan) {
+                    $pertanyaan['questionable_id'] = $value;
+                    $pertanyaan['questionable_type'] = Pembelajaran::class;
+
+                    $dataPertanyaanBaru[] = $pertanyaan;
+                }
+            }
+
+            DB::transaction(function () use ($dataPertanyaanBaru, $dataJawaban, $dataJawabanBaru) {
+                Pertanyaan::all()->last() ? $lastId = Pertanyaan::all()->last()->id : $lastId = 0;
+
+                DB::table('pertanyaan')->insert($dataPertanyaanBaru);
+
+                $pertanyaanIds = [];
+
+                for ($i = 1; $i <= count($dataPertanyaanBaru); $i++) { 
+                    array_push($pertanyaanIds, $lastId + $i);
+                }
+
+                foreach ($pertanyaanIds as $id => $value) {
+                    foreach ($dataJawaban as $jawaban) {
+                        $jawaban['pertanyaan_id'] = $value;
+
+                        $dataJawabanBaru[] = $jawaban;
+                    }
+                }
+
+                DB::table('jawaban')->insert($dataJawabanBaru);
+            });
+
+            return redirect()
+                        ->route('pembelajaran.index')
+                        ->with('success', 'Data kuesioner pembelajaran berhasil ditambah.');
+        }
+
+    	$pembelajaran = Pembelajaran::create($request->only([
+    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran'
+    	]));
+
         $pertanyaan = $pembelajaran
                         ->pertanyaan()
-                        ->createMany($data);
+                        ->createMany($dataPertanyaan);
 
         foreach ($pertanyaan as $key) {   
             $key->jawaban()->createMany($dataJawaban);

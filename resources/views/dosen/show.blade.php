@@ -53,6 +53,10 @@
         <div class="col-md-6">
           <table class="table table-bordered text-dark">
             <tr>
+              <td class="text-dark">Kode</td>
+              <td>{{ $dosen->kode }}</td>
+            </tr>
+            <tr>
               <td class="text-dark">NIDN</td>
               <td>{{ $dosen->nidn }}</td>
             </tr>

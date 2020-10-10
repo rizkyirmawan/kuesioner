@@ -15,6 +15,7 @@ class CreateDosenTable extends Migration
     {
         Schema::create('dosen', function (Blueprint $table) {
             $table->id();
+            $table->string('kode');
             $table->string('nidn');
             $table->string('nama');
             $table->string('nomor_telepon');

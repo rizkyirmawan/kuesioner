@@ -17,7 +17,7 @@ class CreateStudiTable extends Migration
             $table->id();
             $table->unsignedBigInteger('kelas_id');
             $table->string('kode_matkul');
-            $table->unsignedBigInteger('dosen_id');
+            $table->string('kode_dosen');
             $table->timestamps();
         });
     }

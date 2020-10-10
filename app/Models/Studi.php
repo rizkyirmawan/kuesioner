@@ -22,7 +22,7 @@ class Studi extends Model
 
     public function dosen()
     {
-    	return $this->belongsTo(Dosen::class);
+    	return $this->belongsTo(Dosen::class, 'kode_dosen');
     }
 
     public function mahasiswa()

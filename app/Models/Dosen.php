@@ -10,6 +10,15 @@ class Dosen extends Model
 
 	protected $guarded = [];
 
+    protected $primaryKey = 'kode';
+
+    public $incrementing = false;
+
+    public function getRouteKeyName()
+    {
+        return 'kode';
+    }
+
 	public function user()
 	{
 		return $this->morphOne(User::class, 'userable');
@@ -22,6 +31,6 @@ class Dosen extends Model
 
 	public function studi()
 	{
-		return $this->hasMany(Studi::class);
+		return $this->hasMany(Studi::class, 'kode_dosen');
 	}
 }

@@ -120,10 +120,10 @@ class MatkulController extends Controller
     {
         $request->request->add([
             'kelas_id' => $request->kelas,
-            'dosen_id' => $request->dosen
+            'kode_dosen' => $request->dosen
         ]);
 
-        $mataKuliah->studi()->create($request->only('kelas_id', 'dosen_id'));
+        $mataKuliah->studi()->create($request->only('kelas_id', 'kode_dosen'));
 
         return redirect()
                 ->route('matkul.show', ['mataKuliah' => $mataKuliah])
@@ -134,10 +134,10 @@ class MatkulController extends Controller
     public function updateStudi(Matkul $mataKuliah, Studi $studi, Request $request)
     {
         $request->request->add([
-            'dosen_id' => $request->dosen
+            'kode_dosen' => $request->dosen
         ]);
 
-        $studi->update($request->only('dosen_id'));
+        $studi->update($request->only('kode_dosen'));
 
         return redirect()
                 ->route('matkul.show', ['mataKuliah' => $mataKuliah])
@@ -188,26 +188,57 @@ class MatkulController extends Controller
         try {
             $collection = Excel::toCollection(new KRSImport, $request->file('excel'));
 
-            $plucked = $collection->first()->map(function ($item, $key) {
+            $dataKRS = $collection->first()->map(function ($item, $key) {
                 $item['kode_matkul'] = $item['kd_mk'];
                 return collect($item)->only(['nim', 'kode_matkul']);
             })->toArray();
 
             $dataMatkul = $collection->first()->unique('kd_mk')->map(function ($item, $key) {
                 $item['kode'] = $item['kd_mk'];
-
                 $item['mata_kuliah'] = $item['nama_mk'];
-
                 return collect($item)->only(['kode', 'mata_kuliah']);
             })->toArray();
+
+            $dataStudi = $collection->first()->unique(function ($item) {
+                return $item['kelas_program'].$item['kd_dosen'].$item['kd_mk'];
+            })->map(function ($item, $key) {
+                $kelasRegPagi = Kelas::where('kode', 'REG-A')->first();
+                $kelasRegSore = Kelas::where('kode', 'REG-B')->first();
+                $kelasEksekutif = Kelas::where('kode', 'EKS-A')->first();
+
+                $item['kode_dosen'] = $item['kd_dosen'];
+                $item['kode_matkul'] = $item['kd_mk'];
+
+                if ($item['kelas_program'] === 'REGULER') {
+                    $item['kelas_id'] = $kelasRegPagi->id;
+                } elseif ($item['kelas_program'] === 'KARYAWAN') {
+                    $item['kelas_id'] = $kelasRegSore->id;
+                } elseif ($item['kelas_program'] === 'EKSEKUTIF') {
+                    $item['kelas_id'] = $kelasEksekutif->id;
+                }
+
+                return collect($item)->only(['kelas_id', 'kode_dosen', 'kode_matkul']);
+            })->filter(function ($item) {
+                return $item['kode_dosen'] != 'BL';
+            })->toArray();
+
+            $kodeUnikDosen = Dosen::pluck('kode')->unique()->values()->all();
+            $importedKodeUnikDosen = $collection->first()->unique('kd_dosen')->values()->pluck('kd_dosen')->reject(function ($item) {
+                return $item === 'BL';
+            })->values()->toArray();
+
+            if (Arr::sortRecursive($importedKodeUnikDosen) !== Arr::sortRecursive($kodeUnikDosen)) {
+                return back()->with('error', 'Terdapat data dosen yang belum ada.');
+            }
 
             DB::table('matkul')->truncate();
 
             DB::table('program')->truncate();
 
+            DB::table('studi')->truncate();
+
             foreach ($dataMatkul as $matkul) {
                 $jurusanIF = Jurusan::where('kode', 'IF')->first();
-
                 $jurusanSI = Jurusan::where('kode', 'SI')->first();
 
                 if (Str::substr($matkul['kode'], 0, 2) == 'IF') {
@@ -219,13 +250,20 @@ class MatkulController extends Controller
                 }
 
                 $mk = Matkul::create($matkul);
-
                 $mk->jurusan()->sync($jurusan);
+            }
+
+            foreach ($dataStudi as $studi) {
+                Studi::insert($studi);
             }
 
             DB::table('peserta_didik')->truncate();
 
-            DB::table('peserta_didik')->insert($plucked);
+            $dataKRSChunks = array_chunk($dataKRS, 200);
+
+            foreach ($dataKRSChunks as $peserta) {
+                DB::table('peserta_didik')->insert($peserta);
+            }
         } catch(\Exception $e) {
             return back()
                     ->with('error', 'Gagal membaca file. Silahkan sesuaikan field dengan blanko.');
