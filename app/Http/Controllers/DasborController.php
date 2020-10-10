@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Identitas;
 use App\Models\Pembelajaran;
 use App\Models\Kemahasiswaan;
+use App\Models\TahunAjaran;
 use App\Models\TracerStudy;
 use App\Models\Studi;
 
@@ -14,6 +15,8 @@ class DasborController extends Controller
     public function index()
     {
     	$title = 'Dasbor';
+
+        $tahunAjaranAktif = TahunAjaran::where('aktif', 1)->first();
 
     	$pembelajaran = Pembelajaran::all()->count();
 
@@ -66,7 +69,8 @@ class DasborController extends Controller
     		'tracerStudyAlumni',
     		'pembelajaranMahasiswa',
     		'pembelajaranDosen',
-    		'studiDosen'
+    		'studiDosen',
+            'tahunAjaranAktif'
     	));
     }
 }
