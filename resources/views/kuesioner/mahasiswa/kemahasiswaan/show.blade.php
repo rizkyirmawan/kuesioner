@@ -43,7 +43,7 @@
 
     @csrf
 
-    <div class="tab-content">
+    <div class="tab-content" id="question-section">
 
       @foreach($questions as $chunk)
         <div class="tab-pane fade @if($loop->iteration === 1) show active @endif" id="list-{{ $loop->iteration }}" role="tabpanel"">
@@ -135,4 +135,16 @@
 
   </form>
 
+@endsection
+
+@section('scripts')
+<script>
+  const listTabs = document.querySelectorAll('#list-tab');
+
+  listTabs.forEach(function(item) {
+    item.addEventListener('click', function() {
+      window.location = '#question-section';
+    });
+  });
+</script>
 @endsection
