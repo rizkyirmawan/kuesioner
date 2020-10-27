@@ -75,6 +75,10 @@
               <td>{{ $pembelajaran->kuesioner }}</td>
             </tr>
             <tr>
+              <th>Periode Pengisian</th>
+              <td>{{ Carbon\Carbon::parse($pembelajaran->awal)->translatedFormat('d F Y') . ' - ' . Carbon\Carbon::parse($pembelajaran->akhir)->translatedFormat('d F Y') }}</td>
+            </tr>
+            <tr>
               <th>Deskripsi</th>
               <td class="text-justify">{{ $pembelajaran->deskripsi }}</td>
             </tr>

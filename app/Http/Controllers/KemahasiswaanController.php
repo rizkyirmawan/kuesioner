@@ -17,8 +17,11 @@ class KemahasiswaanController extends Controller
     public function index()
     {
     	$title = 'Data Kuesioner Layanan Mahasiswa';
+        
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
-    	$kemahasiswaan = Kemahasiswaan::all();
+    	$kemahasiswaan = Kemahasiswaan::where('tahun_ajaran', $tahunAjaran->id)
+                            ->get();
 
     	return view('kuesioner.kemahasiswaan.index', compact('title', 'kemahasiswaan'));
     }
@@ -148,11 +151,9 @@ class KemahasiswaanController extends Controller
 
         $kemahasiswaan->load(['pertanyaan.jawaban', 'pertanyaan.respons', 'pertanyaan.respons.jawaban']);
 
-        $pertanyaanCollect = $kemahasiswaan->respons->load(['jawaban']);
+        $questions = $kemahasiswaan->pertanyaan->chunk(5);
 
-        $totalNilai = $pertanyaanCollect->sum('jawaban.skor');
-
-        return view('kuesioner.kemahasiswaan.respons', compact('title', 'kemahasiswaan', 'totalNilai'));
+        return view('kuesioner.kemahasiswaan.respons', compact('title', 'kemahasiswaan', 'questions'));
     }
 
     // Export Respons

@@ -31,6 +31,7 @@
             <tr>
               <th>No.</th>
               <th>Tahun Lulus Tertuju</th>
+              <th>Periode</th>
               <th>Kelola</th>
             </tr>
           </thead>
@@ -40,6 +41,7 @@
             <tr>
             	<td>{{ $loop->iteration }}.</td>
               <td>{{ $kuesioner->tahun_lulus }}</td>
+              <td>{{ Carbon\Carbon::parse($kuesioner->awal)->translatedFormat('d F Y') . ' - ' . Carbon\Carbon::parse($kuesioner->akhir)->translatedFormat('d F Y') }}</td>
               <td>
                 @if(Auth::user()->role->role === 'Admin')
 								<a href="{{ route('tracerStudy.identitas.show', ['identitas' => $kuesioner]) }}" class="btn btn-secondary btn-sm btn-icon-split">
@@ -74,13 +76,24 @@
             @csrf
 
             <div class="form-group">
-              <label for="tahun_lulus">Tahun Lulus Tertuju:</label>
+              <label for="tahun_lulus" class="text-dark">Tahun Lulus Tertuju:</label>
               <select name="tahun_lulus" class="form-control">
                 <option selected disabled>Pilih Tahun Lulus</option>
                 @foreach($tahunLulus as $tahun)
                 <option value="{{ $tahun }}">{{ $tahun }}</option>
                 @endforeach
               </select>
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="awal" class="text-dark">Awal Periode:</label>
+                <input type="date" class="form-control" id="awal" name="awal" min="{{ date('Y-m-d') }}">
+              </div>
+              <div class="col-md-6">
+                <label for="akhir" class="text-dark">Akhir Periode:</label>
+                <input type="date" class="form-control" id="akhir" name="akhir">
+              </div>
             </div>
 
         </div>
@@ -94,4 +107,15 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+  const awalInput = document.querySelector('#awal');
+  const akhirInput = document.querySelector('#akhir');
+
+  awalInput.addEventListener('change', function() {
+    akhirInput.setAttribute('min', this.value);
+  });
+</script>
 @endsection

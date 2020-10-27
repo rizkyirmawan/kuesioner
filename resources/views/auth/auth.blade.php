@@ -30,7 +30,7 @@
 
       <div class="col-xl-6 col-lg-12 col-md-9">
         <div class="d-flex justify-content-center mt-3 mb-2">
-          <img src="{{ asset('img/undraw_welcome_cats_thqn.svg') }}" class="img-fluid" width="400">
+          <img src="{{ asset('img/logo-stmik.png') }}" class="img-fluid" width="400">
         </div>
         <div class="card o-hidden border-0 shadow-lg my-3">
           <div class="card-body p-0">

@@ -150,7 +150,7 @@ Route::middleware(['auth'])->group(function() {
 		Route::get('respons-pembelajaran/{pembelajaran}', 'PembelajaranController@exportRespons')->name('export.respons.pembelajaran');
 		Route::get('respons-layanan-mahasiswa/{kemahasiswaan}', 'KemahasiswaanController@exportRespons')->name('export.respons.kemahasiswaan');
 		Route::get('respons-tracer-study/{tracerStudy}', 'TracerStudyController@exportRespons')->name('export.respons.tracerStudy');
-		Route::get('rekap-pembelajaran', 'PembelajaranController@exportRekap')->name('export.rekap.pembelajaran');
+		Route::post('rekap-pembelajaran', 'PembelajaranController@exportRekap')->name('export.rekap.pembelajaran');
 		Route::get('rekap-layanan-mahasiswa', 'KemahasiswaanController@exportRekap')->name('export.rekap.kemahasiswaan');
 		Route::get('rekap-tracer-study/{identitas}', 'TracerStudyController@exportRekap')->name('export.rekap.tracerStudy');
 

@@ -38,72 +38,93 @@
 
     @csrf
 
-    @foreach($tracerStudy->pertanyaan as $key => $pertanyaan)
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-dark">{{ $loop->iteration . '. ' . $pertanyaan->pertanyaan }}</h6>
-      </div>
-      <div class="card-body">
-       
-        @if($pertanyaan->tipe === 'Radio')
-          @php $counter++ @endphp
-          <ul class="list-group text-dark">
-            @foreach($pertanyaan->jawaban as $jawaban)
-            <label for="jawaban-{{ $jawaban->id }}">
-              <li class="list-group-item">
-                <input type="radio" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2" required>
-                {{ $jawaban->jawaban . ' (Nilai: ' . $jawaban->skor . ')' }}
-                <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
-              </li>
-            </label>
-            @endforeach
-          </ul>
-        
-        @elseif($pertanyaan->tipe === 'Checkbox')
-          <ul class="list-group text-dark">
-            @foreach($pertanyaan->jawaban as $jawaban)
-            @php $counter++ @endphp
-            <label for="jawaban-{{ $jawaban->id }}">
-              <li class="list-group-item">
-                <input type="checkbox" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2">
-                {{ $jawaban->jawaban }}
-                <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
-              </li>
-            </label>
-            @endforeach
-          </ul>
-       
-        @elseif($pertanyaan->tipe === 'Text')
-          @php $counter++ @endphp
-          <input type="text" name="respons[{{ $counter }}][jawaban_teks]" placeholder="Jawaban anda..." class="form-control" required>
-          <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
-        
-        @elseif($pertanyaan->tipe === 'Textarea')
-          @php $counter++ @endphp
-          <textarea rows="5" name="respons[{{ $counter }}][jawaban_teks]" placeholder="Jawaban anda..." class="form-control" required></textarea>
-          <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
-        
-        @endif
+    <div class="tab-content">
 
-      </div>
+      @foreach($questions as $chunk)
+        <div class="tab-pane fade @if($loop->iteration === 1) show active @endif" id="list-{{ $loop->iteration }}" role="tabpanel"">
+
+          @foreach($chunk as $key => $pertanyaan)
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-dark">{{ ($loop->parent->iteration - 1) * 5 + $loop->index + 1 . '. ' . $pertanyaan->pertanyaan }}</h6>
+            </div>
+            <div class="card-body">
+             
+              @if($pertanyaan->tipe === 'Radio')
+                @php $counter++ @endphp
+                <ul class="list-group text-dark">
+                  @foreach($pertanyaan->jawaban as $jawaban)
+                  <label for="jawaban-{{ $jawaban->id }}">
+                    <li class="list-group-item">
+                      <input type="radio" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2" required>
+                      {{ $jawaban->jawaban . ' (Nilai: ' . $jawaban->skor . ')'}}
+                      <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
+                    </li>
+                  </label>
+                  @endforeach
+                </ul>
+              
+              @elseif($pertanyaan->tipe === 'Checkbox')
+                <ul class="list-group text-dark">
+                  @foreach($pertanyaan->jawaban as $jawaban)
+                  @php $counter++ @endphp
+                  <label for="jawaban-{{ $jawaban->id }}">
+                    <li class="list-group-item">
+                      <input type="checkbox" name="respons[{{ $counter }}][jawaban_id]" id="jawaban-{{ $jawaban->id }}" value="{{ $jawaban->id }}" class="mr-2">
+                      {{ $jawaban->jawaban . ' (Nilai: ' . $jawaban->skor . ')' }}
+                      <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
+                    </li>
+                  </label>
+                  @endforeach
+                </ul>
+             
+              @elseif($pertanyaan->tipe === 'Text')
+                @php $counter++ @endphp
+                <input type="text" name="respons[{{ $counter }}][jawaban_teks]" placeholder="Jawaban anda..." class="form-control" required>
+                <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
+              
+              @elseif($pertanyaan->tipe === 'Textarea')
+                @php $counter++ @endphp
+                <textarea rows="5" name="respons[{{ $counter }}][jawaban_teks]" placeholder="Jawaban anda..." class="form-control" required></textarea>
+                <input type="hidden" name="respons[{{ $counter }}][pertanyaan_id]" value="{{ $pertanyaan->id }}">
+              
+              @endif
+
+            </div>
+          </div>
+          @endforeach
+          
+        </div>
+        @endforeach
+
     </div>
-    @endforeach
 
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex mb-3">
+      <div class="mr-auto p-2">
+        <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
+          @foreach($questions as $chunk)
+          <a class="list-group-item list-group-item-action @if($loop->iteration === 1) active @endif" id="list-{{ $loop->iteration }}-list" data-toggle="list" href="#list-{{ $loop->iteration }}" role="tab" aria-controls="{{ $loop->iteration }}">{{ $loop->iteration }}</a>
+          @endforeach
+        </div>
+      </div>
       @if($tracerStudy->pertanyaan)
-      <button class="btn btn-primary btn-icon-split" type="submit">
-        <span class="icon text-white-50">
-          <i class="fas fa-check"></i>
-        </span>
-        <span class="text">Selesai</span>
-      </button>
+      <div class="p-2">
+        <button class="btn btn-primary btn-icon-split" type="submit">
+          <span class="icon text-white-50">
+            <i class="fas fa-check"></i>
+          </span>
+          <span class="text">Selesai</span>
+        </button>  
+      </div>
       @else
-      <button class="btn btn-danger btn-icon-split disabled" type="submit">
-        <span class="icon text-white-50">
-          <i class="fas fa-times"></i>
-        </span>
-        <span class="text">Belum Ada Pertanyaan</span>
-      </button>
+      <div class="p-2">
+        <button class="btn btn-danger btn-icon-split disabled" type="submit">
+          <span class="icon text-white-50">
+            <i class="fas fa-times"></i>
+          </span>
+          <span class="text">Belum Ada Pertanyaan</span>
+        </button>
+      </div>
       @endif
     </div>
 

@@ -20,6 +20,8 @@ class CreatePembelajaranTable extends Migration
             $table->string('kuesioner');
             $table->text('deskripsi');
             $table->string('tahun_ajaran');
+            $table->date('awal');
+            $table->date('akhir');
             $table->string('status')->nullable();
             $table->timestamps();
         });

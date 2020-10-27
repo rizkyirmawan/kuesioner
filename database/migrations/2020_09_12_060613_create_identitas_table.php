@@ -16,6 +16,8 @@ class CreateIdentitasTable extends Migration
         Schema::create('identitas', function (Blueprint $table) {
             $table->id();
             $table->string('tahun_lulus');
+            $table->date('awal');
+            $table->date('akhir');
             $table->timestamps();
         });
     }

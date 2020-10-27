@@ -63,6 +63,10 @@
               <td>{{ $kemahasiswaan->kuesioner }}</td>
             </tr>
             <tr>
+              <th>Periode</th>
+              <td class="text-justify">{{ Carbon\Carbon::parse($kemahasiswaan->awal)->translatedFormat('d F Y') . ' - ' . Carbon\Carbon::parse($kemahasiswaan->akhir)->translatedFormat('d F Y') }}</td>
+            </tr>
+            <tr>
               <th>Deskripsi</th>
               <td class="text-justify">{{ $kemahasiswaan->deskripsi }}</td>
             </tr>

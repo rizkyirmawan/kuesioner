@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Identitas;
 use App\Models\Pembelajaran;
 use App\Models\Kemahasiswaan;
@@ -16,11 +17,16 @@ class DasborController extends Controller
     {
     	$title = 'Dasbor';
 
+        $today = Carbon::now();
+
         $tahunAjaranAktif = TahunAjaran::where('aktif', 1)->first();
 
     	$pembelajaran = Pembelajaran::all()->count();
 
-    	$kemahasiswaan = Kemahasiswaan::all()->count();
+    	$kemahasiswaan = Kemahasiswaan::where('tahun_ajaran', $tahunAjaranAktif->id)
+                            ->whereDate('awal', '<=', $today->format('Y-m-d'))
+                            ->whereDate('akhir', '>=', $today->format('Y-m-d'))
+                            ->count();
 
     	$identitas = Identitas::all()->count();
 
@@ -48,6 +54,8 @@ class DasborController extends Controller
                             ->join('mahasiswa', 'peserta_didik.nim', '=', 'mahasiswa.nim')
                             ->where('studi.kelas_id', auth()->user()->userable->kelas_id)
                             ->where('peserta_didik.nim', auth()->user()->userable->nim)
+                            ->whereDate('awal', '<=', $today->format('Y-m-d'))
+                            ->whereDate('akhir', '>=', $today->format('Y-m-d'))
                             ->count();
         }
 

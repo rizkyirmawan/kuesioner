@@ -30,7 +30,7 @@
 		<tr>
 			<td style="border: 2px solid black; text-align: center;">{{ $loop->iteration }}</td>
 			<td style="border: 2px solid black;">{{ $pertanyaan->pertanyaan }}</td>
-			<td style="border: 2px solid black; font-weight: bold; text-align: center;">{{ $pertanyaan->respons->sum('jawaban.skor') }}</td>
+			<td style="border: 2px solid black; font-weight: bold; text-align: center;">{{ round($pertanyaan->respons->sum('jawaban.skor') / $pertanyaan->respons->count(), 1) }}</td>
 		</tr>
 		@endforeach
 		<tr>

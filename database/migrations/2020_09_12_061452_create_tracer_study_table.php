@@ -19,6 +19,8 @@ class CreateTracerStudyTable extends Migration
             $table->unsignedBigInteger('identitas_id');
             $table->string('perusahaan');
             $table->string('email_perusahaan');
+            $table->text('alamat_perusahaan');
+            $table->string('kontak_perusahaan');
             $table->string('kode');
             $table->string('bidang');
             $table->string('status')->nullable();

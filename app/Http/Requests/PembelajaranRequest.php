@@ -26,7 +26,9 @@ class PembelajaranRequest extends FormRequest
         return [
             'kuesioner' => 'required',
             'deskripsi' => 'required',
-            'studi' => 'required'
+            'studi' => 'required',
+            'awal' => 'required',
+            'akhir' => 'required'
         ];
     }
 
@@ -35,7 +37,9 @@ class PembelajaranRequest extends FormRequest
         return [
             'kuesioner.required' => 'Judul kuesioner tidak boleh kosong.',
             'deskripsi.required' => 'Deskripsi kuesioner tidak boleh kosong.',
-            'studi.required' => 'Silahkan pilih kelas kuliah.'
+            'studi.required' => 'Silahkan pilih kelas kuliah.',
+            'awal' => 'Awal periode tidak boleh kosong.',
+            'akhir' => 'Akhir periode tidak boleh kosong.'
         ];
     }
 }

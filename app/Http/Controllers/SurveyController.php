@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Mail\TracerStudyMail;
 use App\Models\Identitas;
 use App\Models\Kemahasiswaan;
@@ -10,6 +11,7 @@ use App\Models\Matkul;
 use App\Models\Pembelajaran;
 use App\Models\Studi;
 use App\Models\TracerStudy;
+use App\Models\TahunAjaran;
 use App\Http\Requests\FormulirPerusahaanRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -22,6 +24,10 @@ class SurveyController extends Controller
     {
     	$title = 'Kuesioner Pembelajaran';
 
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
+        $today = Carbon::now();
+
     	$data = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                         ->join('matkul', 'studi.kode_matkul', '=', 'matkul.kode')
@@ -30,6 +36,9 @@ class SurveyController extends Controller
                         ->join('mahasiswa', 'peserta_didik.nim', '=', 'mahasiswa.nim')
                         ->where('studi.kelas_id', auth()->user()->userable->kelas_id)
                         ->where('peserta_didik.nim', auth()->user()->userable->nim)
+                        ->where('pembelajaran.tahun_ajaran', $tahunAjaran->id)
+                        ->whereDate('awal', '<=', $today->format('Y-m-d'))
+                        ->whereDate('akhir', '>=', $today->format('Y-m-d'))
                         ->get();
 
         $pembelajaran = collect($data)->unique()->values()->all();
@@ -46,7 +55,9 @@ class SurveyController extends Controller
 
         $pembelajaran->load(['pertanyaan.jawaban']);
 
-        return view('kuesioner.mahasiswa.pembelajaran.show', compact('title', 'counter', 'pembelajaran'));
+        $questions = $pembelajaran->pertanyaan->chunk(5);
+
+        return view('kuesioner.mahasiswa.pembelajaran.show', compact('title', 'counter', 'pembelajaran', 'questions'));
     }
 
     // Store Pembelajaran
@@ -71,7 +82,14 @@ class SurveyController extends Controller
     {
         $title = 'Kuesioner Layanan Mahasiswa';
 
-        $data = Kemahasiswaan::all();
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
+        $today = Carbon::now();
+
+        $data = Kemahasiswaan::where('tahun_ajaran', $tahunAjaran->id)
+                            ->whereDate('awal', '<=', $today->format('Y-m-d'))
+                            ->whereDate('akhir', '>=', $today->format('Y-m-d'))
+                            ->get();
 
         $kemahasiswaan = collect($data)->unique()->values()->all();
 
@@ -87,7 +105,9 @@ class SurveyController extends Controller
 
         $kemahasiswaan->load(['pertanyaan.jawaban']);
 
-        return view('kuesioner.mahasiswa.kemahasiswaan.show', compact('title', 'counter', 'kemahasiswaan'));
+        $questions = $kemahasiswaan->pertanyaan->chunk(5);
+
+        return view('kuesioner.mahasiswa.kemahasiswaan.show', compact('title', 'counter', 'kemahasiswaan', 'questions'));
     }
 
     // Store Kemahasiswaan
@@ -112,9 +132,12 @@ class SurveyController extends Controller
     {
         $title = 'Kuesioner Tracer Study';
 
-        $data = Identitas::where('tahun_lulus', auth()->user()->userable->tahun_lulus)->get();
+        $today = Carbon::now();
 
-        $identitas = collect($data)->unique()->values()->all();
+        $identitas = Identitas::where('tahun_lulus', auth()->user()->userable->tahun_lulus)
+                        ->whereDate('awal', '<=', $today->format('Y-m-d'))
+                        ->whereDate('akhir', '>=', $today->format('Y-m-d'))
+                        ->first();
 
         $tracerStudy = TracerStudy::where('user_id', auth()->user()->id)->first();
 
@@ -226,7 +249,9 @@ class SurveyController extends Controller
 
         $tracerStudy->load(['pertanyaan.jawaban']);
 
-        return view('kuesioner.tracerStudy.show', compact('title', 'counter', 'tracerStudy'));
+        $questions = $tracerStudy->pertanyaan->chunk(5);
+
+        return view('kuesioner.tracerStudy.show', compact('title', 'counter', 'tracerStudy', 'questions'));
     }
 
     // Store Tracer Study

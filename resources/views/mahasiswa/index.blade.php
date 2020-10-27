@@ -49,7 +49,7 @@
     			<h6 class="font-weight-bold text-primary">Daftar Mahasiswa</h6>
     		</div>
         <div class="p-2 ml-auto">
-          <a href="{{ route('export.mahasiswa') }}" class="btn btn-success btn-sm btn-icon-split">
+          <a href="{{ route('export.mahasiswa') }}" class="btn btn-success btn-sm btn-icon-split @if($mahasiswa->count() <= 0) disabled @endif">
             <span class="icon text-white-50">
               <i class="fas fa-file-export"></i>
             </span>

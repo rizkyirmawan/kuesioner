@@ -30,12 +30,16 @@
 		<tr>
 			<td style="border: 2px solid black; text-align: center;">{{ $loop->iteration }}</td>
 			<td style="border: 2px solid black;">{{ $pertanyaan->pertanyaan }}</td>
-			<td style="border: 2px solid black; font-weight: bold; text-align: center;">{{ $pertanyaan->respons->sum('jawaban.skor') }}</td>
+			<td style="border: 2px solid black; font-weight: bold; text-align: center;">{{ round($pertanyaan->respons->sum('jawaban.skor') / $pertanyaan->respons->count(), 1) }}</td>
 		</tr>
 		@endforeach
 		<tr>
 			<td colspan="2" style="font-weight: bold;">Total Nilai</td>
-			<td style="font-weight: bold;">{{ $pembelajaran->respons->sum('jawaban.skor') <= 0 ? 0 : round($pembelajaran->respons->sum('jawaban.skor') / $pembelajaran->pertanyaan()->count(), 1) . ' dari ' . $pembelajaran->responden->count() . ' responden.' }}</td>
+			<td style="font-weight: bold;">{{ $pembelajaran->respons->sum('jawaban.skor') <= 0 ? 0 : round($pembelajaran->respons->sum('jawaban.skor') / $pembelajaran->pertanyaan()->count(), 1) }}</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="font-weight: bold;">Total Responden</td>
+			<td style="font-weight: bold;">{{ $pembelajaran->responden->count() }}</td>
 		</tr>
 	</tbody>
 </table>

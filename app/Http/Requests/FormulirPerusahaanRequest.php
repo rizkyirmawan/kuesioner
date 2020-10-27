@@ -26,7 +26,9 @@ class FormulirPerusahaanRequest extends FormRequest
         return [
             'perusahaan' => 'required',
             'email_perusahaan' => 'required|email',
-            'bidang' => 'required'
+            'bidang' => 'required',
+            'alamat_perusahaan' => 'required',
+            'kontak_perusahaan' => 'required'
         ];
     }
 
@@ -36,7 +38,9 @@ class FormulirPerusahaanRequest extends FormRequest
             'perusahaan.required' => 'Nama perusahaan tidak boleh kosong.',
             'email_perusahaan.required' => 'Email perusahaan tidak boleh kosong.',
             'email_perusahaan.email' => 'Email perusahaan tidak valid.',
-            'bidang.required' => 'Silahkan pilih bidang perusahaan.'
+            'bidang.required' => 'Silahkan pilih bidang perusahaan.',
+            'alamat_perusahaan.required' => 'Silahkan isi alamat perusahaan.',
+            'kontak_perusahaan.required' => 'Silahkan isi kontak perusahaan.'
         ];
     }
 }

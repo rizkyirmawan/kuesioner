@@ -22,7 +22,8 @@ class TracerStudyController extends Controller
 
     	$identitas = Identitas::all();
 
-    	$tahunLulus = Alumni::pluck('tahun_lulus')
+    	$tahunLulus = Alumni::whereNotIn('tahun_lulus', Identitas::pluck('tahun_lulus'))
+                            ->pluck('tahun_lulus')
     						->unique()
     						->values()
     						->all();
@@ -36,7 +37,7 @@ class TracerStudyController extends Controller
     	try {
     		Identitas::create($request->all());
     	} catch (\Exception $e) {
-    		return back()->with('error', 'Silahkan pilih tahun lulus tertuju.');
+    		return back()->with('error', 'Silahkan isi semua field.');
     	}
 
     	return redirect()
@@ -61,7 +62,9 @@ class TracerStudyController extends Controller
 
         $tracerStudy->load(['pertanyaan.jawaban', 'responden.respons']);
 
-        return view('kuesioner.tracerStudy.respons', compact('title', 'tracerStudy'));
+        $questions = $tracerStudy->pertanyaan->chunk(5);
+
+        return view('kuesioner.tracerStudy.respons', compact('title', 'tracerStudy', 'questions'));
     }
 
     // Export Respons

@@ -18,6 +18,7 @@
               <th>No.</th>
               <th>Kuesioner</th>
               <th>Tahun Ajaran</th>
+              <th>Periode</th>
               <th>Kelola</th>
             </tr>
           </thead>
@@ -28,6 +29,7 @@
             	<td>{{ $loop->iteration }}.</td>
               <td>{{ $kuesioner->kuesioner }}</td>
               <td>{{ $kuesioner->tahunAjaran->semester . ' ' . $kuesioner->tahunAjaran->tahun_ajaran }}</td>
+              <td>{{ Carbon\Carbon::parse($kuesioner->awal)->translatedFormat('d F Y') . ' - ' . Carbon\Carbon::parse($kuesioner->akhir)->translatedFormat('d F Y') }}</td>
               <td class="text-center">
                 @if($kuesioner->responden->where('user_id', auth()->user()->id)->count() > 0)
                 <h4>

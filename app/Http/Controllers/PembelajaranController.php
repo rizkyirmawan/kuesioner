@@ -23,19 +23,42 @@ class PembelajaranController extends Controller
     {
     	$title = 'Data Kuesioner Pembelajaran';
 
-    	$pembelajaran = Pembelajaran::with('studi')->get();
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
-    	return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
+        $studiCount = Studi::count();
+
+    	$pembelajaran = Pembelajaran::with('studi')
+                        ->where('tahun_ajaran', $tahunAjaran->id)
+                        ->get();
+
+        $dosenUnik = $pembelajaran->unique('studi.kode_dosen')->map(function ($item) {
+                            return [
+                                'kode'  => $item->studi->dosen->kode,
+                                'nama'  => $item->studi->dosen->nama
+                            ];
+                        });
+
+        $matkulUnik = $pembelajaran->unique('studi.kode_matkul')->map(function ($item) {
+                            return [
+                                'kode'          => $item->studi->matkul->kode,
+                                'mata_kuliah'   => $item->studi->matkul->mata_kuliah
+                            ];
+                        });
+
+    	return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran', 'dosenUnik', 'matkulUnik', 'studiCount'));
     }
 
     // Index for Dosen
     public function indexDosen()
     {
         $title = 'Data Kuesioner Pembelajaran';
+        
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
         $pembelajaran = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                         ->where('studi.kode_dosen', auth()->user()->userable->kode)
+                        ->where('tahun_ajaran', $tahunAjaran->id)
                         ->get();
 
         return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
@@ -124,6 +147,8 @@ class PembelajaranController extends Controller
                     'studi_id'      => $value,
                     'kuesioner'     => $request->kuesioner,
                     'deskripsi'     => $request->deskripsi,
+                    'awal'          => $request->awal,
+                    'akhir'         => $request->akhir,
                     'tahun_ajaran'  => $tahunAjaran->id,
                     'status'        => 1
                 ]);
@@ -166,7 +191,7 @@ class PembelajaranController extends Controller
         }
 
     	$pembelajaran = Pembelajaran::create($request->only([
-    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran'
+    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran', 'awal', 'akhir'
     	]));
 
         $pertanyaan = $pembelajaran
@@ -212,11 +237,13 @@ class PembelajaranController extends Controller
     	$request->request->add([
     		'user_id' => auth()->user()->id,
     		'studi_id' => $request->studi,
-            'tahun_ajaran' => $tahunAjaran->id
+            'tahun_ajaran' => $tahunAjaran->id,
+            'awal' => $request->awal,
+            'akhir' => $request->akhir
     	]);
 
     	$pembelajaran->update($request->only([
-    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran'
+    		'user_id', 'studi_id', 'kuesioner', 'deskripsi', 'tahun_ajaran', 'awal', 'akhir'
     	]));
 
     	return redirect()->route('pembelajaran.show', ['pembelajaran' => $pembelajaran])->with('success', 'Data kuesioner pembelajaran berhasil diubah.');
@@ -241,7 +268,11 @@ class PembelajaranController extends Controller
 
         $pembelajaran->load(['pertanyaan.jawaban', 'pertanyaan.respons', 'pertanyaan.respons.jawaban']);
 
-        return view('kuesioner.pembelajaran.respons', compact('title', 'pembelajaran'));
+        $questions = $pembelajaran->pertanyaan->chunk(5);
+
+        // dd($question);
+
+        return view('kuesioner.pembelajaran.respons', compact('title', 'pembelajaran', 'questions'));
     }
 
     // Export Respons

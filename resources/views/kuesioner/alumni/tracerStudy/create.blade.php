@@ -28,7 +28,7 @@
               <label for="perusahaan" class="text-dark">Nama Perusahaan:</label>
               <input type="text" name="perusahaan" class="form-control" value="{{ old('perusahaan') }}">
               @if($errors->count() <= 0)
-                <small class="form-text text-muted">Silahkan isi nama lengkap perusahaan tempat anda bekerja.</small>
+                <small class="form-text text-muted">Silahkan isi nama perusahaan tempat anda bekerja.</small>
               @endif
               @error('perusahaan')
                 <small class="form-text text-danger">{{ $message }}</small>
@@ -66,6 +66,33 @@
             </div>
           </div>
 
+          <div class="col-md-8 mb-2">
+            <div class="form-group">
+              <label for="alamat_perusahaan" class="text-dark">Alamat Perusahaan:</label>
+              <input type="text" name="alamat_perusahaan" class="form-control" value="{{ old('alamat_perusahaan') }}">
+              @if($errors->count() <= 0)
+                <small class="form-text text-muted">Silahkan isi alamat perusahaan tempat anda bekerja.</small>
+              @endif
+              @error('alamat_perusahaan')
+                <small class="form-text text-danger">{{ $message }}</small>
+              @enderror
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-2">
+            <div class="form-group">
+              <label for="kontak_perusahaan" class="text-dark">Kontak Perusahaan:</label>
+              <input type="text" name="kontak_perusahaan" 
+              class="form-control @error('kontak_perusahaan') is-invalid @enderror" maxlength="12" onkeypress="isNumber(event)" value="{{ old('kontak_perusahaan') }}">
+              @if($errors->count() <= 0)
+                <small class="form-text text-muted">Silahkan isi kontak perusahaan tempat anda bekerja.</small>
+              @endif
+              @error('kontak_perusahaan')
+                <small class="form-text text-danger">{{ $message }}</small>
+              @enderror
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -81,4 +108,8 @@
       </div>
     </form>
   </div>
+@endsection
+
+@section('scripts')
+  <script src="{{ asset('js/app.js') }}"></script>
 @endsection
