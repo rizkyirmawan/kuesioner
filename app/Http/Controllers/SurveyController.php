@@ -12,6 +12,7 @@ use App\Models\Pembelajaran;
 use App\Models\Studi;
 use App\Models\TracerStudy;
 use App\Models\TahunAjaran;
+use App\Models\Pertanyaan\PertanyaanTracerStudy;
 use App\Http\Requests\FormulirPerusahaanRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -141,7 +142,7 @@ class SurveyController extends Controller
 
         $tracerStudy = TracerStudy::where('user_id', auth()->user()->id)->first();
 
-        return view('kuesioner.alumni.tracerStudy.index', compact('title', 'identitas', 'tracerStudy'));
+        return view('kuesioner.alumni.tracerStudy.index', compact('title', 'identitas', 'tracerStudy', 'pertanyaanTracerStudyCount'));
     }
 
     // Create Tracer Study Identitas
@@ -157,40 +158,37 @@ class SurveyController extends Controller
     {
         $kode = Str::upper(Str::random(8));
 
-        $dataPertanyaan = [
-            ['pertanyaan' => 'Nama pengisi.', 'tipe' => 'Text'],
+        if ($request->bidang == 'IT') {
+            $dataPertanyaan = collect(PertanyaanTracerStudy::orderBy('tipe', 'desc')->get())->map(function($item) {
+                $item['tipe'] = 'Radio';
+
+                return $item->only(['pertanyaan', 'tipe']);
+            })->toArray();
+        } else {
+            $dataPertanyaan = collect(PertanyaanTracerStudy::where('tipe', '=', 'Non IT')->get())->map(function($item) {
+                $item['tipe'] = 'Radio';
+
+                return $item->only(['pertanyaan', 'tipe']);
+            })->toArray();
+        }
+
+        $additionalQuestion = [
             ['pertanyaan' => 'Jabatan pengisi.', 'tipe' => 'Text'],
-            ['pertanyaan' => 'Integritas (etika dan moral).', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Keahlian berdasarkan bidang ilmu (profesionalisme).', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Bahasa Inggris.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Penggunaan Teknologi Informasi.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Komunikasi.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kerjasama tim.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Pengembangan diri.', 'tipe' => 'Radio'],
+            ['pertanyaan' => 'Nama pengisi.', 'tipe' => 'Text']
         ];
 
-        $pertanyaanIT = [
-            ['pertanyaan' => 'Kemampuan dalam menguasai sekurang-kurangnya satu bahasa pemrograman.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kemampuan dalam menguasai tools aplikasi pemrograman.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kemampuan dalam menguasai aplikasi database.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kemampuan dalam mengimplementasikan rancangan database.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kemampuan dalam melakukan Rekayasa Perangkat Lunak.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kemampuan dalam mengoperasikan berbagai sistem operasi (Windows/Linux).', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kemampuan dalam implementasi Jaringan Komputer.', 'tipe' => 'Radio']
-        ];
+        foreach ($additionalQuestion as $question) {
+            array_unshift($dataPertanyaan, $question);
+        }
+
+        dd($dataPertanyaan);
 
         $dataJawaban = [
             ['jawaban' => 'Sangat Baik', 'skor' => 4],
             ['jawaban' => 'Baik', 'skor' => 3],
             ['jawaban' => 'Cukup', 'skor' => 2],
             ['jawaban' => 'Kurang', 'skor' => 1]
-        ];
-
-        if ($request->bidang == 'IT') {
-            foreach ($pertanyaanIT as $data) {
-                array_push($dataPertanyaan, $data);
-            }
-        }
+        ];        
 
         $request->request->add([
             'user_id'       => auth()->user()->id,

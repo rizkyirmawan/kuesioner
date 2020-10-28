@@ -84,7 +84,7 @@
     		</div>
         @if(Auth::user()->role->role === 'Admin')
     		<div class="p-2 ml-auto">
-	      	<a href="{{ route('pembelajaran.create') }}" class="btn btn-primary btn-sm btn-icon-split @if($studiCount <= 0) disabled @endif">
+	      	<a href="{{ route('pembelajaran.create') }}" class="btn btn-primary btn-sm btn-icon-split @if($studiCount <= 0 || $pertanyaanPembelajaranCount <= 0) disabled @endif">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>

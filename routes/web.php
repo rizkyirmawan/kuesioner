@@ -99,7 +99,33 @@ Route::middleware(['auth'])->group(function() {
 			Route::post('mata-kuliah', 'MatkulController@importKRS')->name('krs.import');
 		});
 
-		Route::prefix('kuesioner')->group(function () {
+		Route::prefix('pertanyaan')->group(function() {
+			// Default Pertanyaan Pembelajaran Routes
+			Route::get('pertanyaan-pembelajaran', 'Pertanyaan\PertanyaanPembelajaranController@index')->name('question.pembelajaran.index');
+			Route::post('pertanyaan-pembelajaran', 'Pertanyaan\PertanyaanPembelajaranController@store')->name('question.pembelajaran.store');
+			Route::patch('pertanyaan-pembelajaran/{pertanyaan}', 'Pertanyaan\PertanyaanPembelajaranController@update')->name('question.pembelajaran.update');
+			Route::delete('pertanyaan-pembelajaran/{pertanyaan}', 'Pertanyaan\PertanyaanPembelajaranController@destroy')->name('question.pembelajaran.destroy');
+			Route::post('pertanyaan-pembelajaran/import', 'Pertanyaan\PertanyaanPembelajaranController@import')->name('question.pembelajaran.import');
+			Route::get('pertanyaan-pembelajaran/blanko', 'Pertanyaan\PertanyaanPembelajaranController@blanko')->name('question.pembelajaran.blanko');
+
+			// Default Pertanyaan Layanan Mahasiswa Routes
+			Route::get('pertanyaan-layanan-mahasiswa', 'Pertanyaan\PertanyaanKemahasiswaanController@index')->name('question.kemahasiswaan.index');
+			Route::post('pertanyaan-layanan-mahasiswa', 'Pertanyaan\PertanyaanKemahasiswaanController@store')->name('question.kemahasiswaan.store');
+			Route::patch('pertanyaan-layanan-mahasiswa/{pertanyaan}', 'Pertanyaan\PertanyaanKemahasiswaanController@update')->name('question.kemahasiswaan.update');
+			Route::delete('pertanyaan-layanan-mahasiswa/{pertanyaan}', 'Pertanyaan\PertanyaanKemahasiswaanController@destroy')->name('question.kemahasiswaan.destroy');
+			Route::post('pertanyaan-layanan-mahasiswa/import', 'Pertanyaan\PertanyaanKemahasiswaanController@import')->name('question.kemahasiswaan.import');
+			Route::get('pertanyaan-layanan-mahasiswa/blanko', 'Pertanyaan\PertanyaanKemahasiswaanController@blanko')->name('question.kemahasiswaan.blanko');
+
+			// Default Pertanyaan Tracer Study Routes
+			Route::get('pertanyaan-tracer-study', 'Pertanyaan\PertanyaanTracerController@index')->name('question.tracerStudy.index');
+			Route::post('pertanyaan-tracer-study', 'Pertanyaan\PertanyaanTracerController@store')->name('question.tracerStudy.store');
+			Route::patch('pertanyaan-tracer-study/{pertanyaan}', 'Pertanyaan\PertanyaanTracerController@update')->name('question.tracerStudy.update');
+			Route::delete('pertanyaan-tracer-study/{pertanyaan}', 'Pertanyaan\PertanyaanTracerController@destroy')->name('question.tracerStudy.destroy');
+			Route::post('pertanyaan-tracer-study/import', 'Pertanyaan\PertanyaanTracerController@import')->name('question.tracerStudy.import');
+			Route::get('pertanyaan-tracer-study/blanko', 'Pertanyaan\PertanyaanTracerController@blanko')->name('question.tracerStudy.blanko');
+		});
+
+		Route::prefix('kuesioner')->group(function() {
 			// Kuesioner Pembelajaran Routes
 			Route::get('pembelajaran', 'PembelajaranController@index')->name('pembelajaran.index');
 			Route::get('pembelajaran/create', 'PembelajaranController@create')->name('pembelajaran.create');
@@ -145,7 +171,7 @@ Route::middleware(['auth'])->group(function() {
 	});
 	
 	// Exports
-	Route::prefix('export')->group(function () {
+	Route::prefix('export')->group(function() {
 		// Kuesioner
 		Route::get('respons-pembelajaran/{pembelajaran}', 'PembelajaranController@exportRespons')->name('export.respons.pembelajaran');
 		Route::get('respons-layanan-mahasiswa/{kemahasiswaan}', 'KemahasiswaanController@exportRespons')->name('export.respons.kemahasiswaan');
@@ -160,13 +186,13 @@ Route::middleware(['auth'])->group(function() {
 	});
 
 	// Downloads
-	Route::prefix('download')->group(function () {
+	Route::prefix('download')->group(function() {
 		Route::get('blanko-krs', 'MatkulController@blankoKRS')->name('download.blankoKRS');
 		Route::get('blanko-mahasiswa', 'MahasiswaController@blankoMahasiswa')->name('download.blankoMahasiswa');
 		Route::get('blanko-dosen', 'DosenController@blankoDosen')->name('download.blankoDosen');
 	});
 
-	Route::prefix('kuesioner')->group(function () {
+	Route::prefix('kuesioner')->group(function() {
 		// Pembelajaran Respon
 		Route::get('dosen/pembelajaran', 'PembelajaranController@indexDosen')->name('dosen.pembelajaran.index');
 		Route::get('pembelajaran/{pembelajaran}/respons', 'PembelajaranController@showRespons')->name('pembelajaran.respons');

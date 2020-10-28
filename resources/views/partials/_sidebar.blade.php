@@ -78,6 +78,21 @@
         Manajemen Kuesioner
       </div>
 
+      <li class="nav-item {{ Request::segment(1) === 'pertanyaan' ? 'active' : '' }}">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePertanyaan">
+          <i class="fas fa-fw fa-question-circle"></i>
+          <span>Pertanyaan</span>
+        </a>
+        <div id="collapsePertanyaan" class="collapse {{ Request::segment(1) === 'pertanyaan' ? 'show' : '' }}" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kelola Pertanyaan:</h6>
+            <a class="collapse-item {{ Request::segment(2) === 'pertanyaan-pembelajaran' ? 'active' : '' }}" href="{{ route('question.pembelajaran.index') }}">Evaluasi Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(2) === 'pertanyaan-layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('question.kemahasiswaan.index') }}">Layanan Mahasiswa</a>
+            <a class="collapse-item {{ Request::segment(2) === 'pertanyaan-tracer-study' ? 'active' : '' }}" href="{{ route('question.tracerStudy.index') }}">Tracer Study</a>
+          </div>
+        </div>
+      </li>
+
       <li class="nav-item {{ Request::segment(1) === 'kuesioner' ? 'active' : '' }}">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseKuesioner">
           <i class="fas fa-fw fa-book"></i>
@@ -86,7 +101,7 @@
         <div id="collapseKuesioner" class="collapse {{ Request::segment(1) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kelola Kuesioner:</h6>
-            <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('pembelajaran.index') }}">Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(2) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('pembelajaran.index') }}">Evaluasi Pembelajaran</a>
             <a class="collapse-item {{ Request::segment(2) === 'layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('kemahasiswaan.index') }}">Layanan Mahasiswa</a>
             <a class="collapse-item {{ Request::segment(2) === 'tracer-study' ? 'active' : '' }}" href="{{ route('tracerStudy.index') }}">Tracer Study</a>
           </div>
@@ -111,7 +126,7 @@
         <div id="collapseKuesioner" class="collapse {{ Request::segment(1) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Respons Kuesioner:</h6>
-            <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('dosen.pembelajaran.index') }}">Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('dosen.pembelajaran.index') }}">Evaluasi Pembelajaran</a>
           </div>
         </div>
       </li>
@@ -134,7 +149,7 @@
         <div id="collapseMaster" class="collapse {{ Request::segment(2) === 'kuesioner' ? 'show' : '' }}" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Pengisian Kuesioner:</h6>
-            <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('mahasiswa.pembelajaran') }}">Pembelajaran</a>
+            <a class="collapse-item {{ Request::segment(3) === 'pembelajaran' ? 'active' : '' }}" href="{{ route('mahasiswa.pembelajaran') }}">Evaluasi Pembelajaran</a>
             <a class="collapse-item {{ Request::segment(3) === 'layanan-mahasiswa' ? 'active' : '' }}" href="{{ route('mahasiswa.kemahasiswaan') }}">Layanan Mahasiswa</a>
           </div>
         </div>

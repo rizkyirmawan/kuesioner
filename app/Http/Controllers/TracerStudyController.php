@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumni;
 use App\Models\Identitas;
 use App\Models\TracerStudy;
+use App\Models\Pertanyaan\PertanyaanTracerStudy;
 use Illuminate\Http\Request;
 use App\Exports\ResponsTracerStudyExport;
 use App\Exports\RekapTracerStudyExport;
@@ -22,13 +23,15 @@ class TracerStudyController extends Controller
 
     	$identitas = Identitas::all();
 
+        $pertanyaanTracerStudyCount = PertanyaanTracerStudy::count();
+
     	$tahunLulus = Alumni::whereNotIn('tahun_lulus', Identitas::pluck('tahun_lulus'))
                             ->pluck('tahun_lulus')
     						->unique()
     						->values()
     						->all();
 
-    	return view('kuesioner.tracerStudy.index', compact('title', 'identitas', 'tracerStudy', 'tahunLulus'));
+    	return view('kuesioner.tracerStudy.index', compact('title', 'identitas', 'tracerStudy', 'tahunLulus', 'pertanyaanTracerStudyCount'));
     }
 
     // Create Identitas

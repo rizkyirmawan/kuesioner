@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kemahasiswaan;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
+use App\Models\Pertanyaan\PertanyaanKemahasiswaan;
 use App\Http\Requests\KemahasiswaanRequest;
 use App\Exports\ResponsKemahasiswaanExport;
 use App\Exports\RekapKemahasiswaanExport;
@@ -20,10 +21,11 @@ class KemahasiswaanController extends Controller
         
         $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
-    	$kemahasiswaan = Kemahasiswaan::where('tahun_ajaran', $tahunAjaran->id)
-                            ->get();
+        $pertanyaanKemahasiswaanCount = PertanyaanKemahasiswaan::count();
 
-    	return view('kuesioner.kemahasiswaan.index', compact('title', 'kemahasiswaan'));
+    	$kemahasiswaan = Kemahasiswaan::where('tahun_ajaran', $tahunAjaran->id)->get();
+
+    	return view('kuesioner.kemahasiswaan.index', compact('title', 'kemahasiswaan', 'pertanyaanKemahasiswaanCount'));
     }
 
     // Create
@@ -48,30 +50,11 @@ class KemahasiswaanController extends Controller
 
     	$kemahasiswaan = Kemahasiswaan::create($request->all());
 
-        $data = [
-            ['pertanyaan' => 'Pelayanan administrasi akademik dan kemahasiswaan STMIK Bandung.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Sikap pelayanan staff layanan akademik.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Pelaksanaan bimbingan kegiatan kemahasiswaan.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Pelaksanaan bimbingan akademik mahasiswa.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Ketertarikan untuk mengikuti kegiatan bimbingan akademik.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Ketertarikan untuk mengikuti kegiatan bimbingan kegiatan kemahasiswaan.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Manfaat dan kinerja organisasi kemahasiswaan STMIK Bandung.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Pengaruh keberadaan dan kinerja organisasi mahasiswa terhadap motivasi belajar anda.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Keaktifan anda dalam mengikuti kegiatan ekstrakurikuler di STMIK Bandung.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Penyebaran Informasi dan layanan beasiswa.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Penyebaran informasi kegiatan dan lomba kemahasiswaan.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi sarana perkuliahan di STMIK Bandung.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi sarana praktikum di STMIK Bandung.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kenyamanan situasi belajar di STMIK Bandung yang dapat memotivasi berkajar mahasiswa.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi tempat istirahat mahasiswa di lingkungan STMIK Bandung.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Hubungan personal di bagian kerumahtanggaan (satpam, cleaning service dan office boy) untuk kenyamanan mahasiswa menuntut ilmu.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi tempat parkir.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi sarana peribadahan.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi sarana perpustakaan.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi sarana toilet.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi sarana konsultasi.', 'tipe' => 'Radio'],
-            ['pertanyaan' => 'Kondisi penunjang kegiatan kemahasiswaan.', 'tipe' => 'Radio']
-        ];
+        $data = collect(PertanyaanKemahasiswaan::all())->map(function($item) {
+            $item['tipe'] = 'Radio';
+
+            return $item->only(['pertanyaan', 'tipe']);
+        })->toArray();
 
         $dataJawaban = [
             ['jawaban' => 'Sangat Baik', 'skor' => 5],

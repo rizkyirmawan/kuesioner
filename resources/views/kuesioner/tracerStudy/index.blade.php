@@ -14,7 +14,7 @@
     		</div>
     		<div class="p-2 ml-auto">
           @if(Auth::user()->role->role === 'Admin')
-	      	<a href="#" class="btn btn-primary btn-sm btn-icon-split" data-target="#createIdentitasModal" data-toggle="modal">
+	      	<a href="#" class="btn btn-primary btn-sm btn-icon-split @if($pertanyaanTracerStudyCount <= 0) disabled @endif" data-target="#createIdentitasModal" data-toggle="modal">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>

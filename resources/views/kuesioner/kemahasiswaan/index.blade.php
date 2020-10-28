@@ -22,7 +22,7 @@
           </a>
         </div>
         <div class="p-2">
-          <a href="{{ route('kemahasiswaan.create') }}" class="btn btn-primary btn-sm btn-icon-split">
+          <a href="{{ route('kemahasiswaan.create') }}" class="btn btn-primary btn-sm btn-icon-split @if($pertanyaanKemahasiswaanCount <= 0) disabled @endif">
             <span class="icon text-white-50">
               <i class="fas fa-plus"></i>
             </span>
