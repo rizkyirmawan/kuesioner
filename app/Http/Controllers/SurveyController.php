@@ -83,12 +83,9 @@ class SurveyController extends Controller
     {
         $title = 'Kuesioner Layanan Mahasiswa';
 
-        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
-
         $today = Carbon::now();
 
-        $data = Kemahasiswaan::where('tahun_ajaran', $tahunAjaran->id)
-                            ->whereDate('awal', '<=', $today->format('Y-m-d'))
+        $data = Kemahasiswaan::whereDate('awal', '<=', $today->format('Y-m-d'))
                             ->whereDate('akhir', '>=', $today->format('Y-m-d'))
                             ->get();
 
