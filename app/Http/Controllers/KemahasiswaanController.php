@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Kemahasiswaan;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
@@ -18,12 +19,10 @@ class KemahasiswaanController extends Controller
     public function index()
     {
     	$title = 'Data Kuesioner Layanan Mahasiswa';
-        
-        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
         $pertanyaanKemahasiswaanCount = PertanyaanKemahasiswaan::count();
 
-    	$kemahasiswaan = Kemahasiswaan::where('tahun_ajaran', $tahunAjaran->id)->get();
+    	$kemahasiswaan = Kemahasiswaan::all();
 
     	return view('kuesioner.kemahasiswaan.index', compact('title', 'kemahasiswaan', 'pertanyaanKemahasiswaanCount'));
     }
@@ -41,11 +40,11 @@ class KemahasiswaanController extends Controller
     // Store
     public function store(KemahasiswaanRequest $request)
     {
-        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+        $today = Carbon::now();
 
     	$request->request->add([
     		'user_id' => auth()->user()->id,
-            'tahun_ajaran' => $tahunAjaran->id
+            'tahun' => $today->year
     	]);
 
     	$kemahasiswaan = Kemahasiswaan::create($request->all());
@@ -82,8 +81,6 @@ class KemahasiswaanController extends Controller
     {
     	$title = 'Detail Kuesioner Layanan Mahasiswa';
 
-    	$kemahasiswaan->load(['tahunAjaran']);
-
     	return view('kuesioner.kemahasiswaan.show', compact('title', 'kemahasiswaan'));
     }
 
@@ -103,11 +100,11 @@ class KemahasiswaanController extends Controller
     // Update
     public function update(Kemahasiswaan $kemahasiswaan, KemahasiswaanRequest $request)
     {
-        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+        $today = Carbon::now();
     	
     	$request->request->add([
     		'user_id' => auth()->user()->id,
-            'tahun_ajaran' => $tahunAjaran->id
+            'tahun' => $today->year
     	]);
 
     	$kemahasiswaan->update($request->all());

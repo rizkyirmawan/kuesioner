@@ -8,6 +8,7 @@ use App\Models\Mahasiswa;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Studi;
+use App\Models\TahunAjaran;
 use App\Http\Requests\MatkulRequest;
 use App\Imports\KRSImport;
 use Carbon\Carbon;
@@ -118,7 +119,10 @@ class MatkulController extends Controller
     // Store Studi
     public function storeStudi(Matkul $mataKuliah, Request $request)
     {
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
         $request->request->add([
+            'tahun_ajaran' => $tahunAjaran->id,
             'kelas_id' => $request->kelas,
             'kode_dosen' => $request->dosen
         ]);
@@ -206,8 +210,11 @@ class MatkulController extends Controller
                 $kelasRegSore = Kelas::where('kode', 'REG-B')->first();
                 $kelasEksekutif = Kelas::where('kode', 'EKS-A')->first();
 
+                $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
                 $item['kode_dosen'] = $item['kd_dosen'];
                 $item['kode_matkul'] = $item['kd_mk'];
+                $item['tahun_ajaran'] = $tahunAjaran->id;
 
                 if ($item['kelas_program'] === 'REGULER') {
                     $item['kelas_id'] = $kelasRegPagi->id;
@@ -217,7 +224,7 @@ class MatkulController extends Controller
                     $item['kelas_id'] = $kelasEksekutif->id;
                 }
 
-                return collect($item)->only(['kelas_id', 'kode_dosen', 'kode_matkul']);
+                return collect($item)->only(['kelas_id', 'kode_dosen', 'kode_matkul', 'tahun_ajaran']);
             })->filter(function ($item) {
                 return $item['kode_dosen'] != 'BL';
             })->toArray();

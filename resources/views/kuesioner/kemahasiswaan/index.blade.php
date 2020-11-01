@@ -39,7 +39,7 @@
             <tr>
               <th>No.</th>
               <th>Kuesioner</th>
-              <th>Tahun Ajaran</th>
+              <th>Tahun</th>
               <th>Periode</th>
               <th>Kelola</th>
             </tr>
@@ -50,7 +50,7 @@
             <tr>
             	<td>{{ $loop->iteration }}.</td>
               <td>{{ $kuesioner->kuesioner }}</td>
-              <td>{{ $kuesioner->tahunAjaran->semester . ' ' . $kuesioner->tahunAjaran->tahun_ajaran }}</td>
+              <td>{{ $kuesioner->tahun }}</td>
               <td>{{ Carbon\Carbon::parse($kuesioner->awal)->translatedFormat('d F Y') . ' - ' . Carbon\Carbon::parse($kuesioner->akhir)->translatedFormat('d F Y') }}</td>
               <td>
                 @if(Auth::user()->role->role === 'Admin')

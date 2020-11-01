@@ -55,8 +55,8 @@
         <div class="col-md-6">
           <table class="table table-bordered text-dark">
             <tr>
-              <th>Tahun Ajaran</th>
-              <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
+              <th>Tahun</th>
+              <td>{{ $kemahasiswaan->tahun }}</td>
             </tr>
             <tr>
               <th>Kuesioner</th>

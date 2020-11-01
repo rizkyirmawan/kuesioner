@@ -15,6 +15,7 @@ class CreateStudiTable extends Migration
     {
         Schema::create('studi', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('tahun_ajaran');
             $table->unsignedBigInteger('kelas_id');
             $table->string('kode_matkul');
             $table->string('kode_dosen');

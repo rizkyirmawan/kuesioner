@@ -10,6 +10,11 @@ class Studi extends Model
 
     protected $guarded = [];
 
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran');
+    }
+
     public function kelas()
     {
     	return $this->belongsTo(Kelas::class);

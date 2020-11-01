@@ -18,7 +18,7 @@ class CreateKemahasiswaanTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('kuesioner');
             $table->text('deskripsi');
-            $table->unsignedBigInteger('tahun_ajaran');
+            $table->string('tahun');
             $table->date('awal');
             $table->date('akhir');
             $table->unsignedSmallInteger('status')->nullable();

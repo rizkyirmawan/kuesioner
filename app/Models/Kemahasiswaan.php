@@ -25,11 +25,6 @@ class Kemahasiswaan extends Model
         return $this->morphMany(Responden::class, 'kuesionerable');
     }
 
-    public function tahunAjaran()
-    {
-        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran');
-    }
-
     public function respons()
     {
         return $this->hasManyThrough(Respons::class, Pertanyaan::class, 'questionable_id')->where('questionable_type', Kemahasiswaan::class);

@@ -25,11 +25,11 @@
         <div class="col-md-12">
           <table class="table table-bordered text-dark text-center">
             <tr>
-              <th>Tahun Ajaran</th>
+              <th>Tahun</th>
               <th>Periode</th>
             </tr>
             <tr>
-              <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
+              <td>{{ $kemahasiswaan->tahun }}</td>
               <td>{{ Carbon\Carbon::parse($kemahasiswaan->awal)->translatedFormat('d F Y') . ' - ' . Carbon\Carbon::parse($kemahasiswaan->akhir)->translatedFormat('d F Y') }}</td>
             </tr>
           </table>

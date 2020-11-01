@@ -26,7 +26,7 @@ class PembelajaranController extends Controller
 
         $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
-        $studiCount = Studi::count();
+        $studiCount = Studi::where('tahun_ajaran', $tahunAjaran->id)->count();
 
         $pertanyaanPembelajaranCount = PertanyaanPembelajaran::count();
 
@@ -70,9 +70,13 @@ class PembelajaranController extends Controller
     // Create
     public function create()
     {
+        $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
     	$title = 'Tambah Data Kuesioner Pembelajaran';
 
-    	$studi = Studi::with(['matkul', 'kelas'])->get();
+    	$studi = Studi::with(['matkul', 'kelas'])
+                    ->where('tahun_ajaran', $tahunAjaran->id)
+                    ->get();
 
     	$pembelajaran = new Pembelajaran();
 
@@ -101,7 +105,11 @@ class PembelajaranController extends Controller
         if ($request->studi === 'Semua') {
             ini_set('max_execution_time', 300);
 
-            $studiIds = Studi::pluck('id')->values();
+            $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
+
+            $studiIds = Studi::where('tahun_ajaran', $tahunAjaran->id)
+                        ->pluck('id')
+                        ->values();
 
             $insertedPembelajaranIds = [];
 

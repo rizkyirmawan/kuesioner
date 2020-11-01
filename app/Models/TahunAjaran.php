@@ -14,4 +14,9 @@ class TahunAjaran extends Model
     {
     	return $this->hasOne(Pembelajaran::class);
     }
+
+    public function studi()
+    {
+    	return $this->hasMany(Studi::class);
+    }
 }
