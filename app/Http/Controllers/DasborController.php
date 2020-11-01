@@ -23,8 +23,7 @@ class DasborController extends Controller
 
     	$pembelajaran = Pembelajaran::all()->count();
 
-    	$kemahasiswaan = Kemahasiswaan::where('tahun_ajaran', $tahunAjaranAktif->id)
-                            ->whereDate('awal', '<=', $today->format('Y-m-d'))
+    	$kemahasiswaan = Kemahasiswaan::whereDate('awal', '<=', $today->format('Y-m-d'))
                             ->whereDate('akhir', '>=', $today->format('Y-m-d'))
                             ->count();
 
