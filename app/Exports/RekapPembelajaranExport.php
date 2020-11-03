@@ -18,23 +18,23 @@ class RekapPembelajaranExport implements FromView, ShouldAutoSize
         	$pembelajaran = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                         ->where('studi.kode_dosen', request()->dosen)
-                        ->where('tahun_ajaran', $tahunAjaran->id)
+                        ->where('pembelajaran.tahun_ajaran', $tahunAjaran->id)
                         ->get();
         } elseif (request()->matkul) {
         	$pembelajaran = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                         ->where('studi.kode_matkul', request()->matkul)
-                        ->where('tahun_ajaran', $tahunAjaran->id)
+                        ->where('pembelajaran.tahun_ajaran', $tahunAjaran->id)
                         ->get();
         } elseif (auth()->user()->role->role === 'Dosen') {
             $pembelajaran = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                         ->where('studi.kode_dosen', auth()->user()->userable->kode)
-                        ->where('tahun_ajaran', $tahunAjaran->id)
+                        ->where('pembelajaran.tahun_ajaran', $tahunAjaran->id)
                         ->get();
         } else {
 	    	$pembelajaran = Pembelajaran::with('studi')
-	    					->where('tahun_ajaran', $tahunAjaran->id)
+	    					->where('pembelajaran.tahun_ajaran', $tahunAjaran->id)
 	    					->get();
         }
 
