@@ -233,6 +233,8 @@ class MahasiswaController extends Controller
     public function importMahasiswa(Request $request)
     {
         try {
+            ini_set('max_execution_time', 300);
+            
             $collection = Excel::toCollection(new MahasiswaImport, $request->file('excel'));
 
             $dataMhs = $collection->first()->map(function ($item, $key) {
