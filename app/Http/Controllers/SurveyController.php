@@ -132,6 +132,8 @@ class SurveyController extends Controller
 
         $today = Carbon::now();
 
+        $pertanyaanTracerStudyCount = PertanyaanTracerStudy::count();
+
         $identitas = Identitas::where('tahun_lulus', auth()->user()->userable->tahun_lulus)
                         ->whereDate('awal', '<=', $today->format('Y-m-d'))
                         ->whereDate('akhir', '>=', $today->format('Y-m-d'))
