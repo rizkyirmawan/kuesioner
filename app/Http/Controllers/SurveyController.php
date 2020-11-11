@@ -180,8 +180,6 @@ class SurveyController extends Controller
             array_unshift($dataPertanyaan, $question);
         }
 
-        dd($dataPertanyaan);
-
         $dataJawaban = [
             ['jawaban' => 'Sangat Baik', 'skor' => 4],
             ['jawaban' => 'Baik', 'skor' => 3],
