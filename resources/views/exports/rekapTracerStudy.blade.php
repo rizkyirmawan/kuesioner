@@ -20,7 +20,7 @@
 			<td style="border: 2px solid black; text-align: center;">{{ $kuesioner->user->userable->angkatan }}</td>
 			<td style="border: 2px solid black; text-align: center;">{{ $kuesioner->user->userable->tahun_lulus }}</td>
 			<td style="border: 2px solid black;">{{ $kuesioner->perusahaan . ' (' .$kuesioner->bidang . ')' }}</td>
-			<td style="border: 2px solid black; font-weight: bold; text-align: center;">{{ $kuesioner->respons->sum('jawaban.skor') <= 0 ? 0 : round($kuesioner->respons->sum('jawaban.skor') / $kuesioner->pertanyaan()->count(), 1) }}</td>
+			<td style="border: 2px solid black; font-weight: bold; text-align: center;">{{ $kuesioner->respons->sum('jawaban.skor') <= 0 ? 0 : round($kuesioner->respons->sum('jawaban.skor') / $kuesioner->pertanyaan->where('tipe', '!=', 'Text')->where('tipe', '!=', 'Textarea')->count(), 1) }}</td>
 		</tr>
 		@endforeach
 	</tbody>
