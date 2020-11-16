@@ -61,7 +61,7 @@ class PembelajaranController extends Controller
         $pembelajaran = Pembelajaran::select('pembelajaran.*')
                         ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                         ->where('studi.kode_dosen', auth()->user()->userable->kode)
-                        ->where('tahun_ajaran', $tahunAjaran->id)
+                        ->where('pembelajaran.tahun_ajaran', $tahunAjaran->id)
                         ->get();
 
         return view('kuesioner.pembelajaran.index', compact('title', 'pembelajaran'));
