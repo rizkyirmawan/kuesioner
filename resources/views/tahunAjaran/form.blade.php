@@ -21,7 +21,7 @@
 			<select name="tahun_ajaran" class="form-control" @error('tahun_ajaran') is-invalid @enderror">
 				<option disabled selected>Pilih Tahun Ajaran</option>
 				@for($i = Carbon\Carbon::now()->year; $i >= 1970; $i--)
-					<option value="{{ $i }}">{{ $i }}</option>
+					<option value="{{ $i . '/' . (intval($i) + 1) }}">{{ $i . '/' . (intval($i) + 1) }}</option>
 				@endfor
 			</select>
 			@error('tahun_ajaran')

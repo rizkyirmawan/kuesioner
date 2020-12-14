@@ -24,47 +24,61 @@ class AlumniTableSeeder extends Seeder
 
     	$data = [
     		[
-    			'nim' 				=> '1213666',
-    			'nama' 				=> 'RONX BANGKANANG',
+    			'nim' 				=> '1215008',
+    			'nama' 				=> 'RADITYO YOGA PRATAMA',
     			'alamat' 			=> 'Bandung',
-    			'nomor_telepon' 	=> '+6289444888666',
-    			'angkatan' 			=> '2013',
-    			'tahun_lulus'		=> '2017',
-    			'jurusan_id' 		=> $jurusanIF->id,
-    			'role_id' 			=> $alumniRole->id,
-    			'email' 			=> 'ronx@example.com',
-    			'password' 			=> bcrypt(1213666),
-    			'remember_token' 	=> Str::random(10),
-    			'email_verified_at'	=> Carbon::now()
-    		],
-    		[
-    			'nim' 				=> '1213777',
-    			'nama' 				=> 'UYAN WALKER',
-    			'alamat' 			=> 'Bandung',
-    			'nomor_telepon' 	=> '+6289444888000',
-    			'angkatan' 			=> '2013',
+    			'nomor_telepon' 	=> '+6285702517067',
+    			'angkatan' 			=> '2015',
     			'tahun_lulus'		=> '2018',
     			'jurusan_id' 		=> $jurusanIF->id,
     			'role_id' 			=> $alumniRole->id,
-    			'email' 			=> 'uyan@example.com',
-    			'password' 			=> bcrypt(1213777),
+    			'email' 			=> 'radityo.contact@gmail.com',
+    			'password' 			=> bcrypt(1215008),
     			'remember_token' 	=> Str::random(10),
     			'email_verified_at'	=> Carbon::now()
     		],
     		[
-    			'nim' 				=> '1213888',
-    			'nama' 				=> 'KARMANAH O\' BRIEN',
+    			'nim' 				=> '3216005',
+    			'nama' 				=> 'RIZKY',
     			'alamat' 			=> 'Bandung',
-    			'nomor_telepon' 	=> '+6289444888222',
-    			'angkatan' 			=> '2013',
-    			'tahun_lulus'		=> '2017',
-    			'jurusan_id' 		=> $jurusanSI->id,
+    			'nomor_telepon' 	=> '+628965200002',
+    			'angkatan' 			=> '2016',
+    			'tahun_lulus'		=> '2019',
+    			'jurusan_id' 		=> $jurusanIF->id,
     			'role_id' 			=> $alumniRole->id,
-    			'email' 			=> 'karmanah@example.com',
-    			'password' 			=> bcrypt(1213888),
+    			'email' 			=> 'jstrizky@gmail.com',
+    			'password' 			=> bcrypt(3216005),
     			'remember_token' 	=> Str::random(10),
     			'email_verified_at'	=> Carbon::now()
-    		]
+    		],
+    		[
+    			'nim' 				=> '3216003',
+    			'nama' 				=> 'FIKRI MUBARAK',
+    			'alamat' 			=> 'Bandung',
+    			'nomor_telepon' 	=> '+6289444888222',
+    			'angkatan' 			=> '2016',
+    			'tahun_lulus'		=> '2019',
+    			'jurusan_id' 		=> $jurusanSI->id,
+    			'role_id' 			=> $alumniRole->id,
+    			'email' 			=> 'fmubaraks@gmail.com',
+    			'password' 			=> bcrypt(3216003),
+    			'remember_token' 	=> Str::random(10),
+    			'email_verified_at'	=> Carbon::now()
+    		],
+            [
+                'nim'               => '1215002',
+                'nama'              => 'BAYU BIMANTARA',
+                'alamat'            => 'Bandung Barat',
+                'nomor_telepon'     => '+62895332055486',
+                'angkatan'          => '2015',
+                'tahun_lulus'       => '2019',
+                'jurusan_id'        => $jurusanSI->id,
+                'role_id'           => $alumniRole->id,
+                'email'             => 'bayubimantarar@gmail.com',
+                'password'          => bcrypt(1215002),
+                'remember_token'    => Str::random(10),
+                'email_verified_at' => Carbon::now()
+            ]
     	];
 
     	foreach ($data as $alumni) {

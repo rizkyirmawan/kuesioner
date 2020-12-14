@@ -6,13 +6,7 @@
 
 		<div class="col-md-3 mb-3">
 			<label for="studi" class="text-dark">Matkul & Kelas:</label>
-			<select name="studi" class="form-control">
-				<option disabled selected>Pilih Matkul & Kelas</option>
-				<option value="Semua">Semua</option>
-				@foreach($studi as $std)
-				<option value="{{ $std->id }}" @if($pembelajaran->studi) @if($std->id === $pembelajaran->studi->id) {{ 'selected' }} @endif @endif>{{ $std->matkul->mata_kuliah }} ({{ $std->kelas->kelas }})</option>
-				@endforeach
-			</select>
+			<input type="text" class="form-control" name="studi" value="Semua" readonly>
 			@error('studi')
 				<small class="form-text text-danger">{{ $message }}</small>
 			@enderror
