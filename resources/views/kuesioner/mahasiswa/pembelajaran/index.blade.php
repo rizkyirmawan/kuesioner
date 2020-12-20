@@ -17,7 +17,7 @@
             <tr>
               <th>No.</th>
               <th>Dosen</th>
-              <th>Kelas</th>
+              <th>Tahun Ajaran</th>
               <th>Mata Kuliah</th>
               <th>Kelola</th>
             </tr>
@@ -28,7 +28,7 @@
             <tr>
             	<td>{{ $loop->iteration }}.</td>
               <td>{{ $kuesioner->studi->dosen->nama }}</td>
-              <td>{{ $kuesioner->studi->kelas->kelas }}</td>
+              <td>{{ $kuesioner->tahunAjaran->semester . ' ' . $kuesioner->tahunAjaran->tahun_ajaran }}</td>
               <td>{{ $kuesioner->studi->matkul->mata_kuliah }}</td>
               <td class="text-center">
                 @if($kuesioner->responden->where('user_id', auth()->user()->id)->count() > 0)

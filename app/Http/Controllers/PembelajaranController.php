@@ -228,9 +228,13 @@ class PembelajaranController extends Controller
     // Destroy
     public function destroy(Pembelajaran $pembelajaran)
     {
-    	$pembelajaran->pertanyaan()->jawaban()->delete();
+    	$pembelajaran->jawaban()->delete();
 
-        $pembelajaran->responden()->respons()->delete();
+        $pembelajaran->respons()->delete();
+
+        $pembelajaran->pertanyaan()->delete();
+
+        $pembelajaran->responden()->delete();
 
         $pembelajaran->delete();
 

@@ -25,6 +25,11 @@ class Pembelajaran extends Model
         return $this->morphMany(Pertanyaan::class, 'questionable');
     }
 
+    public function jawaban()
+    {
+        return $this->hasManyThrough(Jawaban::class, Pertanyaan::class, 'questionable_id')->where('questionable_type', Pembelajaran::class);
+    }
+
     public function responden()
     {
         return $this->morphMany(Responden::class, 'kuesionerable');

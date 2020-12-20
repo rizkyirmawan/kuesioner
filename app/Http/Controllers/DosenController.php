@@ -14,6 +14,7 @@ use App\Http\Requests\DosenRequest;
 use App\Http\Requests\UserRequest;
 use App\Exports\DosenExport;
 use App\Imports\DosenImport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
@@ -173,7 +174,13 @@ class DosenController extends Controller
         try {
             $collection = Excel::toCollection(new DosenImport, request()->file('excel'));
 
-            $dataDosen = $collection->first()->map(function ($item, $key) {
+            $importedKodeDosen = $collection->first()->pluck('kode')->unique()->toArray();
+
+            $kodeDosen = collect(Dosen::all())->pluck('kode')->unique()->toArray();
+
+            $diffKodeDosen = array_map('unserialize', array_diff(array_map('serialize', $importedKodeDosen), array_map('serialize', $kodeDosen)));
+
+            $dataDosen = $collection->first()->map(function ($item, $key) use ($diffKodeDosen) {
                 $item['nomor_telepon']  = '+' . strval($item['nomor_telepon']);
                 $item['nama']           = $item['nama_dosen'];
 
@@ -185,28 +192,31 @@ class DosenController extends Controller
                 $item['password']           = bcrypt('dosen');
 
                 return collect($item)->forget(['nama_dosen']);
-            })->toArray();
+            })->whereIn('kode', $diffKodeDosen)->toArray();
 
-            Dosen::truncate();
-
-            User::where('userable_type', Dosen::class)->delete();
+            if (count($importedDataDosen) <= 0) {
+                return back()
+                        ->with('warning', 'Tidak ada data dosen yang berbeda.');
+            }
 
             foreach ($dataDosen as $dosen) {
-                $ds = Dosen::create(Arr::except($dosen, [
-                    'email',
-                    'password',
-                    'role_id',
-                    'remember_token',
-                    'email_verified_at'
-                ]));
+                DB::transaction(function() use ($dosen) {
+                    $ds = Dosen::create(Arr::except($dosen, [
+                        'email',
+                        'password',
+                        'role_id',
+                        'remember_token',
+                        'email_verified_at'
+                    ]));
 
-                $ds->user()->create(Arr::only($dosen, [
-                    'email',
-                    'password',
-                    'role_id',
-                    'remember_token',
-                    'email_verified_at'
-                ]));
+                    $ds->user()->create(Arr::only($dosen, [
+                        'email',
+                        'password',
+                        'role_id',
+                        'remember_token',
+                        'email_verified_at'
+                    ]));
+                });
             }
         } catch (\Exception $e) {
             return back()

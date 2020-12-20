@@ -89,7 +89,7 @@ class SurveyController extends Controller
                             ->whereDate('akhir', '>=', $today->format('Y-m-d'))
                             ->get();
 
-        $kemahasiswaan = collect($data)->unique()->values()->all();
+        $kemahasiswaan = collect($data)->all();
 
         return view('kuesioner.mahasiswa.kemahasiswaan.index', compact('title', 'kemahasiswaan'));
     }

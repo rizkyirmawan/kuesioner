@@ -10,6 +10,11 @@ class Jawaban extends Model
 
     protected $guarded = [];
 
+    public function answerable()
+    {
+        return $this->morphTo();
+    }
+
     public function pertanyaan()
     {
     	return $this->belongsTo(Pertanyaan::class);

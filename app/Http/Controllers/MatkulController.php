@@ -9,6 +9,7 @@ use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Studi;
 use App\Models\TahunAjaran;
+use App\Models\PesertaDidik;
 use App\Http\Requests\MatkulRequest;
 use App\Imports\KRSImport;
 use Carbon\Carbon;
@@ -192,18 +193,41 @@ class MatkulController extends Controller
         try {
             $collection = Excel::toCollection(new KRSImport, $request->file('excel'));
 
-            $dataKRS = $collection->first()->map(function ($item, $key) {
+            $dataPesertaDidik = PesertaDidik::all()
+                                ->map(function ($item, $key) {
+                                    return $item->only(['nim', 'kode_matkul']);
+                                })
+                                ->sort()
+                                ->toArray();
+
+            $importedDataKRS = $collection->first()->map(function ($item, $key) {
                 $item['kode_matkul'] = $item['kd_mk'];
                 return collect($item)->only(['nim', 'kode_matkul']);
-            })->toArray();
+            })->sort()->toArray();
+
+            $dataKRS = array_map('unserialize', array_diff(array_map('serialize', $importedDataKRS), array_map('serialize', $dataPesertaDidik)));
+
+            $importedKodeMatkul = $collection->first()->pluck('kode_matkul')->sort()->unique()->toArray();
+
+            $kodeMatkulCollection = collect(Matkul::all())->pluck('kode')->sort()->unique()->toArray();
+
+            $diffKodeMatkul = array_map('unserialize', array_diff(array_map('serialize', $importedKodeMatkul), array_map('serialize', $kodeMatkulCollection)));
 
             $dataMatkul = $collection->first()->unique('kd_mk')->map(function ($item, $key) {
                 $item['kode'] = $item['kd_mk'];
                 $item['mata_kuliah'] = $item['nama_mk'];
                 return collect($item)->only(['kode', 'mata_kuliah']);
-            })->toArray();
+            })->whereIn('kode', $diffKodeMatkul)->toArray();
 
-            $dataStudi = $collection->first()->unique(function ($item) {
+            $dataKelasKuliah = Studi::all()
+                                ->unique()
+                                ->map(function ($item, $key) {
+                                    return $item->only(['tahun_ajaran', 'kode_matkul', 'kode_dosen', 'kelas_id']);
+                                })
+                                ->sort()
+                                ->toArray();
+
+            $importedDataStudi = $collection->first()->unique(function ($item) {
                 return $item['kelas_program'].$item['kd_dosen'].$item['kd_mk'];
             })->map(function ($item, $key) {
                 $kelasRegPagi = Kelas::where('kode', 'REG-A')->first();
@@ -224,52 +248,54 @@ class MatkulController extends Controller
                     $item['kelas_id'] = $kelasEksekutif->id;
                 }
 
-                return collect($item)->only(['kelas_id', 'kode_dosen', 'kode_matkul', 'tahun_ajaran']);
+                return collect($item)->only(['tahun_ajaran', 'kelas_id', 'kode_matkul', 'kode_dosen']);
             })->filter(function ($item) {
                 return $item['kode_dosen'] != 'BL';
-            })->toArray();
+            })->sort()->toArray();
+
+            $dataStudi = array_map('unserialize', array_diff(array_map('serialize', $importedDataStudi), array_map('serialize', $dataKelasKuliah)));
 
             $kodeUnikDosen = Dosen::pluck('kode')->unique()->values()->all();
             $importedKodeUnikDosen = $collection->first()->unique('kd_dosen')->values()->pluck('kd_dosen')->reject(function ($item) {
                 return $item === 'BL';
             })->values()->toArray();
 
-            if (Arr::sortRecursive($importedKodeUnikDosen) !== Arr::sortRecursive($kodeUnikDosen)) {
-                return back()->with('error', 'Terdapat data dosen yang belum ada.');
-            }
-
-            DB::table('matkul')->truncate();
-
-            DB::table('program')->truncate();
-
-            DB::table('studi')->truncate();
-
-            foreach ($dataMatkul as $matkul) {
-                $jurusanIF = Jurusan::where('kode', 'IF')->first();
-                $jurusanSI = Jurusan::where('kode', 'SI')->first();
-
-                if (Str::substr($matkul['kode'], 0, 2) == 'IF') {
-                    $jurusan = [$jurusanIF->id];
-                } elseif (Str::substr($matkul['kode'], 0, 2) == 'SI') {
-                    $jurusan = [$jurusanSI->id];
-                } else {
-                    $jurusan = [$jurusanIF->id, $jurusanSI->id];
+            foreach ($importedKodeUnikDosen as $kode) {
+                if (!in_array($kode, $kodeUnikDosen)) {
+                    return back()->with('error', 'Terdapat data dosen yang belum ada.');
                 }
-
-                $mk = Matkul::create($matkul);
-                $mk->jurusan()->sync($jurusan);
             }
 
-            foreach ($dataStudi as $studi) {
-                Studi::insert($studi);
+            if (count($dataMatkul) > 0) {
+                foreach ($dataMatkul as $matkul) {
+                    $jurusanIF = Jurusan::where('kode', 'IF')->first();
+                    $jurusanSI = Jurusan::where('kode', 'SI')->first();
+
+                    if (Str::substr($matkul['kode'], 0, 2) == 'IF') {
+                        $jurusan = [$jurusanIF->id];
+                    } elseif (Str::substr($matkul['kode'], 0, 2) == 'SI') {
+                        $jurusan = [$jurusanSI->id];
+                    } else {
+                        $jurusan = [$jurusanIF->id, $jurusanSI->id];
+                    }
+
+                    $mk = Matkul::create($matkul);
+                    $mk->jurusan()->sync($jurusan);
+                }
             }
 
-            DB::table('peserta_didik')->truncate();
+            if (count($dataStudi) > 0) {
+                foreach ($dataStudi as $studi) {
+                    Studi::insert($studi);
+                }
+            }
 
-            $dataKRSChunks = array_chunk($dataKRS, 200);
+            if (count($dataKRS) > 0) {
+                $dataKRSChunks = array_chunk($dataKRS, 200);
 
-            foreach ($dataKRSChunks as $peserta) {
-                DB::table('peserta_didik')->insert($peserta);
+                foreach ($dataKRSChunks as $peserta) {
+                    DB::table('peserta_didik')->insert($peserta);
+                }
             }
         } catch(\Exception $e) {
             return back()

@@ -53,6 +53,7 @@ class DasborController extends Controller
                             ->join('mahasiswa', 'peserta_didik.nim', '=', 'mahasiswa.nim')
                             ->where('studi.kelas_id', auth()->user()->userable->kelas_id)
                             ->where('peserta_didik.nim', auth()->user()->userable->nim)
+                            ->where('pembelajaran.tahun_ajaran', $tahunAjaranAktif->id)
                             ->whereDate('awal', '<=', $today->format('Y-m-d'))
                             ->whereDate('akhir', '>=', $today->format('Y-m-d'))
                             ->count();

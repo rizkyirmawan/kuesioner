@@ -17,6 +17,7 @@ use App\Http\Requests\MahasiswaRequest;
 use App\Http\Requests\UserRequest;
 use App\Exports\MahasiswaExport;
 use App\Imports\MahasiswaImport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
@@ -237,6 +238,12 @@ class MahasiswaController extends Controller
             
             $collection = Excel::toCollection(new MahasiswaImport, $request->file('excel'));
 
+            $importedNim = $collection->first()->pluck('nim')->unique()->toArray();
+
+            $nimCollection = collect(Mahasiswa::all())->pluck('nim')->unique()->toArray();
+
+            $diffNim = array_map('unserialize', array_diff(array_map('serialize', $importedNim), array_map('serialize', $nimCollection)));
+
             $dataMhs = $collection->first()->map(function ($item, $key) {
                 $jurusanIF      = Jurusan::where('kode', 'IF')->first();
                 $jurusanSI      = Jurusan::where('kode', 'SI')->first();
@@ -273,28 +280,31 @@ class MahasiswaController extends Controller
                 }
 
                 return collect($item)->forget(['nama_mahasiswa', 'kelas_program', 'jurusan']);
-            })->toArray();
+            })->whereIn('nim', $diffNim)->toArray();
 
-            Mahasiswa::truncate();
-
-            User::where('userable_type', Mahasiswa::class)->delete();
+            if (count($dataMhs) <= 0) {
+                return back()
+                        ->with('warning', 'Tidak ada data mahasiswa yang berbeda.');
+            }
 
             foreach ($dataMhs as $mahasiswa) {
-                $mhs = Mahasiswa::create(Arr::except($mahasiswa, [
-                    'email',
-                    'password',
-                    'role_id',
-                    'remember_token',
-                    'email_verified_at'
-                ]));
+                DB::transaction(function() use ($mahasiswa) {
+                    $mhs = Mahasiswa::create(Arr::except($mahasiswa, [
+                        'email',
+                        'password',
+                        'role_id',
+                        'remember_token',
+                        'email_verified_at'
+                    ]));
 
-                $mhs->user()->create(Arr::only($mahasiswa, [
-                    'email',
-                    'password',
-                    'role_id',
-                    'remember_token',
-                    'email_verified_at'
-                ]));
+                    $mhs->user()->create(Arr::only($mahasiswa, [
+                        'email',
+                        'password',
+                        'role_id',
+                        'remember_token',
+                        'email_verified_at'
+                    ]));
+                });
             }
         } catch (\Exception $e) {
             return back()

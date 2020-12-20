@@ -115,9 +115,13 @@ class KemahasiswaanController extends Controller
     // Destroy
     public function destroy(Kemahasiswaan $kemahasiswaan)
     {
-    	$kemahasiswaan->pertanyaan()->jawaban()->delete();
+        $kemahasiswaan->jawaban()->delete();
 
-        $kemahasiswaan->responden()->respons()->delete();
+        $kemahasiswaan->respons()->delete();
+        
+    	$kemahasiswaan->pertanyaan()->delete();
+
+        $kemahasiswaan->responden()->delete();
 
         $kemahasiswaan->delete();
 

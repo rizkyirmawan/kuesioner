@@ -39,11 +39,11 @@
         <div class="col-md-12">
           <table class="table table-bordered text-dark">
             <tr>
-              <th>Tahun Ajaran</th>
+              <th>Tahun</th>
               <th>Total Nilai</th>
             </tr>
             <tr>
-              <td>{{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
+              <td>{{ $kemahasiswaan->tahun }}</td>
               <td>{{ $kemahasiswaan->respons->sum('jawaban.skor') <= 0 ? 0 : round($kemahasiswaan->respons->sum('jawaban.skor') / $kemahasiswaan->pertanyaan()->count(), 1) . ' dari ' . $kemahasiswaan->responden->count() . ' responden.' }}</td>
             </tr>
           </table>
