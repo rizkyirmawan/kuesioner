@@ -15,6 +15,11 @@ class TahunAjaran extends Model
     	return $this->hasOne(Pembelajaran::class);
     }
 
+    public function matkul()
+    {
+        return $this->hasMany(Matkul::class);
+    }
+
     public function studi()
     {
     	return $this->hasMany(Studi::class);

@@ -84,7 +84,7 @@
               <td class="text-dark">Kelas & Dosen</td>
               <td>
                 <ul class="list-group">
-                  @forelse($mataKuliah->studi as $std)
+                  @forelse($mataKuliah->studi()->where('tahun_ajaran', $tahunAjaranAktif->id)->get() as $std)
                     <span class="badge badge-success d-block mt-2">{{ $std->kelas->kelas }}: {{ $std->dosen->nama }}</span>
                   @empty
                     Belum Dikelola
@@ -103,7 +103,7 @@
               <th>Kelas</th>
               <th>Peserta</th>
             </tr>
-            @forelse($mataKuliah->studi as $studi)
+            @forelse($mataKuliah->studi()->where('tahun_ajaran', $tahunAjaranAktif->id)->get() as $studi)
               <tr>
                 <td>
                   {{ $studi->kelas->kelas }}

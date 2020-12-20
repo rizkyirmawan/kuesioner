@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Role;
+use App\Models\TahunAjaran;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -209,8 +210,11 @@ class MahasiswaController extends Controller
     // API Mahasiswa Attached to Matkul
     public function mahasiswaAttached($matkul)
     {
-        $res = Mahasiswa::whereHas('matkul', function ($query) use ($matkul) {
-           $query->where('kode_matkul', '=', $matkul);
+        $tahunAjaranAktif = TahunAjaran::where('aktif', 1)->first();
+        
+        $res = Mahasiswa::whereHas('matkul', function ($query) use ($matkul, $tahunAjaranAktif) {
+           return $query->where('kode_matkul', $matkul->kode)
+                        ->where('tahun_ajaran', $tahunAjaranAktif->id);
         })->get();
 
         return response()->json($res, 200);

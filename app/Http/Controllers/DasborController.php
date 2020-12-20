@@ -45,7 +45,7 @@ class DasborController extends Controller
         }
 
         if (auth()->user()->role->role === 'Mahasiswa') {
-        	$pembelajaranMahasiswa = Pembelajaran::select('pembelajaran.*')
+        	$pembelajaranMahasiswa = collect(Pembelajaran::select('pembelajaran.*')
                             ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                             ->join('matkul', 'studi.kode_matkul', '=', 'matkul.kode')
                             ->join('peserta_didik', 'matkul.kode', '=', 'peserta_didik.kode_matkul')
@@ -56,13 +56,14 @@ class DasborController extends Controller
                             ->where('pembelajaran.tahun_ajaran', $tahunAjaranAktif->id)
                             ->whereDate('awal', '<=', $today->format('Y-m-d'))
                             ->whereDate('akhir', '>=', $today->format('Y-m-d'))
-                            ->count();
+                            ->get())->unique()->toArray();
         }
 
         if (auth()->user()->role->role === 'Dosen') {
             $pembelajaranDosen = Pembelajaran::select('pembelajaran.*')
                             ->join('studi', 'pembelajaran.studi_id', '=', 'studi.id')
                             ->where('studi.kode_dosen', auth()->user()->userable->kode)
+                            ->where('pembelajaran.tahun_ajaran', $tahunAjaranAktif->id)
                             ->count();
 
             $studiDosen = Studi::where('kode_dosen', auth()->user()->userable->kode)->count();

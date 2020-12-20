@@ -60,15 +60,18 @@ class MatkulController extends Controller
     {
     	$title = 'Mata Kuliah: ' . $mataKuliah->mata_kuliah;
 
-        $mahasiswa = Mahasiswa::whereHas('matkul', function ($query) use ($mataKuliah) {
-           $query->where('kode_matkul', '=', $mataKuliah->kode);
+        $tahunAjaranAktif = TahunAjaran::where('aktif', 1)->first();
+
+        $mahasiswa = Mahasiswa::whereHas('matkul', function ($query) use ($mataKuliah, $tahunAjaranAktif) {
+           return $query->where('kode_matkul', $mataKuliah->kode)
+                        ->where('tahun_ajaran', $tahunAjaranAktif->id);
         })->get();
 
         $kelas = Kelas::whereNotIn('id', $mataKuliah->studi->pluck('kelas_id'))->get();
 
         $dosen = Dosen::all();
 
-    	return view('matkul.show', compact('title', 'mataKuliah', 'kelas', 'dosen', 'mahasiswa'));
+    	return view('matkul.show', compact('title', 'mataKuliah', 'kelas', 'dosen', 'mahasiswa', 'tahunAjaranAktif'));
     }
 
     // Edit Matkul
@@ -193,6 +196,8 @@ class MatkulController extends Controller
         try {
             $collection = Excel::toCollection(new KRSImport, $request->file('excel'));
 
+            $tahunAjaranAktif = TahunAjaran::where('aktif', 1)->first();
+
             $dataPesertaDidik = PesertaDidik::all()
                                 ->map(function ($item, $key) {
                                     return $item->only(['nim', 'kode_matkul']);
@@ -200,9 +205,10 @@ class MatkulController extends Controller
                                 ->sort()
                                 ->toArray();
 
-            $importedDataKRS = $collection->first()->map(function ($item, $key) {
+            $importedDataKRS = $collection->first()->map(function ($item, $key) use ($tahunAjaranAktif) {
                 $item['kode_matkul'] = $item['kd_mk'];
-                return collect($item)->only(['nim', 'kode_matkul']);
+                $item['tahun_ajaran'] = $tahunAjaranAktif->id;
+                return collect($item)->only(['nim', 'kode_matkul', 'tahun_ajaran']);
             })->sort()->toArray();
 
             $dataKRS = array_map('unserialize', array_diff(array_map('serialize', $importedDataKRS), array_map('serialize', $dataPesertaDidik)));
@@ -229,16 +235,14 @@ class MatkulController extends Controller
 
             $importedDataStudi = $collection->first()->unique(function ($item) {
                 return $item['kelas_program'].$item['kd_dosen'].$item['kd_mk'];
-            })->map(function ($item, $key) {
+            })->map(function ($item, $key) use ($tahunAjaranAktif) {
                 $kelasRegPagi = Kelas::where('kode', 'REG-A')->first();
                 $kelasRegSore = Kelas::where('kode', 'REG-B')->first();
                 $kelasEksekutif = Kelas::where('kode', 'EKS-A')->first();
 
-                $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
-
                 $item['kode_dosen'] = $item['kd_dosen'];
                 $item['kode_matkul'] = $item['kd_mk'];
-                $item['tahun_ajaran'] = $tahunAjaran->id;
+                $item['tahun_ajaran'] = $tahunAjaranAktif->id;
 
                 if ($item['kelas_program'] === 'REGULER') {
                     $item['kelas_id'] = $kelasRegPagi->id;
