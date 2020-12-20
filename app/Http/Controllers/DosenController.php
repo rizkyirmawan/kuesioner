@@ -194,7 +194,7 @@ class DosenController extends Controller
                 return collect($item)->forget(['nama_dosen']);
             })->whereIn('kode', $diffKodeDosen)->toArray();
 
-            if (count($importedDataDosen) <= 0) {
+            if (count($dataDosen) <= 0) {
                 return back()
                         ->with('warning', 'Tidak ada data dosen yang berbeda.');
             }
