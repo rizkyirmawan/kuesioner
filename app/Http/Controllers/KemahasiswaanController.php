@@ -147,7 +147,7 @@ class KemahasiswaanController extends Controller
 
         $kemahasiswaan->load(['pertanyaan.jawaban', 'pertanyaan.respons', 'pertanyaan.respons.jawaban']);
 
-        return Excel::download(new ResponsKemahasiswaanExport($kemahasiswaan), $kode . '-LAYANAN-MHS-' . $kemahasiswaan->tahunAjaran->semester . '-' . $kemahasiswaan->tahunAjaran->tahun_ajaran . '.xlsx');
+        return Excel::download(new ResponsKemahasiswaanExport($kemahasiswaan), $kode . '-LAYANAN-MHS-' . $kemahasiswaan->tahun . '.xlsx');
     }
 
     // Export Rekap

@@ -4,8 +4,8 @@
 		<td style="border: 2px solid black;">: {{ $kemahasiswaan->kuesioner }}</td>
 	</tr>
 	<tr>
-		<td style="font-weight: bold; border: 2px solid black;">Tahun Ajaran</td>
-		<td style="border: 2px solid black;">: {{ $kemahasiswaan->tahunAjaran->semester . ' ' . $kemahasiswaan->tahunAjaran->tahun_ajaran }}</td>
+		<td style="font-weight: bold; border: 2px solid black;">Tahun</td>
+		<td style="border: 2px solid black;">: {{ $kemahasiswaan->tahun }}</td>
 	</tr>
 </table>
 
@@ -27,7 +27,11 @@
 		@endforeach
 		<tr>
 			<td colspan="2" style="font-weight: bold;">Total Nilai</td>
-			<td style="font-weight: bold;">{{ $kemahasiswaan->respons->sum('jawaban.skor') <= 0 ? 0 : round($kemahasiswaan->respons->sum('jawaban.skor') / $kemahasiswaan->pertanyaan()->count(), 1) . ' dari ' . $kemahasiswaan->responden->count() . ' responden.' }}</td>
+			<td style="font-weight: bold;">{{ $kemahasiswaan->respons->sum('jawaban.skor') <= 0 ? 0 : round($kemahasiswaan->respons->sum('jawaban.skor') / $kemahasiswaan->pertanyaan()->count(), 1) }}</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="font-weight: bold;">Total Responden</td>
+			<td style="font-weight: bold;">{{ $kemahasiswaan->responden->count() }}</td>
 		</tr>
 	</tbody>
 </table>
