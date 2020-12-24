@@ -27,7 +27,7 @@
 		@endforeach
 		<tr>
 			<td colspan="2" style="font-weight: bold;">Total Nilai</td>
-			<td style="font-weight: bold;">{{ $kemahasiswaan->respons->sum('jawaban.skor') <= 0 ? 0 : round($kemahasiswaan->respons->sum('jawaban.skor') / $kemahasiswaan->pertanyaan()->count(), 1) }}</td>
+			<td style="font-weight: bold;">{{ $kemahasiswaan->respons->sum('jawaban.skor') <= 0 ? 0 : round($kemahasiswaan->respons->sum('jawaban.skor') / $kemahasiswaan->responden()->count() / $kemahasiswaan->pertanyaan()->count(), 1) }}</td>
 		</tr>
 		<tr>
 			<td colspan="2" style="font-weight: bold;">Total Responden</td>

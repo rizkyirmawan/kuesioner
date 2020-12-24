@@ -288,6 +288,14 @@ class MatkulController extends Controller
                 }
             }
 
+            if (count($dataKRS) <= 0) {
+                return back()
+                        ->with('warning', 'Data KRS tidak ada yang berbeda.');
+            } elseif (count($dataStudi) <= 0) {
+                return back()
+                        ->with('warning', 'Data kelas kuliah tidak ada yang berbeda.');
+            }
+
             if (count($dataStudi) > 0) {
                 foreach ($dataStudi as $studi) {
                     Studi::insert($studi);

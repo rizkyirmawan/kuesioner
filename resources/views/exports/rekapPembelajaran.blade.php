@@ -16,7 +16,7 @@
 			<td style="border: 2px solid black;">{{ $kuesioner->studi->dosen->nama }}</td>
 			<td style="border: 2px solid black;">{{ $kuesioner->studi->kelas->kelas }}</td>
 			<td style="border: 2px solid black;">{{ $kuesioner->studi->matkul->kode . ': ' .$kuesioner->studi->matkul->mata_kuliah }}</td>
-			<td style="font-weight: bold; border: 2px solid black; text-align: center;">{{ $kuesioner->respons->sum('jawaban.skor') <= 0 ? 0 : round($kuesioner->respons->sum('jawaban.skor') / $kuesioner->pertanyaan()->count(), 1) }}</td>
+			<td style="font-weight: bold; border: 2px solid black; text-align: center;">{{ $kuesioner->respons->sum('jawaban.skor') <= 0 ? 0 : round($kuesioner->respons->sum('jawaban.skor') / $kuesioner->responden()->count() / $kuesioner->pertanyaan()->count(), 1) }}</td>
 			<td style="font-weight: bold; border: 2px solid black; text-align: center;">{{ $kuesioner->responden->count() }}</td>
 		</tr>
 		@endforeach
