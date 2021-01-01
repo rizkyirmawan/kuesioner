@@ -38,8 +38,8 @@ class PembelajaranRequest extends FormRequest
             'kuesioner.required' => 'Judul kuesioner tidak boleh kosong.',
             'deskripsi.required' => 'Deskripsi kuesioner tidak boleh kosong.',
             'studi.required' => 'Silahkan pilih kelas kuliah.',
-            'awal' => 'Awal periode tidak boleh kosong.',
-            'akhir' => 'Akhir periode tidak boleh kosong.'
+            'awal.required' => 'Awal periode tidak boleh kosong.',
+            'akhir.required' => 'Akhir periode tidak boleh kosong.'
         ];
     }
 }

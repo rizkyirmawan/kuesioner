@@ -42,6 +42,14 @@ class KemahasiswaanController extends Controller
     {
         $today = Carbon::now();
 
+        $kemahasiswaanTahunIni = Kemahasiswaan::where('tahun', $today->year)->first();
+
+        if ($kemahasiswaanTahunIni) {
+            return redirect()
+                    ->route('kemahasiswaan.index')
+                    ->with('warning', 'Kuesioner tahun ini sudah dibuat.');
+        }
+
     	$request->request->add([
     		'user_id' => auth()->user()->id,
             'tahun' => $today->year

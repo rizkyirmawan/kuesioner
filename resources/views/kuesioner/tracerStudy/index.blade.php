@@ -77,7 +77,7 @@
 
             <div class="form-group">
               <label for="tahun_lulus" class="text-dark">Tahun Lulus Tertuju:</label>
-              <select name="tahun_lulus" class="form-control">
+              <select name="tahun_lulus" class="form-control" required>
                 <option selected disabled>Pilih Tahun Lulus</option>
                 @foreach($tahunLulus as $tahun)
                 <option value="{{ $tahun }}">{{ $tahun }}</option>
