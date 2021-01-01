@@ -66,7 +66,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                  	<small class="text-gray-600">Copyright &copy; Rizky Irmawan {{ date('yy') }}</small>
+                  	<small class="text-gray-600">Copyright &copy; Rizky Irmawan {{ \Carbon\Carbon::now()->year }}</small>
                   </div>
                 </div>
               </div>

@@ -107,9 +107,21 @@ class PembelajaranController extends Controller
 
             $tahunAjaran = TahunAjaran::where('aktif', 1)->first();
 
+            $pembelajaranStudiIds = Pembelajaran::where('tahun_ajaran', $tahunAjaran->id)
+                        ->pluck('studi_id')
+                        ->values()
+                        ->toArray();
+
             $studiIds = Studi::where('tahun_ajaran', $tahunAjaran->id)
+            			->whereNotIn('id', $pembelajaranStudiIds)
                         ->pluck('id')
                         ->values();
+
+            if (count($studiIds) <= 0) {
+            	return redirect()
+                        ->route('pembelajaran.index')
+                        ->with('warning', 'Tidak ada kuesioner baru yang perlu ditambahkan.');
+            }
 
             $insertedPembelajaranIds = [];
 
